@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 void main() {
   runApp(GetMaterialApp(
-    title: 'Whoru',
+    title: 'Delivery Hub',
     // showPerformanceOverlay: true,
     debugShowCheckedModeBanner: false,
     initialRoute: '/root',

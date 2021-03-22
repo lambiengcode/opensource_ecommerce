@@ -1,6 +1,10 @@
 import 'package:delivery_hub/src/common/style.dart';
 import 'package:delivery_hub/src/models/action.dart';
+import 'package:delivery_hub/src/pages/home/controllers/action_controller.dart';
+import 'package:delivery_hub/src/pages/home/controllers/carousel_controller.dart';
 import 'package:delivery_hub/src/pages/home/widget/action_button.dart';
+import 'package:delivery_hub/src/pages/home/widget/carousel_banner.dart';
+import 'package:delivery_hub/src/pages/home/widget/horizontal_store_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -54,6 +58,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _myLocation = getUserLocation();
+    Get.put(ActionController(), permanent: true);
+    Get.put(CarouselBannerController(index: 0), permanent: true);
   }
 
   @override
@@ -76,7 +82,21 @@ class _HomePageState extends State<HomePage> {
                 physics: ClampingScrollPhysics(),
                 child: Column(
                   children: [
+                    SizedBox(height: 8.0),
+                    _buildCarouselBanner(context),
+                    SizedBox(height: 12.0),
+                    _buildTitle(context, 'category'.trArgs()),
+                    SizedBox(height: 12.0),
                     _buildHorizontalAction(context),
+                    SizedBox(height: 12.0),
+                    _buildTitle(context, 'mostPopular'.trArgs()),
+                    SizedBox(height: 12.0),
+                    _buildPopularStore(context),
+                    SizedBox(height: 12.0),
+                    _buildTitle(context, 'mostPopular'.trArgs()),
+                    SizedBox(height: 12.0),
+                    _buildPopularStore(context),
+                    SizedBox(height: 12.0),
                   ],
                 ),
               ),
@@ -245,6 +265,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildCarouselBanner(context) {
+    final _size = MediaQuery.of(context).size;
+    return Container(
+      height: _size.height * .125,
+      margin: EdgeInsets.symmetric(
+        horizontal: 14.0,
+      ),
+      child: CarouselImage(),
+    );
+  }
+
   Widget _buildHorizontalAction(context) {
     final _size = MediaQuery.of(context).size;
     return Container(
@@ -259,6 +290,51 @@ class _HomePageState extends State<HomePage> {
             title: actions[index].title,
             icon: actions[index].icon,
           );
+        },
+      ),
+    );
+  }
+
+  Widget _buildTitle(context, title) {
+    final _size = MediaQuery.of(context).size;
+    return Padding(
+      padding: EdgeInsets.only(left: 14.0, right: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: colorTitle,
+              fontSize: _size.width / 22.5,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          GestureDetector(
+            onTap: () => null,
+            child: Text(
+              'viewall'.trArgs(),
+              style: TextStyle(
+                color: colorPrimary,
+                fontSize: _size.width / 28.5,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPopularStore(context) {
+    final _size = MediaQuery.of(context).size;
+    return Container(
+      height: _size.width * .48,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return HorizontalStoreCard();
         },
       ),
     );

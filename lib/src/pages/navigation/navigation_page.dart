@@ -1,3 +1,4 @@
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:delivery_hub/src/common/style.dart';
 import 'package:delivery_hub/src/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
@@ -9,101 +10,89 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
-  int _currentPage = 0;
+  int currentPage = 2;
   var _pages = [
-    HomePage(),
     Container(),
+    Container(),
+    HomePage(),
     Container(),
     Container(),
   ];
 
+  // final FirebaseMessaging _fcm = FirebaseMessaging();
+  // StreamSubscription iosSubscription;
+
+  // _saveDeviceToken() async {
+  //   // Get the token for this device
+  //   String fcmToken = await _fcm.getToken();
+
+  //   // Save it to Firestore
+  //   if (fcmToken != null) {
+  //     print(fcmToken + 'lambiengcode');
+  //   }
+  // }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+
+  //   if (Platform.isIOS) {
+  //     iosSubscription = _fcm.onIosSettingsRegistered.listen((data) {
+  //       _saveDeviceToken();
+  //     });
+
+  //     _fcm.requestNotificationPermissions(IosNotificationSettings());
+  //   } else {
+  //     _saveDeviceToken();
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
-    final _size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        color: mC,
-        child: Stack(
-          children: [
-            _pages[_currentPage],
-            Positioned(
-              bottom: 0.0,
-              left: 0.0,
-              right: 0.0,
-              child: Container(
-                height: _size.height * .07,
-                width: _size.width,
-                margin: EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                  vertical: _size.height / 30.0,
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 24.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
-                  color: mC,
-                  boxShadow: [
-                    BoxShadow(
-                      color: mCD,
-                      offset: Offset(8, 8),
-                      blurRadius: 8,
-                    ),
-                    BoxShadow(
-                      color: mCL,
-                      offset: Offset(-4, -4),
-                      blurRadius: 4,
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildActionNavigation(
-                      context,
-                      'Home',
-                      Feather.home,
-                      0,
-                    ),
-                    _buildActionNavigation(
-                      context,
-                      'Orders',
-                      Feather.clipboard,
-                      1,
-                    ),
-                    _buildActionNavigation(
-                      context,
-                      'Favourites',
-                      Feather.heart,
-                      2,
-                    ),
-                    _buildActionNavigation(
-                      context,
-                      'Profile',
-                      Feather.user,
-                      3,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+      bottomNavigationBar: StyleProvider(
+        style: Style(),
+        child: ConvexAppBar.badge(
+          {3: currentPage == 3 ? '' : '2'},
+          initialActiveIndex: 2,
+          height: 60.0,
+          top: -24.0,
+          curveSize: 85.0,
+          style: TabStyle.reactCircle,
+          activeColor: colorTitle,
+          color: colorTitle,
+          items: [
+            TabItem(icon: Feather.clipboard),
+            TabItem(icon: Feather.heart),
+            TabItem(icon: Feather.home),
+            TabItem(icon: Feather.bell),
+            TabItem(icon: Feather.user),
           ],
+          backgroundColor: mC,
+          onTap: (int i) {
+            setState(() {
+              currentPage = i;
+            });
+          },
         ),
       ),
+      body: _pages[currentPage],
     );
   }
+}
 
-  Widget _buildActionNavigation(context, title, icon, index) {
-    final _size = MediaQuery.of(context).size;
-    return IconButton(
-      icon: Icon(
-        icon,
-        size: _size.width / 16.96,
-        color: _currentPage == index ? colorPrimary : colorDarkGrey,
-      ),
-      onPressed: () {
-        setState(() {
-          _currentPage = index;
-        });
-      },
-    );
+class Style extends StyleHook {
+  @override
+  double get activeIconSize => 25.0;
+
+  @override
+  double get activeIconMargin => 10.0;
+
+  @override
+  double get iconSize => 25.0;
+
+  @override
+  TextStyle textStyle(Color color) {
+    return TextStyle(fontSize: 10.0, color: color);
   }
 }
