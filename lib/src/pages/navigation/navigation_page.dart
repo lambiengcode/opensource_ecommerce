@@ -1,6 +1,7 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:delivery_hub/src/common/style.dart';
 import 'package:delivery_hub/src/pages/home/home_page.dart';
+import 'package:delivery_hub/src/pages/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
@@ -16,7 +17,7 @@ class _NavigationState extends State<Navigation> {
     Container(),
     HomePage(),
     Container(),
-    Container(),
+    ProfilePage(),
   ];
 
   // final FirebaseMessaging _fcm = FirebaseMessaging();
