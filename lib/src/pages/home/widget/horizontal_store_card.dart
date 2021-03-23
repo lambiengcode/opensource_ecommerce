@@ -19,7 +19,7 @@ class _HorizontalStoreCardState extends State<HorizontalStoreCard> {
       onTap: () => Get.toNamed('/store'),
       child: Container(
         width: _size.width * .4,
-        margin: EdgeInsets.only(left: 12.0),
+        margin: EdgeInsets.only(left: 6.0),
         child: Stack(
           children: [
             Container(

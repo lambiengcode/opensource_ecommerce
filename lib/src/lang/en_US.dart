@@ -4,6 +4,9 @@ const Map<String, String> en_US = {
   'searchHide': 'Find my friend',
   'mostPopular': 'Most Popular',
   'category': 'Category',
+  'nearBy': 'Nearby',
+  'shippingServices': 'Shipping Services',
+  'onSale': 'On Sale',
   'viewall': 'View all',
 
   // Profile

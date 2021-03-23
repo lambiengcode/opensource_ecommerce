@@ -5,6 +5,7 @@ import 'package:delivery_hub/src/pages/home/controllers/carousel_controller.dart
 import 'package:delivery_hub/src/pages/home/widget/action_button.dart';
 import 'package:delivery_hub/src/pages/home/widget/carousel_banner.dart';
 import 'package:delivery_hub/src/pages/home/widget/horizontal_store_card.dart';
+import 'package:delivery_hub/src/pages/home/widget/vertical_store_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -93,10 +94,29 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(height: 12.0),
                     _buildPopularStore(context),
                     SizedBox(height: 12.0),
-                    _buildTitle(context, 'mostPopular'.trArgs()),
+                    _buildTitle(context, 'onSale'.trArgs()),
                     SizedBox(height: 12.0),
                     _buildPopularStore(context),
                     SizedBox(height: 12.0),
+                    _buildTitle(context, 'shippingServices'.trArgs()),
+                    SizedBox(height: 12.0),
+                    _buildPopularStore(context),
+                    _buildTitle(context, 'nearBy'.trArgs()),
+                    SizedBox(height: 12.0),
+                    _buildPopularStore(context),
+                    SizedBox(height: 12.0),
+                    ListView.builder(
+                      padding: EdgeInsets.only(top: .0),
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () => Get.toNamed('/store'),
+                          child: VerticalStoreCard(),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -331,6 +351,7 @@ class _HomePageState extends State<HomePage> {
     return Container(
       height: _size.width * .48,
       child: ListView.builder(
+        padding: EdgeInsets.only(left: 6.0, right: 12.0),
         scrollDirection: Axis.horizontal,
         itemCount: 10,
         itemBuilder: (context, index) {

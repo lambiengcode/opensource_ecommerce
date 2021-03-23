@@ -245,7 +245,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           'logout'.trArgs(),
                           style: TextStyle(
                             fontSize: _size.width / 28.0,
-                            color: colorTitle,
+                            color: colorPrimary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

@@ -4,6 +4,9 @@ const Map<String, String> vi_VN = {
   'searchHide': 'Tìm bạn bè',
   'mostPopular': 'Phổ biến nhất',
   'category': 'Danh mục',
+  'nearBy': 'Gần bạn',
+  'shippingServices': 'Dịch vụ vận chuyển',
+  'onSale': 'Đang khuyến mãi',
   'viewall': 'Xem thêm',
 
   // Profile
