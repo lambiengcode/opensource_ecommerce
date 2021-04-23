@@ -20,6 +20,7 @@ class _TransportPage extends State<TransportPage>
     Container(color: mC),
     EmptyOrderPage(),
     Container(color: mC),
+    Container(color: mC),
   ];
 
   @override
@@ -27,7 +28,7 @@ class _TransportPage extends State<TransportPage>
     super.initState();
     _tabController = new TabController(
       vsync: this,
-      length: 4,
+      length: 5,
       initialIndex: 0,
     );
   }
@@ -105,13 +106,19 @@ class _TransportPage extends State<TransportPage>
             Container(
               width: width * .13,
               child: Tab(
-                text: 'history'.trArgs(),
+                text: 'reject'.trArgs(),
               ),
             ),
             Container(
               width: width * .13,
               child: Tab(
-                text: 'reject'.trArgs(),
+                text: 'history'.trArgs(),
+              ),
+            ),
+            Container(
+              width: width * .18,
+              child: Tab(
+                text: 'statistics'.trArgs(),
               ),
             ),
           ],

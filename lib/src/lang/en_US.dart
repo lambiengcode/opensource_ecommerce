@@ -93,4 +93,5 @@ const Map<String, String> en_US = {
 
   // Merchant
   'product': 'Product',
+  'statistics': 'Statistics',
 };
