@@ -138,8 +138,8 @@ class _RegisterTransportPageState extends State<RegisterTransportPage> {
               intensity: .65,
               color: mC,
             ),
-            margin: EdgeInsets.only(right: 12.0, bottom: 16.0),
-            padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            margin: EdgeInsets.only(right: 12.0, bottom: width / 32.0),
+            padding: EdgeInsets.symmetric(horizontal: 24.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,

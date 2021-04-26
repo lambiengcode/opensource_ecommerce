@@ -1,9 +1,12 @@
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/empty/empty_order_page.dart';
+import 'package:van_transport/src/pages/merchant/pages/product_page.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
+
+import '../../routes/app_pages.dart';
 
 class MerchantPage extends StatefulWidget {
   @override
@@ -20,7 +23,7 @@ class _TransportPage extends State<MerchantPage>
     EmptyOrderPage(),
     Container(color: mC),
     EmptyOrderPage(),
-    Container(color: mC),
+    ProductPage(),
     Container(color: mC),
   ];
 
@@ -55,7 +58,8 @@ class _TransportPage extends State<MerchantPage>
                   color: colorPrimaryTextOpacity,
                   size: width / 16.0,
                 ),
-                onPressed: () => null,
+                onPressed: () =>
+                    Get.toNamed(Routes.MERCHANT + Routes.CREATEGROUP),
               ),
             )
           : null,

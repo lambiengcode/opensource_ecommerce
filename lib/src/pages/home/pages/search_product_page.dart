@@ -49,7 +49,6 @@ class _SearchProductPageState extends State<SearchProductPage> {
         height: height,
         width: width,
         color: mC,
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           children: [
             SizedBox(height: height / 20.0),
@@ -60,26 +59,29 @@ class _SearchProductPageState extends State<SearchProductPage> {
             Expanded(
               child: SingleChildScrollView(
                 physics: ClampingScrollPhysics(),
-                child: Column(
-                  children: [
-                    SizedBox(height: 12.0),
-                    _buildTitle('Popular Sale'),
-                    SizedBox(height: 12.0),
-                    _buildPopularStore(context),
-                    SizedBox(height: 12.0),
-                    _buildTitle('Recommanded for you'),
-                    SizedBox(height: 12.0),
-                    _buildPopularStore(context),
-                    SizedBox(height: 12.0),
-                    _buildTitle('Top Collection'),
-                    SizedBox(height: 12.0),
-                    _buildPopularStore(context),
-                    SizedBox(height: 12.0),
-                    _buildTitle('Upcomming'),
-                    SizedBox(height: 12.0),
-                    _buildPopularStore(context),
-                    SizedBox(height: 24.0),
-                  ],
+                child: Padding(
+                  padding: EdgeInsets.only(left: 12.0),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 12.0),
+                      _buildTitle('Popular Sale'),
+                      SizedBox(height: 12.0),
+                      _buildPopularStore(context),
+                      SizedBox(height: 12.0),
+                      _buildTitle('Recommanded for you'),
+                      SizedBox(height: 12.0),
+                      _buildPopularStore(context),
+                      SizedBox(height: 12.0),
+                      _buildTitle('Top Collection'),
+                      SizedBox(height: 12.0),
+                      _buildPopularStore(context),
+                      SizedBox(height: 12.0),
+                      _buildTitle('Upcomming'),
+                      SizedBox(height: 12.0),
+                      _buildPopularStore(context),
+                      SizedBox(height: 24.0),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -90,19 +92,22 @@ class _SearchProductPageState extends State<SearchProductPage> {
   }
 
   Widget _buildTopbar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _buildActionTopbar('Back', Feather.arrow_left),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            _buildActionTopbar('Search', Feather.search),
-            SizedBox(width: 16.0),
-            _buildActionTopbar('Cart', Feather.shopping_cart),
-          ],
-        ),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildActionTopbar('Back', Feather.arrow_left),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _buildActionTopbar('Search', Feather.search),
+              SizedBox(width: 16.0),
+              _buildActionTopbar('Cart', Feather.shopping_cart),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -135,6 +140,7 @@ class _SearchProductPageState extends State<SearchProductPage> {
       height: width * .135,
       width: width,
       child: ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: 12.0),
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
         itemBuilder: (context, index) {
@@ -149,8 +155,8 @@ class _SearchProductPageState extends State<SearchProductPage> {
               intensity: .65,
               color: mC,
             ),
-            margin: EdgeInsets.only(right: 12.0, bottom: 16.0),
-            padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            margin: EdgeInsets.only(right: 12.0, bottom: width / 32.0),
+            padding: EdgeInsets.symmetric(horizontal: 24.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,

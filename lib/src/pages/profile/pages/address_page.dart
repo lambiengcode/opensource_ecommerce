@@ -146,12 +146,16 @@ class _AddressPageState extends State<AddressPage> {
               if (state == PinState.Idle) {
                 return CircleAvatar(
                   radius: 12.0,
-                  backgroundImage: AssetImage('images/avt.jpg'),
+                  backgroundImage: NetworkImage(
+                    'https://avatars.githubusercontent.com/u/60530946?v=4',
+                  ),
                 );
               } else {
                 return CircleAvatar(
                   radius: 12.0,
-                  backgroundImage: AssetImage('images/avt.jpg'),
+                  backgroundImage: NetworkImage(
+                    'https://avatars.githubusercontent.com/u/60530946?v=4',
+                  ),
                 );
               }
             },

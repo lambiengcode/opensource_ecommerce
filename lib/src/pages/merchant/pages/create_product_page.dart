@@ -1,26 +1,20 @@
 import 'dart:io';
-import 'package:van_transport/src/common/style.dart';
-import 'package:van_transport/src/pages/transport/widgets/vertical_transport_card.dart';
-import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import '../../../common/style.dart';
+import '../../../routes/app_pages.dart';
+import '../../transport/widgets/vertical_transport_card.dart';
 
-class EditTransportPage extends StatefulWidget {
+class CreateProductPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _EditTransportPageState();
+  State<StatefulWidget> createState() => _CreateProductPageState();
 }
 
-class _EditTransportPageState extends State<EditTransportPage> {
-  List<String> categories = [
-    'Standard',
-    'Frozen',
-    'Jewelry',
-  ];
+class _CreateProductPageState extends State<CreateProductPage> {
   File _image;
   String _title, _desc, _address;
   TextEditingController titleController = TextEditingController();
@@ -67,7 +61,7 @@ class _EditTransportPageState extends State<EditTransportPage> {
           ),
         ),
         title: Text(
-          'Edit Company',
+          'Create Product',
           style: TextStyle(
             color: colorTitle,
             fontSize: width / 20.0,
@@ -102,61 +96,16 @@ class _EditTransportPageState extends State<EditTransportPage> {
               ),
             ),
             SizedBox(height: 16.0),
-            _buildLineInfo(context, 'Company Name', '', titleController),
+            _buildLineInfo(context, 'Merchant Name', '', titleController),
             _buildDivider(context),
             _buildLineInfo(context, 'Address', '', addressController),
             _buildDivider(context),
             _buildLineInfo(context, 'Description', '', descController),
             _buildDivider(context),
-            _buildLineInfo(context, 'Support Delivery', '', titleController),
+            _buildLineInfo(context, 'Type Merchant', '', titleController),
             _buildDivider(context),
-            SizedBox(height: 24.0),
-            _buildListCategories()
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildListCategories() {
-    return Container(
-      height: width * .135,
-      width: width,
-      child: ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        scrollDirection: Axis.horizontal,
-        itemCount: categories.length,
-        itemBuilder: (context, index) {
-          return NeumorphicButton(
-            onPressed: () => null,
-            style: NeumorphicStyle(
-              shape: NeumorphicShape.concave,
-              boxShape: NeumorphicBoxShape.roundRect(
-                BorderRadius.circular(8.0),
-              ),
-              depth: 4.0,
-              intensity: .65,
-              color: mC,
-            ),
-            margin: EdgeInsets.only(right: 12.0, bottom: width / 32.0),
-            padding: EdgeInsets.symmetric(horizontal: 24.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  categories[index],
-                  style: TextStyle(
-                    color: colorDarkGrey,
-                    fontFamily: 'Lato',
-                    fontSize: width / 30.0,
-                  ),
-                ),
-              ],
-            ),
-            duration: Duration(milliseconds: 200),
-          );
-        },
       ),
     );
   }

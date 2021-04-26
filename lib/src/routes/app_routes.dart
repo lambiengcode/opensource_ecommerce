@@ -36,6 +36,8 @@ abstract class Routes {
   static const MERCHANT = '/merchant';
   static const REGISTERMERCHANT = '/registerMerchant';
   static const EDITMERCHANT = '/editMerchant';
+  static const CREATEGROUP = '/createGroup';
+  static const CREATEPRODUCT = '/createProduct';
 
   // Delivery
   static const DELIVERY = '/delivery';

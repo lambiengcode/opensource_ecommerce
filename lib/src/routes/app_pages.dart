@@ -7,6 +7,8 @@ import 'package:van_transport/src/pages/home/pages/details_product_page.dart';
 import 'package:van_transport/src/pages/home/pages/search_product_page.dart';
 import 'package:van_transport/src/pages/home/pages/store_page.dart';
 import 'package:van_transport/src/pages/merchant/merchant_page.dart';
+import 'package:van_transport/src/pages/merchant/pages/create_group_page.dart';
+import 'package:van_transport/src/pages/merchant/pages/create_product_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/edit_merchant_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/register_merchant_page.dart';
 import 'package:van_transport/src/pages/order/pages/add_product_page.dart';
@@ -26,6 +28,8 @@ import 'package:van_transport/src/pages/transport/pages/edit_transport_page.dart
 import 'package:van_transport/src/pages/transport/pages/register_transport_page.dart';
 import 'package:van_transport/src/pages/transport/transport_page.dart';
 import 'package:get/get.dart';
+
+import '../pages/order/pages/add_product_page.dart';
 part 'app_routes.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -226,6 +230,20 @@ class AppPages {
           transitionDuration: Duration(milliseconds: 200),
           children: [],
         ),
+        GetPage(
+          name: Routes.CREATEGROUP,
+          page: () => CreateGroupPage(),
+          transition: Transition.rightToLeft,
+          transitionDuration: Duration(milliseconds: 200),
+          children: [],
+        ),
+        GetPage(
+          name: Routes.CREATEPRODUCT,
+          page: () => CreateProductPage(),
+          transition: Transition.rightToLeft,
+          transitionDuration: Duration(milliseconds: 200),
+          children: [],
+        ),
       ],
     ),
 
@@ -235,21 +253,22 @@ class AppPages {
       page: () => TransportPage(),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 200),
-      children: [],
-    ),
-    GetPage(
-      name: Routes.REGISTERDELIVERY,
-      page: () => RegisterTransportPage(),
-      transition: Transition.rightToLeft,
-      transitionDuration: Duration(milliseconds: 200),
-      children: [],
-    ),
-    GetPage(
-      name: Routes.EDITDELIVERY,
-      page: () => EditTransportPage(),
-      transition: Transition.rightToLeft,
-      transitionDuration: Duration(milliseconds: 200),
-      children: [],
+      children: [
+        GetPage(
+          name: Routes.REGISTERDELIVERY,
+          page: () => RegisterTransportPage(),
+          transition: Transition.rightToLeft,
+          transitionDuration: Duration(milliseconds: 200),
+          children: [],
+        ),
+        GetPage(
+          name: Routes.EDITDELIVERY,
+          page: () => EditTransportPage(),
+          transition: Transition.rightToLeft,
+          transitionDuration: Duration(milliseconds: 200),
+          children: [],
+        ),
+      ],
     ),
   ];
 }
