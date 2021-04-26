@@ -1,8 +1,8 @@
 import 'dart:ui';
-import 'package:ecommerce_ec/src/common/style.dart';
-import 'package:ecommerce_ec/src/routes/app_pages.dart';
-import 'package:ecommerce_ec/src/services/auth.dart';
-import 'package:ecommerce_ec/src/widgets/snackbar.dart';
+import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
+import 'package:van_transport/src/services/auth.dart';
+import 'package:van_transport/src/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';

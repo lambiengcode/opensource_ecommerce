@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:ecommerce_ec/src/pages/auth/auth_page.dart';
-import 'package:ecommerce_ec/src/pages/navigation/navigation_page.dart';
-import 'package:ecommerce_ec/src/pages/splash/splash.dart';
-import 'package:ecommerce_ec/src/widgets/loading_page.dart';
+import 'package:van_transport/src/pages/auth/auth_page.dart';
+import 'package:van_transport/src/pages/navigation/navigation_page.dart';
+import 'package:van_transport/src/pages/splash/splash.dart';
+import 'package:van_transport/src/widgets/loading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -95,7 +95,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
             }
 
             return App.time == 0
-                ? App.token == ''
+                ? App.token != ''
                     ? AuthenticatePage()
                     : Navigation()
                 : SplashPage();

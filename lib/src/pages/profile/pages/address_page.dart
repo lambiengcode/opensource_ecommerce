@@ -1,5 +1,5 @@
-import 'package:ecommerce_ec/src/common/secret_key.dart';
-import 'package:ecommerce_ec/src/common/style.dart';
+import 'package:van_transport/src/common/secret_key.dart';
+import 'package:van_transport/src/common/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -130,6 +130,10 @@ class _AddressPageState extends State<AddressPage> {
                                           selectedPlace = selectedP;
                                         });
                                         Get.back();
+                                        print(selectedPlace
+                                            .geometry.location.lat);
+                                        print(selectedPlace
+                                            .geometry.location.lng);
                                       },
                                     ),
                                   ),
@@ -340,15 +344,7 @@ class _AddressPageState extends State<AddressPage> {
   Widget _buildCurrentLocation(context, title, value, icon) {
     final _size = MediaQuery.of(context).size;
     return GestureDetector(
-      onTap: () {
-        switch (title) {
-          case 'Current Location':
-            chooseLocation(context);
-            break;
-          default:
-            break;
-        }
-      },
+      onTap: () => chooseLocation(context),
       child: Container(
         padding: EdgeInsets.symmetric(
           horizontal: 12.0,

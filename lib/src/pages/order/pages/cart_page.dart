@@ -1,6 +1,6 @@
-import 'package:ecommerce_ec/src/common/style.dart';
-import 'package:ecommerce_ec/src/pages/order/widgets/cart_card.dart';
-import 'package:ecommerce_ec/src/routes/app_pages.dart';
+import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/order/widgets/cart_card.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';

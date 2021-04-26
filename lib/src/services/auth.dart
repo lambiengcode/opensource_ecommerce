@@ -1,6 +1,6 @@
-import 'package:ecommerce_ec/src/app.dart';
-import 'package:ecommerce_ec/src/common/routes.dart';
-import 'package:ecommerce_ec/src/common/secret_key.dart';
+import 'package:van_transport/src/app.dart';
+import 'package:van_transport/src/common/routes.dart';
+import 'package:van_transport/src/common/secret_key.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;

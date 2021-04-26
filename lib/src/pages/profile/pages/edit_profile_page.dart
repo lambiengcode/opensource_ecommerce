@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:ui';
-import 'package:ecommerce_ec/src/app.dart';
-import 'package:ecommerce_ec/src/common/secret_key.dart';
-import 'package:ecommerce_ec/src/common/style.dart';
+import 'package:van_transport/src/app.dart';
+import 'package:van_transport/src/common/secret_key.dart';
+import 'package:van_transport/src/common/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';

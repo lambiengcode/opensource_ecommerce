@@ -1,4 +1,4 @@
-import 'package:ecommerce_ec/src/common/style.dart';
+import 'package:van_transport/src/common/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 

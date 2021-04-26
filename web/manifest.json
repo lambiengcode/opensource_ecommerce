@@ -1,6 +1,6 @@
 {
-    "name": "ecommerce_ec",
-    "short_name": "ecommerce_ec",
+    "name": "van_transport",
+    "short_name": "van_transport",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

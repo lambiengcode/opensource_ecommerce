@@ -1,5 +1,5 @@
-import 'package:ecommerce_ec/src/common/style.dart';
-import 'package:ecommerce_ec/src/pages/home/controllers/action_controller.dart';
+import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/home/controllers/action_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

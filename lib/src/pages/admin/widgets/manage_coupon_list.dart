@@ -1,4 +1,4 @@
-import 'package:ecommerce_ec/src/pages/home/widget/vertical_store_card.dart';
+import 'package:van_transport/src/pages/home/widget/vertical_store_card.dart';
 import 'package:flutter/material.dart';
 
 class ManageCouponList extends StatefulWidget {

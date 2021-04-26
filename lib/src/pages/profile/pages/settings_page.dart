@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:ecommerce_ec/src/common/style.dart';
-import 'package:ecommerce_ec/src/pages/profile/controllers/settings_controller.dart';
+import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/profile/controllers/settings_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';

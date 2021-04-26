@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:ecommerce_ec/src/common/style.dart';
-import 'package:ecommerce_ec/src/pages/home/controllers/carousel_controller.dart';
-import 'package:ecommerce_ec/src/widgets/error_loading_image.dart';
-import 'package:ecommerce_ec/src/widgets/place_holder_image.dart';
+import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/home/controllers/carousel_controller.dart';
+import 'package:van_transport/src/widgets/error_loading_image.dart';
+import 'package:van_transport/src/widgets/place_holder_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';

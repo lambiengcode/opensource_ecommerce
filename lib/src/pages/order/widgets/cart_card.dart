@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ecommerce_ec/src/common/style.dart';
-import 'package:ecommerce_ec/src/widgets/error_loading_image.dart';
-import 'package:ecommerce_ec/src/widgets/place_holder_image.dart';
+import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/widgets/error_loading_image.dart';
+import 'package:van_transport/src/widgets/place_holder_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';

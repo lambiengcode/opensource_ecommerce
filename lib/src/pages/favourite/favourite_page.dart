@@ -1,6 +1,6 @@
-import 'package:ecommerce_ec/src/common/style.dart';
-import 'package:ecommerce_ec/src/models/action.dart';
-import 'package:ecommerce_ec/src/pages/home/widget/vertical_store_card.dart';
+import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/models/action.dart';
+import 'package:van_transport/src/pages/home/widget/vertical_store_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';

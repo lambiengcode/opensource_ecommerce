@@ -1,10 +1,10 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:ecommerce_ec/src/common/style.dart';
-import 'package:ecommerce_ec/src/pages/favourite/favourite_page.dart';
-import 'package:ecommerce_ec/src/pages/home/home_page.dart';
-import 'package:ecommerce_ec/src/pages/notifications/notifications_page.dart';
-import 'package:ecommerce_ec/src/pages/order/order_page.dart';
-import 'package:ecommerce_ec/src/pages/profile/profile_page.dart';
+import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/favourite/favourite_page.dart';
+import 'package:van_transport/src/pages/home/home_page.dart';
+import 'package:van_transport/src/pages/notifications/notifications_page.dart';
+import 'package:van_transport/src/pages/order/order_page.dart';
+import 'package:van_transport/src/pages/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 

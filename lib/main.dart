@@ -1,6 +1,6 @@
-import 'package:ecommerce_ec/src/lang/translation_service.dart';
-import 'package:ecommerce_ec/src/routes/app_pages.dart';
-import 'package:ecommerce_ec/src/shared/logger_utils.dart';
+import 'package:van_transport/src/lang/translation_service.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
+import 'package:van_transport/src/shared/logger_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

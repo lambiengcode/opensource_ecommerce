@@ -1,5 +1,5 @@
-import 'package:ecommerce_ec/src/pages/auth/pages/login_page.dart';
-import 'package:ecommerce_ec/src/pages/auth/pages/signup_page.dart';
+import 'package:van_transport/src/pages/auth/pages/login_page.dart';
+import 'package:van_transport/src/pages/auth/pages/signup_page.dart';
 import 'package:flutter/material.dart';
 
 class AuthenticatePage extends StatefulWidget {
