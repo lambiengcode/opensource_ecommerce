@@ -93,4 +93,5 @@ const Map<String, String> vi_VN = {
 
   // Merchant
   'product': 'Sản phẩm',
+  'statistics': 'Thống kê',
 };
