@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:get/get.dart';
 
 import '../../../common/style.dart';
-import '../../../common/style.dart';
+import '../../../routes/app_pages.dart';
 
 class ProductPage extends StatefulWidget {
   @override
@@ -16,7 +17,7 @@ class _ProductPageState extends State<ProductPage> {
       margin: EdgeInsets.only(top: 8.0),
       color: mC,
       child: ListView.builder(
-        itemCount: 10,
+        itemCount: 1,
         itemBuilder: (context, index) {
           return _buildGroupCard();
         },
@@ -26,7 +27,7 @@ class _ProductPageState extends State<ProductPage> {
 
   Widget _buildGroupCard() {
     return NeumorphicButton(
-      onPressed: () => null,
+      onPressed: () => Get.toNamed(Routes.MERCHANT + Routes.DETAILSGROUP),
       style: NeumorphicStyle(
         shape: NeumorphicShape.concave,
         boxShape: NeumorphicBoxShape.roundRect(

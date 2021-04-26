@@ -9,12 +9,12 @@ import '../../../common/style.dart';
 import '../../../routes/app_pages.dart';
 import '../../transport/widgets/vertical_transport_card.dart';
 
-class CreateProductPage extends StatefulWidget {
+class EditProductPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _CreateProductPageState();
+  State<StatefulWidget> createState() => _EditProductPageState();
 }
 
-class _CreateProductPageState extends State<CreateProductPage> {
+class _EditProductPageState extends State<EditProductPage> {
   File _image;
   String _title, _desc, _price;
   TextEditingController titleController = TextEditingController();
@@ -61,7 +61,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
           ),
         ),
         title: Text(
-          'Create Product',
+          'Edit Product',
           style: TextStyle(
             color: colorTitle,
             fontSize: width / 20.0,

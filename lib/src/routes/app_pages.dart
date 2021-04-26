@@ -9,7 +9,9 @@ import 'package:van_transport/src/pages/home/pages/store_page.dart';
 import 'package:van_transport/src/pages/merchant/merchant_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/create_group_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/create_product_page.dart';
+import 'package:van_transport/src/pages/merchant/pages/details_product_group_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/edit_merchant_page.dart';
+import 'package:van_transport/src/pages/merchant/pages/edit_product_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/register_merchant_page.dart';
 import 'package:van_transport/src/pages/order/pages/add_product_page.dart';
 import 'package:van_transport/src/pages/order/pages/cart_page.dart';
@@ -238,8 +240,22 @@ class AppPages {
           children: [],
         ),
         GetPage(
+          name: Routes.DETAILSGROUP,
+          page: () => DetailsProductGroupPage(),
+          transition: Transition.rightToLeft,
+          transitionDuration: Duration(milliseconds: 200),
+          children: [],
+        ),
+        GetPage(
           name: Routes.CREATEPRODUCT,
           page: () => CreateProductPage(),
+          transition: Transition.rightToLeft,
+          transitionDuration: Duration(milliseconds: 200),
+          children: [],
+        ),
+        GetPage(
+          name: Routes.EDITPRODUCT,
+          page: () => EditProductPage(),
           transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 200),
           children: [],
