@@ -95,7 +95,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
             }
 
             return App.time == 0
-                ? App.token != ''
+                ? App.token == ''
                     ? AuthenticatePage()
                     : Navigation()
                 : SplashPage();

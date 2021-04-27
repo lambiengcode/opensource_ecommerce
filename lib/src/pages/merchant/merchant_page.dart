@@ -1,6 +1,7 @@
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/empty/empty_order_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/product_page.dart';
+import 'package:van_transport/src/pages/merchant/pages/revenue_page.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -22,7 +23,7 @@ class _TransportPage extends State<MerchantPage>
     Container(color: mC),
     EmptyOrderPage(),
     ProductPage(),
-    Container(color: mC),
+    RevenuePage(),
   ];
 
   @override

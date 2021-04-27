@@ -13,14 +13,13 @@ import 'dart:math';
 class AddressPage extends StatefulWidget {
   const AddressPage({Key key}) : super(key: key);
 
-  static final kInitialPosition = LatLng(-33.8567844, 151.213108);
-
   @override
   _AddressPageState createState() => _AddressPageState();
 }
 
 class _AddressPageState extends State<AddressPage> {
   // var controller = Get.put(ProfileController());
+  final kInitialPosition = LatLng(-33.8567844, 151.213108);
   PickResult selectedPlace;
   LocationData currentLocation;
   Future<dynamic> _myLocation;
@@ -85,7 +84,7 @@ class _AddressPageState extends State<AddressPage> {
         builder: (context) {
           return PlacePicker(
             apiKey: apiMap,
-            initialPosition: AddressPage.kInitialPosition,
+            initialPosition: kInitialPosition,
             useCurrentLocation: true,
             selectInitialPosition: true,
             onGeocodingSearchFailed: (error) => print(error),
@@ -193,9 +192,13 @@ class _AddressPageState extends State<AddressPage> {
     _myLocation = getUserLocation();
     //controller.streamProfile();
     double totalDistance = 0;
-    for (var i = 0; i < data.length - 1; i++) {
-      totalDistance = calculateDistance(data[i]["lat"], data[i]["lng"],
-          data[i + 1]["lat"], data[i + 1]["lng"]);
+    for (var i = 0; i < data.length; i++) {
+      totalDistance = calculateDistance(
+        data[i]["lat"],
+        data[i]["lng"],
+        kInitialPosition.latitude,
+        kInitialPosition.longitude,
+      );
       print(totalDistance);
     }
   }
