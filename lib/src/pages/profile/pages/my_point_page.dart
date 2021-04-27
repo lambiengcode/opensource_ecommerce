@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/pages/order/widgets/bottom_sheet_payment.dart';
 
 class MyPointPage extends StatefulWidget {
   @override
@@ -11,6 +12,7 @@ class MyPointPage extends StatefulWidget {
 
 class _MyPointPageState extends State<MyPointPage> {
   String password = '';
+
   @override
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
@@ -119,13 +121,13 @@ class _MyPointPageState extends State<MyPointPage> {
       showModalBottomSheet(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(20.0),
+            Radius.circular(40.0),
           ),
         ),
         isScrollControlled: true,
         context: context,
         builder: (context) {
-          return _choosePaymentMethod(context, value);
+          return BottomSheetPayment();
         },
       );
     }

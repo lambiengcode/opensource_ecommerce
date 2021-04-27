@@ -5,9 +5,9 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import '../../../common/style.dart';
-import '../../../routes/app_pages.dart';
-import '../../transport/widgets/vertical_transport_card.dart';
+import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/transport/widgets/vertical_transport_card.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
 
 class CreateProductPage extends StatefulWidget {
   @override

@@ -30,11 +30,8 @@ import 'package:van_transport/src/pages/transport/pages/edit_transport_page.dart
 import 'package:van_transport/src/pages/transport/pages/register_transport_page.dart';
 import 'package:van_transport/src/pages/transport/transport_page.dart';
 import 'package:get/get.dart';
-
-import '../pages/order/pages/add_product_page.dart';
 part 'app_routes.dart';
 
-// ignore: avoid_classes_with_only_static_members
 class AppPages {
   static const INITIAL = Routes.ROOT;
 

@@ -3,8 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
-import '../../../common/style.dart';
+import 'package:van_transport/src/common/style.dart';
 
 class CreateGroupPage extends StatefulWidget {
   @override

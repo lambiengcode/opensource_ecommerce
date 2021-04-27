@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 
-import '../../routes/app_pages.dart';
-
 class MerchantPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _TransportPage();

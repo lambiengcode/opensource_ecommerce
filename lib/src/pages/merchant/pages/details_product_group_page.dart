@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
-import '../../../common/style.dart';
-import '../../../routes/app_pages.dart';
-import '../../home/widget/vertical_store_card.dart';
+import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/home/widget/vertical_store_card.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
 
 class DetailsProductGroupPage extends StatefulWidget {
   @override
@@ -12,6 +13,13 @@ class DetailsProductGroupPage extends StatefulWidget {
 
 class _DetailsProductGroupPageState extends State<DetailsProductGroupPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  SlidableController slidableController = new SlidableController();
+
+  @override
+  void initState() {
+    slidableController = SlidableController();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,14 +76,54 @@ class _DetailsProductGroupPageState extends State<DetailsProductGroupPage> {
         height: height,
         width: width,
         margin: EdgeInsets.only(top: 12.0),
-        child: ListView.builder(
-          itemCount: 4,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () => Get.toNamed(Routes.MERCHANT + Routes.EDITPRODUCT),
-              child: VerticalStoreCard(),
-            );
+        child: NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (overscroll) {
+            overscroll.disallowGlow();
+            return true;
           },
+          child: ListView.builder(
+            physics: ClampingScrollPhysics(),
+            itemCount: 4,
+            itemBuilder: (context, index) {
+              return Container(
+                child: Slidable(
+                  actionPane: SlidableDrawerActionPane(),
+                  actionExtentRatio: 0.25,
+                  controller: slidableController,
+                  child: GestureDetector(
+                    onTap: () =>
+                        Get.toNamed(Routes.MERCHANT + Routes.EDITPRODUCT),
+                    child: VerticalStoreCard(),
+                  ),
+                  secondaryActions: <Widget>[
+                    GestureDetector(
+                      onTap: () => slidableController.activeState.close(),
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(12.0, 12.0, 6.0, 18.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4.0),
+                          color: mCD,
+                          boxShadow: [
+                            BoxShadow(
+                                color: mCL,
+                                offset: Offset(3, 3),
+                                blurRadius: 3,
+                                spreadRadius: -3),
+                          ],
+                        ),
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Feather.trash_2,
+                          color: colorTitle,
+                          size: width / 15.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
