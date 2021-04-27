@@ -71,7 +71,7 @@ class PieChart2State extends State {
                 Indicator(
                   color: Color(0xfff8b250),
                   text: 'Feb',
-                  isSquare: true,
+                  isSquare: false,
                 ),
                 SizedBox(
                   height: 4,
@@ -79,7 +79,7 @@ class PieChart2State extends State {
                 Indicator(
                   color: Color(0xff845bef),
                   text: 'Mar',
-                  isSquare: true,
+                  isSquare: false,
                 ),
                 SizedBox(
                   height: 4,
@@ -87,7 +87,7 @@ class PieChart2State extends State {
                 Indicator(
                   color: Color(0xff13d38e),
                   text: 'Apr',
-                  isSquare: true,
+                  isSquare: false,
                 ),
                 SizedBox(
                   height: 18,

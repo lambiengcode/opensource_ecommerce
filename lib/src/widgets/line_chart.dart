@@ -30,11 +30,6 @@ class LineChartRevenueState extends State<LineChartRevenue> {
               offset: Offset(10, 10),
               blurRadius: 10,
             ),
-            BoxShadow(
-              color: mCL,
-              offset: Offset(-10, -10),
-              blurRadius: 10,
-            ),
           ],
         ),
         child: Stack(
@@ -50,6 +45,7 @@ class LineChartRevenueState extends State<LineChartRevenue> {
                   style: TextStyle(
                     color: colorDarkGrey,
                     fontSize: width / 24.0,
+                    fontFamily: 'Lato',
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -63,6 +59,7 @@ class LineChartRevenueState extends State<LineChartRevenue> {
                     fontSize: width / 18.0,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 2,
+                    fontFamily: 'Lato',
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -116,10 +113,11 @@ class LineChartRevenueState extends State<LineChartRevenue> {
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          getTextStyles: (value) => const TextStyle(
-            color: Color(0xff72719b),
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
+          getTextStyles: (value) => TextStyle(
+            color: colorTitle,
+            fontWeight: FontWeight.w600,
+            fontSize: width / 32.0,
+            fontFamily: 'Lato',
           ),
           margin: 10,
           getTitles: (value) {
