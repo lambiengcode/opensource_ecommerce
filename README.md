@@ -25,9 +25,9 @@ flutter run
 ### Screenshots
 
 <p> 
-<img src="https://github.com/lambiengcode/project_college_ec/blob/master/screenshots/home.png?raw=true" width="200px"/>
-<img src="https://github.com/lambiengcode/project_college_ec/blob/master/screenshots/profile.png?raw=true" width="200px"/>
-<img src="https://github.com/lambiengcode/project_college_ec/blob/master/screenshots/details.png?raw=true" width="200px"/>
+<img src="https://github.com/hongvinhmobile/project_college_ec/blob/dev/screenshots/home.png?raw=true" width="200px"/>
+<img src="https://github.com/hongvinhmobile/project_college_ec/blob/dev/screenshots/profile.png?raw=true" width="200px"/>
+<img src="https://github.com/hongvinhmobile/project_college_ec/blob/dev/screenshots/details.png?raw=true" width="200px"/>
 </p>
 
 ### Author
