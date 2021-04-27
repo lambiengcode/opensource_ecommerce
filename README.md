@@ -20,7 +20,7 @@ flutter run
 
 <img src="https://github.com/lambiengcode/project_college_ec/blob/master/images/logo_app.png?raw=true" width="150px" height="150px"/>
 
-- Design by Truc Quynh
+- Design by lambiengcode
 
 ### Screenshots
 
