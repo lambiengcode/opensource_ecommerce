@@ -1,3 +1,3 @@
 // Authentication
 const LOGIN_WITH_EMAIL = '/Auth/Login';
-const REGISTER = '/Register';
+const REGISTER = '/Auth/Register';

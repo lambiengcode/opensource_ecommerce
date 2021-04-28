@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 void main() {
   runApp(GetMaterialApp(
     title: 'Delivery Hub',
-    // showPerformanceOverlay: true,
     debugShowCheckedModeBanner: false,
     defaultTransition: Transition.native,
     locale: TranslationService.locale,

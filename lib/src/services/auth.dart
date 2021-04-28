@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 
 class AuthService {
-  Future<int> loginByEmail(username, password) async {
+  Future<Map<String, dynamic>> loginByEmail(username, password) async {
     var body = {
       'email': username,
       'password': password,
@@ -19,10 +19,15 @@ class AuthService {
       await prefs.setString('jwt', token);
       App.token = token;
     }
-    return response.statusCode;
+    return {
+      'status': response.statusCode,
+      'email': username,
+      'password': password,
+    };
   }
 
-  Future<int> register(email, password, phone, fullName) async {
+  Future<Map<String, dynamic>> register(
+      email, password, phone, fullName) async {
     var body = {
       'email': email,
       'password': password,
@@ -37,7 +42,13 @@ class AuthService {
       await prefs.setString('jwt', token);
       App.token = token;
     }
-    return response.statusCode;
+    return {
+      'status': response.statusCode,
+      'email': email,
+      'password': password,
+      'phone': phone,
+      'fullName': fullName,
+    };
   }
 
   Future<void> signOut() async {

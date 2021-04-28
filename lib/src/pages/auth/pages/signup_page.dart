@@ -1,9 +1,11 @@
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/services/auth.dart';
 import 'package:van_transport/src/widgets/loading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/widgets/snackbar.dart';
 
 class SignupPage extends StatefulWidget {
   final VoidCallback toggleView;
@@ -15,12 +17,16 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
-
+  AuthService _authService = AuthService();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _confirmPswController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _fullNameController = TextEditingController();
   FocusNode textFieldFocus = FocusNode();
   String fullName = '';
   String phone = '';
   String email = '';
-  String idNum = '';
   String password = '';
 
   bool hidePassword = true;
@@ -95,31 +101,39 @@ class _SignupPageState extends State<SignupPage> {
                                 child: Column(
                                   children: <Widget>[
                                     SizedBox(height: 12.0),
-                                    _buildLineInfo(context, 'phone'.trArgs(),
-                                        'validPhone'.trArgs()),
+                                    _buildLineInfo(
+                                      context,
+                                      'phone'.trArgs(),
+                                      'validPhone'.trArgs(),
+                                      _phoneController,
+                                    ),
                                     _buildDivider(context),
                                     _buildLineInfo(
                                       context,
                                       'fullName'.trArgs(),
                                       'validFullName'.trArgs(),
+                                      _fullNameController,
                                     ),
                                     _buildDivider(context),
                                     _buildLineInfo(
                                       context,
                                       'email'.trArgs(),
                                       'validEmail'.trArgs(),
+                                      _emailController,
                                     ),
                                     _buildDivider(context),
                                     _buildLineInfo(
                                       context,
                                       'password'.trArgs(),
                                       'validPsw'.trArgs(),
+                                      _passwordController,
                                     ),
                                     _buildDivider(context),
                                     Container(
                                       padding: EdgeInsets.fromLTRB(
                                           14.0, 24.0, 18.0, 4.0),
                                       child: TextFormField(
+                                        controller: _confirmPswController,
                                         cursorColor: colorTitle,
                                         cursorRadius: Radius.circular(30.0),
                                         style: TextStyle(
@@ -161,6 +175,37 @@ class _SignupPageState extends State<SignupPage> {
                                       loading = true;
                                     });
                                   }
+                                  var res = await _authService.register(
+                                    email,
+                                    password,
+                                    phone,
+                                    fullName,
+                                  );
+
+                                  if (res['status'] == 200) {
+                                    Get.offAndToNamed('/root');
+                                  } else {
+                                    setState(() {
+                                      loading = false;
+                                      email = res['email'];
+                                      password = res['password'];
+                                      fullName = res['fullName'];
+                                      phone = res['phone'];
+                                      _confirmPswController.text =
+                                          res['password'];
+                                      _emailController.text = res['email'];
+                                      _passwordController.text =
+                                          res['password'];
+                                      _phoneController.text = res['phone'];
+                                      _fullNameController.text =
+                                          res['fullName'];
+                                    });
+                                    GetSnackBar snackBar = GetSnackBar(
+                                      title: 'Signup Fail!',
+                                      subTitle: 'Email exists, try again!',
+                                    );
+                                    snackBar.show();
+                                  }
                                 },
                                 child: Container(
                                   height: 46.8,
@@ -196,11 +241,12 @@ class _SignupPageState extends State<SignupPage> {
           );
   }
 
-  Widget _buildLineInfo(context, title, valid) {
+  Widget _buildLineInfo(context, title, valid, controller) {
     final _size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.fromLTRB(14.0, 18.0, 18.0, 4.0),
       child: TextFormField(
+        controller: controller,
         cursorColor: colorTitle,
         cursorRadius: Radius.circular(30.0),
         style: TextStyle(
@@ -209,61 +255,26 @@ class _SignupPageState extends State<SignupPage> {
           fontWeight: FontWeight.w500,
         ),
         validator: (val) {
-          switch (title) {
-            case 'Email':
-              return GetUtils.isEmail(val.trim()) ? null : valid;
-            case 'Phone Number':
-              return GetUtils.isPhoneNumber(val.trim()) ? null : valid;
-            case 'Password':
-              return val.trim().length < 6 ? valid : null;
-
-            // Vietnamese
-            case 'Số điện thoại':
-              return GetUtils.isPhoneNumber(val.trim()) ? null : valid;
-            case 'Mật khẩu':
-              return val.trim().length < 6 ? valid : null;
-            default:
-              return val.trim().length == 0 ? valid : null;
+          if (title == 'phone'.trArgs()) {
+            return GetUtils.isPhoneNumber(val.trim()) ? null : valid;
+          } else if (title == 'fullName'.trArgs()) {
+            return val.trim().length == 0 ? valid : null;
+          } else if (title == 'email'.trArgs()) {
+            return GetUtils.isEmail(val.trim()) ? null : valid;
+          } else {
+            return val.trim().length < 6 ? valid : null;
           }
         },
         onChanged: (val) {
           setState(() {
-            switch (title) {
-              // en-US
-              case 'Full Name':
-                fullName = val.trim();
-                break;
-              case 'Phone Number':
-                phone = val.trim();
-                break;
-              case 'Email':
-                email = val.trim();
-                break;
-              case 'ID Number':
-                idNum = val.trim();
-                break;
-              case 'Password':
-                password = val.trim();
-                break;
-
-              // vi-VN
-              case 'Họ và Tên':
-                fullName = val.trim();
-                break;
-              case 'Số điện thoại':
-                phone = val.trim();
-                break;
-              case 'Email':
-                email = val.trim();
-                break;
-              case 'Số CMND/CCCD':
-                idNum = val.trim();
-                break;
-              case 'Mật khẩu':
-                password = val.trim();
-                break;
-              default:
-                break;
+            if (title == 'phone'.trArgs()) {
+              phone = val.trim();
+            } else if (title == 'fullName'.trArgs()) {
+              fullName = val.trim();
+            } else if (title == 'email'.trArgs()) {
+              email = val.trim();
+            } else {
+              password = val.trim();
             }
           });
         },

@@ -17,6 +17,7 @@ class PieChart2State extends State {
     return AspectRatio(
       aspectRatio: 1.23,
       child: Container(
+        padding: EdgeInsets.only(bottom: 48.0),
         decoration: BoxDecoration(
           color: mCL,
           boxShadow: [
@@ -39,27 +40,28 @@ class PieChart2State extends State {
                 aspectRatio: 1.23,
                 child: PieChart(
                   PieChartData(
-                      pieTouchData:
-                          PieTouchData(touchCallback: (pieTouchResponse) {
-                        setState(() {
-                          final desiredTouch = pieTouchResponse.touchInput
-                                  is! PointerExitEvent &&
-                              pieTouchResponse.touchInput is! PointerUpEvent;
-                          if (desiredTouch &&
-                              pieTouchResponse.touchedSection != null) {
-                            touchedIndex = pieTouchResponse
-                                .touchedSection.titlePositionPercentageOffset;
-                          } else {
-                            touchedIndex = -1;
-                          }
-                        });
-                      }),
-                      borderData: FlBorderData(
-                        show: false,
-                      ),
-                      sectionsSpace: 0,
-                      centerSpaceRadius: 40,
-                      sections: showingSections()),
+                    pieTouchData:
+                        PieTouchData(touchCallback: (pieTouchResponse) {
+                      setState(() {
+                        final desiredTouch =
+                            pieTouchResponse.touchInput is! PointerExitEvent &&
+                                pieTouchResponse.touchInput is! PointerUpEvent;
+                        if (desiredTouch &&
+                            pieTouchResponse.touchedSection != null) {
+                          touchedIndex = pieTouchResponse
+                              .touchedSection.titlePositionPercentageOffset;
+                        } else {
+                          touchedIndex = -1;
+                        }
+                      });
+                    }),
+                    borderData: FlBorderData(
+                      show: false,
+                    ),
+                    sectionsSpace: 0,
+                    centerSpaceRadius: 50,
+                    sections: showingSections(),
+                  ),
                 ),
               ),
             ),

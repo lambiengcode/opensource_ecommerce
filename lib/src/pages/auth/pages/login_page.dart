@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/widgets/snackbar.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback toggleView;
@@ -17,6 +18,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
   FocusNode textFieldFocus = FocusNode();
   String email = '';
@@ -125,6 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                                     Container(
                                       padding: EdgeInsets.all(8),
                                       child: TextFormField(
+                                        controller: _emailController,
                                         cursorColor: colorTitle,
                                         cursorRadius: Radius.circular(30.0),
                                         style: TextStyle(
@@ -168,6 +172,7 @@ class _LoginPageState extends State<LoginPage> {
                                     Container(
                                       padding: EdgeInsets.all(8),
                                       child: TextFormField(
+                                        controller: _passwordController,
                                         cursorColor: colorTitle,
                                         cursorRadius: Radius.circular(30.0),
                                         style: TextStyle(
@@ -244,12 +249,22 @@ class _LoginPageState extends State<LoginPage> {
                                   var res = await _authService.loginByEmail(
                                       email, password);
 
-                                  if (res == 200) {
+                                  if (res['status'] == 200) {
                                     Get.offAndToNamed('/root');
                                   } else {
                                     setState(() {
                                       loading = false;
+                                      email = res['email'];
+                                      password = res['password'];
+                                      _emailController.text = res['email'];
+                                      _passwordController.text =
+                                          res['password'];
                                     });
+                                    GetSnackBar snackBar = GetSnackBar(
+                                      title: 'Login Fail!',
+                                      subTitle: 'Wrong Password',
+                                    );
+                                    snackBar.show();
                                   }
                                 },
                                 child: Container(

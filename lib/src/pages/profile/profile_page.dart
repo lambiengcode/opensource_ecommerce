@@ -297,11 +297,9 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildAction(context, title, icon) {
-    final _size = MediaQuery.of(context).size;
     GetSnackBar getSnackBar = GetSnackBar(
       title: 'Comming Soon!',
       subTitle: 'This feature will available in next update',
-      size: _size,
     );
     return GestureDetector(
       onTap: () {
@@ -322,7 +320,7 @@ class _ProfilePageState extends State<ProfilePage> {
         }
       },
       child: Container(
-        width: _size.width,
+        width: width,
         color: mC,
         padding: EdgeInsets.fromLTRB(24.0, 10.5, 20.0, 10.5),
         child: Row(
@@ -333,7 +331,7 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 Icon(
                   icon,
-                  size: _size.width / 18.0,
+                  size: width / 18.0,
                   color: Colors.grey.shade700,
                 ),
                 SizedBox(
@@ -342,7 +340,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Text(
                   title,
                   style: TextStyle(
-                    fontSize: _size.width / 24.5,
+                    fontSize: width / 24.5,
                     color: Colors.grey.shade700,
                     fontWeight: FontWeight.w600,
                   ),
@@ -351,7 +349,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             Icon(
               Feather.arrow_right,
-              size: _size.width / 18.0,
+              size: width / 18.0,
               color: fCD,
             ),
           ],

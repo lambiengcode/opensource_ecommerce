@@ -65,7 +65,7 @@ class _TransportPage extends State<TransportPage>
         ),
         actions: [
           IconButton(
-            onPressed: () => Get.toNamed(Routes.EDITDELIVERY),
+            onPressed: () => Get.toNamed(Routes.DELIVERY + Routes.EDITDELIVERY),
             icon: Icon(
               Feather.edit_3,
               color: colorTitle,
