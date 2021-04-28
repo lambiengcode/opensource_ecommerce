@@ -45,4 +45,7 @@ abstract class Routes {
   static const DELIVERY = '/delivery';
   static const REGISTERDELIVERY = '/registerDelivery';
   static const EDITDELIVERY = '/editDelivery';
+
+  // Staff Delivery
+  static const STAFFDELIVERY = '/subDelivery';
 }

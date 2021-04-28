@@ -314,7 +314,7 @@ class _ProfilePageState extends State<ProfilePage> {
         } else if (title == 'owner'.trArgs()) {
           Get.toNamed(Routes.MERCHANT);
         } else if (title == 'transportOwner'.trArgs()) {
-          Get.toNamed(Routes.DELIVERY);
+          Get.toNamed(Routes.STAFFDELIVERY);
         } else {
           getSnackBar.show();
         }

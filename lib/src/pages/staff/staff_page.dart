@@ -1,27 +1,29 @@
 import 'package:van_transport/src/common/style.dart';
-import 'package:van_transport/src/pages/empty/empty_order_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/revenue_page.dart';
-import 'package:van_transport/src/pages/transport/pages/wait_for_confirm_page.dart';
+import 'package:van_transport/src/pages/staff/pages/staff_history_page.dart';
+import 'package:van_transport/src/pages/staff/pages/staff_ongoing_page.dart';
+import 'package:van_transport/src/pages/staff/pages/staff_reject_page.dart';
+import 'package:van_transport/src/pages/staff/pages/staff_wait_for_confirm_page.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 
-class TransportPage extends StatefulWidget {
+class StaffPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _TransportPage();
 }
 
-class _TransportPage extends State<TransportPage>
+class _TransportPage extends State<StaffPage>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   var _pages = [
-    WaitForConfirmPage(),
-    Container(color: mC),
-    EmptyOrderPage(),
-    Container(color: mC),
+    StaffWaitForConfirmPage(),
+    StaffOngoingPage(),
+    StaffRejectPage(),
+    StaffHistoryPage(),
     RevenuePage(),
   ];
 
@@ -53,10 +55,7 @@ class _TransportPage extends State<TransportPage>
           ),
         ),
         title: Text(
-          'transportOwner'
-              .trArgs()
-              .replaceAll('For ', '')
-              .replaceAll('Cho c', 'C'),
+          'staff'.trArgs(),
           style: TextStyle(
             color: colorTitle,
             fontSize: width / 20.0,
@@ -68,9 +67,9 @@ class _TransportPage extends State<TransportPage>
           IconButton(
             onPressed: () => Get.toNamed(Routes.DELIVERY + Routes.EDITDELIVERY),
             icon: Icon(
-              Feather.edit_3,
-              color: colorTitle,
-              size: width / 16.0,
+              Feather.map_pin,
+              color: colorPrimary,
+              size: width / 17.5,
             ),
           ),
         ],
