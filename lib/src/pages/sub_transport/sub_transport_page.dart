@@ -9,16 +9,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 
-class SubCityPage extends StatefulWidget {
+class SubTransportPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _TransportPage();
 }
 
-class _TransportPage extends State<SubCityPage>
+class _TransportPage extends State<SubTransportPage>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  bool _showFloatingButton = false;
+  bool _showFloatingButton = true;
+  bool _createSubcity = true;
 
   var _pages = [
     StaffWaitForConfirmPage(),
@@ -37,11 +38,18 @@ class _TransportPage extends State<SubCityPage>
       initialIndex: 0,
     );
     _tabController.addListener(() {
-      setState(() {
-        _tabController.index == 3
-            ? _showFloatingButton = true
-            : _showFloatingButton = false;
-      });
+      if (_tabController.index != 4) {
+        setState(() {
+          _showFloatingButton = true;
+          _tabController.index == 3
+              ? _createSubcity = false
+              : _createSubcity = true;
+        });
+      } else {
+        setState(() {
+          _showFloatingButton = false;
+        });
+      }
     });
   }
 
@@ -59,8 +67,13 @@ class _TransportPage extends State<SubCityPage>
                   color: colorPrimaryTextOpacity,
                   size: width / 16.0,
                 ),
-                onPressed: () =>
-                    Get.toNamed(Routes.SUBCITY + Routes.REGISTERSTAFF),
+                onPressed: () {
+                  if (_createSubcity) {
+                    // Go to create Group
+                  } else {
+                    // Go to create Subcity
+                  }
+                },
               ),
             )
           : null,
@@ -79,7 +92,7 @@ class _TransportPage extends State<SubCityPage>
           ),
         ),
         title: Text(
-          'Grab (Q1)',
+          'Grab (HCM)',
           style: TextStyle(
             color: colorTitle,
             fontSize: width / 20.0,

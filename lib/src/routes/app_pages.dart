@@ -3,6 +3,7 @@ import 'package:van_transport/src/pages/admin/admin_page.dart';
 import 'package:van_transport/src/pages/admin/pages/manage_coupon_page.dart';
 import 'package:van_transport/src/pages/admin/pages/manage_merchant_page.dart';
 import 'package:van_transport/src/pages/admin/pages/manage_transport_page.dart';
+import 'package:van_transport/src/pages/auth/pages/signup_staff_page.dart';
 import 'package:van_transport/src/pages/home/pages/details_product_page.dart';
 import 'package:van_transport/src/pages/home/pages/search_product_page.dart';
 import 'package:van_transport/src/pages/home/pages/store_page.dart';
@@ -28,6 +29,7 @@ import 'package:van_transport/src/pages/profile/pages/search_friend_page.dart';
 import 'package:van_transport/src/pages/profile/pages/settings_page.dart';
 import 'package:van_transport/src/pages/staff/staff_page.dart';
 import 'package:van_transport/src/pages/sub_city/sub_city_page.dart';
+import 'package:van_transport/src/pages/sub_transport/sub_transport_page.dart';
 import 'package:van_transport/src/pages/transport/pages/edit_transport_page.dart';
 import 'package:van_transport/src/pages/transport/pages/register_transport_page.dart';
 import 'package:van_transport/src/pages/transport/transport_page.dart';
@@ -295,11 +297,27 @@ class AppPages {
     ),
 
     GetPage(
+      name: Routes.SUBTRANSPORT,
+      page: () => SubTransportPage(),
+      transition: Transition.rightToLeft,
+      transitionDuration: Duration(microseconds: 200),
+      children: [],
+    ),
+
+    GetPage(
       name: Routes.SUBCITY,
       page: () => SubCityPage(),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(microseconds: 200),
-      children: [],
+      children: [
+        GetPage(
+          name: Routes.REGISTERSTAFF,
+          page: () => SignupStaffPage(),
+          transition: Transition.rightToLeft,
+          transitionDuration: Duration(microseconds: 200),
+          children: [],
+        ),
+      ],
     ),
   ];
 }

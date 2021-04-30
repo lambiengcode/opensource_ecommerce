@@ -51,4 +51,8 @@ abstract class Routes {
 
   // SubCity
   static const SUBCITY = '/subCity';
+  static const REGISTERSTAFF = '/registerStaff';
+
+  // SubTransport
+  static const SUBTRANSPORT = '/subTransport';
 }
