@@ -98,4 +98,7 @@ const Map<String, String> en_US = {
 
   // Staff
   'staff': 'Staff',
+
+  // SubCity
+  'manageStaff': 'Manage Staff',
 };

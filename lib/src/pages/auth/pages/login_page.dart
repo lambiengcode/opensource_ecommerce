@@ -242,29 +242,31 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               GestureDetector(
                                 onTap: () async {
-                                  setState(() {
-                                    loading = true;
-                                  });
-
-                                  var res = await _authService.loginByEmail(
-                                      email, password);
-
-                                  if (res['status'] == 200) {
-                                    Get.offAndToNamed('/root');
-                                  } else {
+                                  if (_formKey.currentState.validate()) {
                                     setState(() {
-                                      loading = false;
-                                      email = res['email'];
-                                      password = res['password'];
-                                      _emailController.text = res['email'];
-                                      _passwordController.text =
-                                          res['password'];
+                                      loading = true;
                                     });
-                                    GetSnackBar snackBar = GetSnackBar(
-                                      title: 'Login Fail!',
-                                      subTitle: 'Wrong Password',
-                                    );
-                                    snackBar.show();
+
+                                    var res = await _authService.loginByEmail(
+                                        email, password);
+
+                                    if (res['status'] == 200) {
+                                      Get.offAndToNamed('/root');
+                                    } else {
+                                      setState(() {
+                                        loading = false;
+                                        email = res['email'];
+                                        password = res['password'];
+                                        _emailController.text = res['email'];
+                                        _passwordController.text =
+                                            res['password'];
+                                      });
+                                      GetSnackBar snackBar = GetSnackBar(
+                                        title: 'Login Fail!',
+                                        subTitle: 'Wrong Password',
+                                      );
+                                      snackBar.show();
+                                    }
                                   }
                                 },
                                 child: Container(

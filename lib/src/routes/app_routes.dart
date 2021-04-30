@@ -48,4 +48,7 @@ abstract class Routes {
 
   // Staff Delivery
   static const STAFFDELIVERY = '/subDelivery';
+
+  // SubCity
+  static const SUBCITY = '/subCity';
 }

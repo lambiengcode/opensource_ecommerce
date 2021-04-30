@@ -1,9 +1,9 @@
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/merchant/pages/revenue_page.dart';
-import 'package:van_transport/src/pages/staff/pages/staff_history_page.dart';
 import 'package:van_transport/src/pages/staff/pages/staff_ongoing_page.dart';
 import 'package:van_transport/src/pages/staff/pages/staff_reject_page.dart';
 import 'package:van_transport/src/pages/staff/pages/staff_wait_for_confirm_page.dart';
+import 'package:van_transport/src/pages/sub_city/pages/manage_staff_page.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -23,7 +23,7 @@ class _TransportPage extends State<SubCityPage>
     StaffWaitForConfirmPage(),
     StaffOngoingPage(),
     StaffRejectPage(),
-    StaffHistoryPage(),
+    ManageStaffPage(),
     RevenuePage(),
   ];
 
@@ -55,7 +55,7 @@ class _TransportPage extends State<SubCityPage>
           ),
         ),
         title: Text(
-          'staff'.trArgs(),
+          'Grab (Q1)',
           style: TextStyle(
             color: colorTitle,
             fontSize: width / 20.0,
@@ -67,9 +67,9 @@ class _TransportPage extends State<SubCityPage>
           IconButton(
             onPressed: () => Get.toNamed(Routes.DELIVERY + Routes.EDITDELIVERY),
             icon: Icon(
-              Feather.map_pin,
-              color: colorPrimary,
-              size: width / 17.5,
+              Feather.filter,
+              color: colorTitle,
+              size: width / 16.0,
             ),
           ),
         ],
@@ -91,14 +91,6 @@ class _TransportPage extends State<SubCityPage>
           ),
           tabs: [
             Container(
-              width: Get.locale == Locale('vi', 'VN')
-                  ? width * .265
-                  : width * .305,
-              child: Tab(
-                text: 'waitForConfirm'.trArgs(),
-              ),
-            ),
-            Container(
               width: width * .185,
               child: Tab(
                 text: 'onGoing'.trArgs(),
@@ -114,6 +106,14 @@ class _TransportPage extends State<SubCityPage>
               width: width * .13,
               child: Tab(
                 text: 'history'.trArgs(),
+              ),
+            ),
+            Container(
+              width: Get.locale == Locale('vi', 'VN')
+                  ? width * .265
+                  : width * .305,
+              child: Tab(
+                text: 'manageStaff'.trArgs(),
               ),
             ),
             Container(

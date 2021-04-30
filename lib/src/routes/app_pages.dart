@@ -27,6 +27,7 @@ import 'package:van_transport/src/pages/profile/pages/my_point_page.dart';
 import 'package:van_transport/src/pages/profile/pages/search_friend_page.dart';
 import 'package:van_transport/src/pages/profile/pages/settings_page.dart';
 import 'package:van_transport/src/pages/staff/staff_page.dart';
+import 'package:van_transport/src/pages/sub_city/sub_city_page.dart';
 import 'package:van_transport/src/pages/transport/pages/edit_transport_page.dart';
 import 'package:van_transport/src/pages/transport/pages/register_transport_page.dart';
 import 'package:van_transport/src/pages/transport/transport_page.dart';
@@ -288,6 +289,14 @@ class AppPages {
     GetPage(
       name: Routes.STAFFDELIVERY,
       page: () => StaffPage(),
+      transition: Transition.rightToLeft,
+      transitionDuration: Duration(microseconds: 200),
+      children: [],
+    ),
+
+    GetPage(
+      name: Routes.SUBCITY,
+      page: () => SubCityPage(),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(microseconds: 200),
       children: [],
