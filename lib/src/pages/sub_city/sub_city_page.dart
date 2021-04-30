@@ -18,6 +18,7 @@ class _TransportPage extends State<SubCityPage>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _showFloatingButton = false;
 
   var _pages = [
     StaffWaitForConfirmPage(),
@@ -35,11 +36,34 @@ class _TransportPage extends State<SubCityPage>
       length: 5,
       initialIndex: 0,
     );
+    _tabController.addListener(() {
+      setState(() {
+        _tabController.index == 3
+            ? _showFloatingButton = true
+            : _showFloatingButton = false;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: _showFloatingButton
+          ? Container(
+              height: width / 6.25,
+              width: width / 6.25,
+              child: FloatingActionButton(
+                backgroundColor: colorTitle,
+                child: Icon(
+                  Feather.plus,
+                  color: colorPrimaryTextOpacity,
+                  size: width / 16.0,
+                ),
+                onPressed: () =>
+                    Get.toNamed(Routes.MERCHANT + Routes.CREATEGROUP),
+              ),
+            )
+          : null,
       key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: mC,
