@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:location/location.dart';
-import 'dart:math';
+import 'package:van_transport/src/services/distance.dart';
 
 class AddressPage extends StatefulWidget {
   const AddressPage({Key key}) : super(key: key);
@@ -19,18 +19,11 @@ class AddressPage extends StatefulWidget {
 
 class _AddressPageState extends State<AddressPage> {
   // var controller = Get.put(ProfileController());
+  final distance = Distance();
   final kInitialPosition = LatLng(-33.8567844, 151.213108);
   PickResult selectedPlace;
   LocationData currentLocation;
   Future<dynamic> _myLocation;
-  double calculateDistance(lat1, lon1, lat2, lon2) {
-    var p = 0.017453292519943295;
-    var c = cos;
-    var a = 0.5 -
-        c((lat2 - lat1) * p) / 2 +
-        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
-    return 12742 * asin(sqrt(a));
-  }
 
   List<dynamic> data = [
     {"lat": 44.968046, "lng": -94.420307},
@@ -193,7 +186,7 @@ class _AddressPageState extends State<AddressPage> {
     //controller.streamProfile();
     double totalDistance = 0;
     for (var i = 0; i < data.length; i++) {
-      totalDistance = calculateDistance(
+      totalDistance = distance.calculateDistance(
         data[i]["lat"],
         data[i]["lng"],
         kInitialPosition.latitude,

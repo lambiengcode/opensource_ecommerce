@@ -1,2 +1,2 @@
 const apiMap = 'AIzaSyAURwoHCVzWdOHBMpP9vDsxgvZVB7-spLI';
-const baseUrl = 'http://13.229.219.206:3000';
+const baseUrl = 'http://13.212.22.134:3000';

@@ -96,10 +96,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                     color: mCD,
                                     boxShadow: [
                                       BoxShadow(
-                                          color: mCL,
-                                          offset: Offset(3, 3),
-                                          blurRadius: 3,
-                                          spreadRadius: -3),
+                                        color: mCL,
+                                        offset: Offset(3, 3),
+                                        blurRadius: 3,
+                                        spreadRadius: -3,
+                                      ),
                                     ],
                                     image: DecorationImage(
                                       image: NetworkImage(
@@ -314,7 +315,7 @@ class _ProfilePageState extends State<ProfilePage> {
         } else if (title == 'owner'.trArgs()) {
           Get.toNamed(Routes.MERCHANT);
         } else if (title == 'transportOwner'.trArgs()) {
-          Get.toNamed(Routes.SUBCITY);
+          Get.toNamed(Routes.SUBTRANSPORT);
         } else {
           getSnackBar.show();
         }

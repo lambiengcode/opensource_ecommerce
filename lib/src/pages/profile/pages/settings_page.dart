@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/profile/controllers/settings_controller.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +63,6 @@ class _SettingsPageState extends State<SettingsPage> {
               GestureDetector(
                 onTap: () async {
                   final SharedPreferences prefs = await _prefs;
-
                   if (Get.locale == Locale('vi', 'VN')) {
                     Get.updateLocale(Locale('en', 'US'));
                     prefs.setString('locale', 'en').then((bool success) {

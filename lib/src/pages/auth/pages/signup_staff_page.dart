@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:image_picker/image_picker.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/services/auth.dart';
@@ -99,7 +98,8 @@ class _SignupStaffPageState extends State<SignupStaffPage> {
                         SizedBox(height: 16.0),
                         Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: _size.width * 0.0),
+                            horizontal: 0.0,
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -129,10 +129,11 @@ class _SignupStaffPageState extends State<SignupStaffPage> {
                                               color: mC,
                                               boxShadow: [
                                                 BoxShadow(
-                                                    color: mCL,
-                                                    offset: Offset(3, 3),
-                                                    blurRadius: 3,
-                                                    spreadRadius: -3),
+                                                  color: mCL,
+                                                  offset: Offset(3, 3),
+                                                  blurRadius: 3,
+                                                  spreadRadius: -3,
+                                                ),
                                               ],
                                               image: DecorationImage(
                                                 image: NetworkImage(
