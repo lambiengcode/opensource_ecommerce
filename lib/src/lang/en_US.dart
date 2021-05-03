@@ -60,6 +60,8 @@ const Map<String, String> en_US = {
   'notifications': 'Notifications',
   'vietnamese': 'Vietnamese',
   'changePsw': 'Change Password',
+  'currentPsw': 'Current Password',
+  'newPsw': 'New Password',
 
   // Bottom Capture
   'capture': 'Take a Photo',

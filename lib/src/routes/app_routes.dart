@@ -25,6 +25,7 @@ abstract class Routes {
   static const ADDFRIEND = '/addFriend';
   static const ADDRESS = '/address';
   static const SETTINGS = '/settings';
+  static const CHANGEPASSWORD = '/changePassword';
 
   // Admin
   static const ADMIN = '/admin';

@@ -76,6 +76,8 @@ const Map<String, String> vi_VN = {
   'notifications': 'Thông báo',
   'vietnamese': 'Tiếng Việt',
   'changePsw': 'Đổi mật khẩu',
+  'currentPsw': 'Mật khẩu hiện tại',
+  'newPsw': 'Mật khẩu mới',
 
   // Bottom Capture
   'capture': 'Chụp ảnh',
@@ -95,4 +97,10 @@ const Map<String, String> vi_VN = {
   // Merchant
   'product': 'Sản phẩm',
   'statistics': 'Thống kê',
+
+  // Staff
+  'staff': 'Nhân viên',
+
+  // SubCity
+  'manageStaff': 'QL Nhân sự',
 };

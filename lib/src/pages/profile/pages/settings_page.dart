@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -83,7 +84,8 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               SizedBox(height: 24.0),
               GestureDetector(
-                onTap: () => Get.toNamed('/settings/changepsw'),
+                onTap: () =>
+                    Get.toNamed(Routes.SETTINGS + Routes.CHANGEPASSWORD),
                 child: Container(
                   height: 52.0,
                   width: _size.width,

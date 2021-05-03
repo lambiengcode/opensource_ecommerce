@@ -22,6 +22,7 @@ import 'package:van_transport/src/pages/order/pages/create_order_page.dart';
 import 'package:van_transport/src/pages/order/pages/pick_address_page.dart';
 import 'package:van_transport/src/pages/profile/pages/add_friend_page.dart';
 import 'package:van_transport/src/pages/profile/pages/address_page.dart';
+import 'package:van_transport/src/pages/profile/pages/change_password_page.dart';
 import 'package:van_transport/src/pages/profile/pages/edit_profile_page.dart';
 import 'package:van_transport/src/pages/profile/pages/friends_page.dart';
 import 'package:van_transport/src/pages/profile/pages/my_point_page.dart';
@@ -178,7 +179,15 @@ class AppPages {
       page: () => SettingsPage(),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 200),
-      children: [],
+      children: [
+        GetPage(
+          name: Routes.CHANGEPASSWORD,
+          page: () => ChangePasswordPage(),
+          transition: Transition.rightToLeft,
+          transitionDuration: Duration(milliseconds: 200),
+          children: [],
+        ),
+      ],
     ),
 
     // Admin
