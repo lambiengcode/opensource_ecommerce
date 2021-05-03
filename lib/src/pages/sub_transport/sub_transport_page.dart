@@ -19,7 +19,7 @@ class _TransportPage extends State<SubTransportPage>
   TabController _tabController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _showFloatingButton = true;
-  bool _createSubcity = true;
+  bool _createSubCity = true;
 
   var _pages = [
     SubTransportWaitForConfirmPage(),
@@ -42,8 +42,8 @@ class _TransportPage extends State<SubTransportPage>
         setState(() {
           _showFloatingButton = true;
           _tabController.index == 3
-              ? _createSubcity = false
-              : _createSubcity = true;
+              ? _createSubCity = false
+              : _createSubCity = true;
         });
       } else {
         setState(() {
@@ -68,7 +68,7 @@ class _TransportPage extends State<SubTransportPage>
                   size: width / 16.0,
                 ),
                 onPressed: () {
-                  if (_createSubcity) {
+                  if (_createSubCity) {
                     Get.toNamed(Routes.SUBCITY + Routes.REGISTERSTAFF);
                   } else {
                     // Go to create Subcity

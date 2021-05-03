@@ -1,6 +1,6 @@
 import 'package:van_transport/src/common/style.dart';
-import 'package:van_transport/src/pages/empty/empty_order_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/revenue_page.dart';
+import 'package:van_transport/src/pages/sub_city/pages/manage_staff_page.dart';
 import 'package:van_transport/src/pages/transport/pages/wait_for_confirm_page.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +16,14 @@ class _TransportPage extends State<TransportPage>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _showFloatingButton = true;
+  bool _createSubTransport = true;
 
   var _pages = [
     WaitForConfirmPage(),
-    Container(color: mC),
-    EmptyOrderPage(),
-    Container(color: mC),
+    WaitForConfirmPage(),
+    WaitForConfirmPage(),
+    ManageStaffPage(),
     RevenuePage(),
   ];
 
@@ -33,11 +35,46 @@ class _TransportPage extends State<TransportPage>
       length: 5,
       initialIndex: 0,
     );
+    _tabController.addListener(() {
+      if (_tabController.index != 4) {
+        setState(() {
+          _showFloatingButton = true;
+          _tabController.index == 3
+              ? _createSubTransport = false
+              : _createSubTransport = true;
+        });
+      } else {
+        setState(() {
+          _showFloatingButton = false;
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: _showFloatingButton
+          ? Container(
+              height: width / 6.25,
+              width: width / 6.25,
+              child: FloatingActionButton(
+                backgroundColor: colorTitle,
+                child: Icon(
+                  Feather.plus,
+                  color: colorPrimaryTextOpacity,
+                  size: width / 16.0,
+                ),
+                onPressed: () {
+                  if (_createSubTransport) {
+                    Get.toNamed(Routes.SUBCITY + Routes.REGISTERSTAFF);
+                  } else {
+                    // Go to create Subcity
+                  }
+                },
+              ),
+            )
+          : null,
       key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: mC,
@@ -112,9 +149,11 @@ class _TransportPage extends State<TransportPage>
               ),
             ),
             Container(
-              width: width * .13,
+              width: Get.locale == Locale('vi', 'VN')
+                  ? width * .265
+                  : width * .305,
               child: Tab(
-                text: 'history'.trArgs(),
+                text: 'manageStaff'.trArgs(),
               ),
             ),
             Container(

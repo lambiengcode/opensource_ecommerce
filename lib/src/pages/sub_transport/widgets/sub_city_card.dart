@@ -68,7 +68,7 @@ class _SubCityCardState extends State<SubCityCard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'FullName: ${widget.fullName}',
+                '${widget.fullName}',
                 style: TextStyle(
                   color: colorTitle,
                   fontSize: width / 24.0,

@@ -14,6 +14,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   AuthService _authService = AuthService();
+
   @override
   void initState() {
     super.initState();
@@ -315,7 +316,7 @@ class _ProfilePageState extends State<ProfilePage> {
         } else if (title == 'owner'.trArgs()) {
           Get.toNamed(Routes.MERCHANT);
         } else if (title == 'transportOwner'.trArgs()) {
-          Get.toNamed(Routes.SUBTRANSPORT);
+          Get.toNamed(Routes.STAFFDELIVERY);
         } else {
           getSnackBar.show();
         }

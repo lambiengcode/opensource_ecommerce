@@ -71,112 +71,117 @@ class _AddressPageState extends State<AddressPage> {
   }
 
   void chooseLocation(context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return PlacePicker(
-            apiKey: apiMap,
-            initialPosition: kInitialPosition,
-            useCurrentLocation: true,
-            selectInitialPosition: true,
-            onGeocodingSearchFailed: (error) => print(error),
-            usePlaceDetailSearch: true,
-            forceSearchOnZoomChanged: true,
-            automaticallyImplyAppBarLeading: false,
-            usePinPointingSearch: true,
-            autocompleteLanguage:
-                Get.locale == Locale('vi', 'VN') ? 'vi' : 'en',
-            region: Get.locale == Locale('vi', 'VN') ? 'vn' : 'us',
-            selectedPlaceWidgetBuilder:
-                (_, selectedP, state, isSearchBarFocused) {
-              print("state: $state, isSearchBarFocused: $isSearchBarFocused");
-              return isSearchBarFocused
-                  ? Container()
-                  : FloatingCard(
-                      bottomPosition:
-                          0.0, // MediaQuery.of(context) will cause rebuild. See MediaQuery document for the information.
-                      leftPosition: 0.0,
-                      rightPosition: 0.0,
-                      width: 600.0,
-                      height: 125.0,
-                      borderRadius: BorderRadius.circular(12.0),
-                      child: state == SearchingState.Searching
-                          ? Center(
-                              child: CircularProgressIndicator(
-                                valueColor: new AlwaysStoppedAnimation<Color>(
-                                  colorTitle,
-                                ),
-                              ),
-                            )
-                          : Column(
-                              children: [
-                                SizedBox(
-                                  height: 20.0,
-                                ),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 12.0),
-                                  child: Text(
-                                    selectedP.formattedAddress,
-                                    style: TextStyle(
-                                        color: colorTitle,
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.w500),
+    try {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return PlacePicker(
+              apiKey: apiMap,
+              initialPosition: kInitialPosition,
+              useCurrentLocation: true,
+              selectInitialPosition: true,
+              onGeocodingSearchFailed: (error) => print(error),
+              usePlaceDetailSearch: true,
+              forceSearchOnZoomChanged: true,
+              automaticallyImplyAppBarLeading: false,
+              usePinPointingSearch: true,
+              autocompleteLanguage:
+                  Get.locale == Locale('vi', 'VN') ? 'vi' : 'en',
+              region: Get.locale == Locale('vi', 'VN') ? 'vn' : 'us',
+              selectedPlaceWidgetBuilder:
+                  (_, selectedP, state, isSearchBarFocused) {
+                print("state: $state, isSearchBarFocused: $isSearchBarFocused");
+                return isSearchBarFocused
+                    ? Container()
+                    : FloatingCard(
+                        bottomPosition: 0.0,
+                        leftPosition: 0.0,
+                        rightPosition: 0.0,
+                        width: 600.0,
+                        height: 125.0,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(12.0),
+                        ),
+                        child: state == SearchingState.Searching
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(
+                                    colorTitle,
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 18.0,
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    width: 600.0,
-                                    child: RaisedButton(
-                                      color: colorTitle,
-                                      child: Text(
-                                        'pick'.trArgs(),
-                                        style: TextStyle(
-                                          color: colorPrimaryTextOpacity,
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          selectedPlace = selectedP;
-                                        });
-                                        Get.back();
-                                        print(selectedPlace
-                                            .geometry.location.lat);
-                                        print(selectedPlace
-                                            .geometry.location.lng);
-                                      },
+                              )
+                            : Column(
+                                children: [
+                                  SizedBox(
+                                    height: 20.0,
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 12.0),
+                                    child: Text(
+                                      selectedP.formattedAddress,
+                                      style: TextStyle(
+                                          color: colorTitle,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                    );
-            },
-            pinBuilder: (context, state) {
-              if (state == PinState.Idle) {
-                return CircleAvatar(
-                  radius: 12.0,
-                  backgroundImage: NetworkImage(
-                    'https://avatars.githubusercontent.com/u/60530946?v=4',
-                  ),
-                );
-              } else {
-                return CircleAvatar(
-                  radius: 12.0,
-                  backgroundImage: NetworkImage(
-                    'https://avatars.githubusercontent.com/u/60530946?v=4',
-                  ),
-                );
-              }
-            },
-          );
-        },
-      ),
-    );
+                                  SizedBox(
+                                    height: 18.0,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      width: 600.0,
+                                      child: RaisedButton(
+                                        color: colorTitle,
+                                        child: Text(
+                                          'pick'.trArgs(),
+                                          style: TextStyle(
+                                            color: colorPrimaryTextOpacity,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            selectedPlace = selectedP;
+                                          });
+                                          Get.back();
+                                          print(selectedPlace
+                                              .geometry.location.lat);
+                                          print(selectedPlace
+                                              .geometry.location.lng);
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      );
+              },
+              pinBuilder: (context, state) {
+                if (state == PinState.Idle) {
+                  return CircleAvatar(
+                    radius: 12.0,
+                    backgroundImage: NetworkImage(
+                      'https://avatars.githubusercontent.com/u/60530946?v=4',
+                    ),
+                  );
+                } else {
+                  return CircleAvatar(
+                    radius: 12.0,
+                    backgroundImage: NetworkImage(
+                      'https://avatars.githubusercontent.com/u/60530946?v=4',
+                    ),
+                  );
+                }
+              },
+            );
+          },
+        ),
+      );
+    } catch (error) {
+      print(error);
+    }
   }
 
   @override
