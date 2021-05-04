@@ -22,12 +22,13 @@ class _RegisterTransportPageState extends State<RegisterTransportPage> {
     'Jewelry',
   ];
   File _image;
+  File _imageVerify;
   String _title, _desc, _address;
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController addressController = TextEditingController();
 
-  void showImageBottomSheet() {
+  void showImageBottomSheet(key) {
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
@@ -37,7 +38,7 @@ class _RegisterTransportPageState extends State<RegisterTransportPage> {
       isScrollControlled: true,
       context: context,
       builder: (context) {
-        return _chooseImage(context);
+        return _chooseImage(context, key);
       },
     );
   }
@@ -92,7 +93,7 @@ class _RegisterTransportPageState extends State<RegisterTransportPage> {
           children: [
             SizedBox(height: 12.0),
             GestureDetector(
-              onTap: () => showImageBottomSheet(),
+              onTap: () => showImageBottomSheet('Avatar'),
               child: VerticalTransportCard(
                 image: _image,
                 address: _address,
@@ -108,9 +109,45 @@ class _RegisterTransportPageState extends State<RegisterTransportPage> {
             _buildDivider(context),
             _buildLineInfo(context, 'Description', '', descController),
             _buildDivider(context),
-            _buildLineInfo(context, 'Support Delivery', '', titleController),
-            _buildDivider(context),
-            SizedBox(height: 24.0),
+            GestureDetector(
+              onTap: () => showImageBottomSheet('Verify'),
+              child: Container(
+                height: height * .16,
+                width: width,
+                margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: mC,
+                  boxShadow: [
+                    BoxShadow(
+                      color: mCD,
+                      offset: Offset(5, 5),
+                      blurRadius: 5,
+                    ),
+                    BoxShadow(
+                      color: mCL,
+                      offset: Offset(-5, -5),
+                      blurRadius: 5,
+                    ),
+                  ],
+                  image: _imageVerify != null
+                      ? DecorationImage(
+                          image: FileImage(_imageVerify),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  _imageVerify == null ? 'Upload your corporate documents' : '',
+                  style: TextStyle(
+                    color: colorDarkGrey,
+                    fontSize: width / 28.0,
+                    fontFamily: 'Lato',
+                  ),
+                ),
+              ),
+            ),
             _buildListCategories()
           ],
         ),
@@ -245,7 +282,7 @@ class _RegisterTransportPageState extends State<RegisterTransportPage> {
     );
   }
 
-  Widget _chooseImage(context) {
+  Widget _chooseImage(context, key) {
     final _size = MediaQuery.of(context).size;
 
     return Container(
@@ -284,7 +321,7 @@ class _RegisterTransportPageState extends State<RegisterTransportPage> {
               ),
             ),
             SizedBox(height: 8.0),
-            _buildAction(context, 'capture'.trArgs(), Feather.camera),
+            _buildAction(context, 'capture'.trArgs(), Feather.camera, key),
             Divider(
               color: Colors.grey,
               thickness: .25,
@@ -292,7 +329,7 @@ class _RegisterTransportPageState extends State<RegisterTransportPage> {
               indent: 8.0,
               endIndent: 8.0,
             ),
-            _buildAction(context, 'pickPhoto'.trArgs(), Feather.image),
+            _buildAction(context, 'pickPhoto'.trArgs(), Feather.image, key),
             SizedBox(height: 18.0),
           ],
         ),
@@ -300,7 +337,7 @@ class _RegisterTransportPageState extends State<RegisterTransportPage> {
     );
   }
 
-  Widget _buildAction(context, title, icon) {
+  Widget _buildAction(context, title, icon, key) {
     final _size = MediaQuery.of(context).size;
 
     Future<void> _pickImage(ImageSource source) async {
@@ -311,7 +348,7 @@ class _RegisterTransportPageState extends State<RegisterTransportPage> {
       );
       if (selected != null) {
         setState(() {
-          _image = selected;
+          key == 'Avatar' ? _image = selected : _imageVerify = selected;
         });
         Get.back();
       }

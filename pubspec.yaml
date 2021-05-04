@@ -40,6 +40,11 @@ dependencies:
   shared_preferences:
   flutter_launcher_icons: ^0.8.1
   image_picker: ^0.6.4
+  webview_flutter: ^1.0.7
+  flutter_js: ^0.2.2+0
+  firebase_storage: ^4.0.1
+  firebase_core: ^0.5.1
+  firebase_messaging: ^7.0.3
 
   location: ^3.2.1
   geocoder: ^0.2.1

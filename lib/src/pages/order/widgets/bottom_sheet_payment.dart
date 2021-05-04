@@ -10,7 +10,7 @@ class BottomSheetPayment extends StatefulWidget {
 
 class _BottomSheetPaymentState extends State<BottomSheetPayment> {
   String paymentMethod = 'Point';
-  List<String> methods = ['Point', 'Credit', 'Momo'];
+  List<String> methods = ['Point', 'Paypal', 'Momo'];
 
   @override
   Widget build(BuildContext context) {
@@ -72,10 +72,10 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
                         methods[0]),
                 paymentMethod == methods[1]
                     ? _buildActiveMethodButton(
-                        'https://image.freepik.com/free-psd/credit-card-mockup_58466-13378.jpg',
+                        'https://pbs.twimg.com/profile_images/1278352097688182784/Bn7-mEJ9_400x400.jpg',
                         methods[1])
                     : _buildInactiveMethodButton(
-                        'https://image.freepik.com/free-psd/credit-card-mockup_58466-13378.jpg',
+                        'https://pbs.twimg.com/profile_images/1278352097688182784/Bn7-mEJ9_400x400.jpg',
                         methods[1]),
                 paymentMethod == methods[2]
                     ? _buildActiveMethodButton(
