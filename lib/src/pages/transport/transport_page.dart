@@ -1,7 +1,7 @@
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/merchant/pages/revenue_page.dart';
 import 'package:van_transport/src/pages/sub_city/pages/manage_staff_page.dart';
-import 'package:van_transport/src/pages/transport/pages/wait_for_confirm_page.dart';
+import 'package:van_transport/src/pages/transport/pages/manage_order_page.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -20,9 +20,9 @@ class _TransportPage extends State<TransportPage>
   bool _createSubTransport = true;
 
   var _pages = [
-    WaitForConfirmPage(),
-    WaitForConfirmPage(),
-    WaitForConfirmPage(),
+    TransportManageOrderPage(pageName: 'Ongoing'),
+    TransportManageOrderPage(pageName: 'Reject'),
+    TransportManageOrderPage(pageName: 'History'),
     ManageStaffPage(),
     RevenuePage(),
   ];
@@ -129,14 +129,6 @@ class _TransportPage extends State<TransportPage>
           ),
           tabs: [
             Container(
-              width: Get.locale == Locale('vi', 'VN')
-                  ? width * .265
-                  : width * .305,
-              child: Tab(
-                text: 'waitForConfirm'.trArgs(),
-              ),
-            ),
-            Container(
               width: width * .185,
               child: Tab(
                 text: 'onGoing'.trArgs(),
@@ -146,6 +138,12 @@ class _TransportPage extends State<TransportPage>
               width: width * .13,
               child: Tab(
                 text: 'reject'.trArgs(),
+              ),
+            ),
+            Container(
+              width: width * .13,
+              child: Tab(
+                text: 'history'.trArgs(),
               ),
             ),
             Container(

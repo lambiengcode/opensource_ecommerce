@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:van_transport/src/pages/sub_transport/widgets/sub_city_card.dart';
 
-class SubTransportWaitForConfirmPage extends StatefulWidget {
+class SubCityManageOrderPage extends StatefulWidget {
+  final String pageName;
+  SubCityManageOrderPage({this.pageName});
   @override
-  State<StatefulWidget> createState() => _SubTransportWaitForConfirmPageState();
+  State<StatefulWidget> createState() => _SubCityManageOrderPageState();
 }
 
-class _SubTransportWaitForConfirmPageState
-    extends State<SubTransportWaitForConfirmPage> {
+class _SubCityManageOrderPageState extends State<SubCityManageOrderPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,9 +17,9 @@ class _SubTransportWaitForConfirmPageState
         itemCount: 1,
         itemBuilder: (context, index) {
           return SubCityCard(
-            fullName: 'Quận 1',
+            fullName: 'Phường 14',
             manager: 'Đào Hồng Vinh',
-            address: 'Quận 1, Hồ Chí Minh',
+            address: 'Phường 14, Quận 1',
           );
         },
       ),

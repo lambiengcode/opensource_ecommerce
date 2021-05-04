@@ -1,6 +1,6 @@
 import 'dart:math';
 
-class Distance {
+class DistanceService {
   double calculateDistance(lat1, lon1, lat2, lon2) {
     var p = 0.017453292519943295;
     var c = cos;

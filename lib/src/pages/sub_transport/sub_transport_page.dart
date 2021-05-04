@@ -1,9 +1,7 @@
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/merchant/pages/revenue_page.dart';
 import 'package:van_transport/src/pages/sub_city/pages/manage_staff_page.dart';
-import 'package:van_transport/src/pages/sub_transport/pages/history_page.dart';
-import 'package:van_transport/src/pages/sub_transport/pages/reject_page.dart';
-import 'package:van_transport/src/pages/sub_transport/pages/wait_for_confirm_page.dart';
+import 'package:van_transport/src/pages/sub_transport/pages/manage_order_page.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -22,9 +20,9 @@ class _TransportPage extends State<SubTransportPage>
   bool _createSubCity = true;
 
   var _pages = [
-    SubTransportWaitForConfirmPage(),
-    SubTransportRejectPage(),
-    SubTransportHistoryPage(),
+    SubTransportManageOrderPage(pageName: 'Ongoing'),
+    SubTransportManageOrderPage(pageName: 'Reject'),
+    SubTransportManageOrderPage(pageName: 'History'),
     ManageStaffPage(),
     RevenuePage(),
   ];

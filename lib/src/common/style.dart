@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+final kInitialPosition = LatLng(-33.8567844, 151.213108);
 var height = Get.height;
 var width = Get.width;
 

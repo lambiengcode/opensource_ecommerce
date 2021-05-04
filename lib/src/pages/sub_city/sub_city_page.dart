@@ -1,8 +1,6 @@
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/merchant/pages/revenue_page.dart';
-import 'package:van_transport/src/pages/staff/pages/staff_ongoing_page.dart';
-import 'package:van_transport/src/pages/staff/pages/staff_reject_page.dart';
-import 'package:van_transport/src/pages/staff/pages/staff_wait_for_confirm_page.dart';
+import 'package:van_transport/src/pages/sub_city/pages/manage_order_page.dart';
 import 'package:van_transport/src/pages/sub_city/pages/manage_staff_page.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +19,9 @@ class _TransportPage extends State<SubCityPage>
   bool _showFloatingButton = false;
 
   var _pages = [
-    StaffWaitForConfirmPage(),
-    StaffOngoingPage(),
-    StaffRejectPage(),
+    SubCityManageOrderPage(pageName: 'Ongoing'),
+    SubCityManageOrderPage(pageName: 'Reject'),
+    SubCityManageOrderPage(pageName: 'History'),
     ManageStaffPage(),
     RevenuePage(),
   ];

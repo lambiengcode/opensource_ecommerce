@@ -19,7 +19,7 @@ class AddressPage extends StatefulWidget {
 
 class _AddressPageState extends State<AddressPage> {
   // var controller = Get.put(ProfileController());
-  final distance = Distance();
+  final distance = DistanceService();
   final kInitialPosition = LatLng(-33.8567844, 151.213108);
   PickResult selectedPlace;
   LocationData currentLocation;

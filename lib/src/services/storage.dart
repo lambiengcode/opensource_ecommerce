@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
-class Storage {
+class StorageService {
   var _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   Random _rnd = Random();
 

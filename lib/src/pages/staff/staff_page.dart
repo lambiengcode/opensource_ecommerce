@@ -1,9 +1,6 @@
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/merchant/pages/revenue_page.dart';
-import 'package:van_transport/src/pages/staff/pages/staff_history_page.dart';
-import 'package:van_transport/src/pages/staff/pages/staff_ongoing_page.dart';
-import 'package:van_transport/src/pages/staff/pages/staff_reject_page.dart';
-import 'package:van_transport/src/pages/staff/pages/staff_wait_for_confirm_page.dart';
+import 'package:van_transport/src/pages/staff/pages/manage_order_page.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -20,10 +17,10 @@ class _TransportPage extends State<StaffPage>
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   var _pages = [
-    StaffWaitForConfirmPage(),
-    StaffOngoingPage(),
-    StaffRejectPage(),
-    StaffHistoryPage(),
+    StaffManageOrderPage(pageName: 'WaitForConfirm'),
+    StaffManageOrderPage(pageName: 'Ongoing'),
+    StaffManageOrderPage(pageName: 'Reject'),
+    StaffManageOrderPage(pageName: 'History'),
     RevenuePage(),
   ];
 

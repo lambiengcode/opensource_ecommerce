@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:van_transport/src/pages/sub_transport/widgets/sub_city_card.dart';
 
-class SubTransportHistoryPage extends StatefulWidget {
+class SubTransportManageOrderPage extends StatefulWidget {
+  final String pageName;
+  SubTransportManageOrderPage({this.pageName});
   @override
-  State<StatefulWidget> createState() => _SubTransportHistoryPageState();
+  State<StatefulWidget> createState() => _SubTransportManageOrderPageState();
 }
 
-class _SubTransportHistoryPageState extends State<SubTransportHistoryPage> {
+class _SubTransportManageOrderPageState
+    extends State<SubTransportManageOrderPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
