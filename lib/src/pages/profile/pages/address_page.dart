@@ -1,3 +1,4 @@
+import 'package:van_transport/src/common/constant_code.dart';
 import 'package:van_transport/src/common/secret_key.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:flutter/material.dart';
@@ -5,13 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:location/location.dart';
+import 'package:van_transport/src/pages/order/controllers/pick_address_controller.dart';
 import 'package:van_transport/src/services/distance.dart';
 
 class AddressPage extends StatefulWidget {
-  const AddressPage({Key key}) : super(key: key);
+  final String mode;
+  AddressPage({this.mode});
 
   @override
   _AddressPageState createState() => _AddressPageState();
@@ -20,7 +22,6 @@ class AddressPage extends StatefulWidget {
 class _AddressPageState extends State<AddressPage> {
   // var controller = Get.put(ProfileController());
   final distance = DistanceService();
-  final kInitialPosition = LatLng(-33.8567844, 151.213108);
   PickResult selectedPlace;
   LocationData currentLocation;
   Future<dynamic> _myLocation;
@@ -375,100 +376,93 @@ class _AddressPageState extends State<AddressPage> {
   }
 
   Widget _buildCurrentLocation(context, title, value, icon) {
-    final _size = MediaQuery.of(context).size;
-    return GestureDetector(
-      onTap: () => chooseLocation(context),
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 12.0,
-          vertical: 16.0,
-        ),
-        decoration: BoxDecoration(
-          color: mC,
-          boxShadow: [
-            BoxShadow(
-              color: mCD,
-              offset: Offset(10, 10),
-              blurRadius: 10,
-            ),
-          ],
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(
-              icon,
-              size: _size.width / 18.0,
-              color: colorTitle,
-            ),
-            SizedBox(
-              width: 12.0,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  value != ''
-                      ? Text(
-                          value,
-                          style: TextStyle(
-                            fontSize: _size.width / 26.8,
-                            color: Colors.grey.shade700,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      : FutureBuilder(
-                          future: _myLocation,
-                          builder: (context, snapshot) {
-                            switch (snapshot.connectionState) {
-                              case ConnectionState.waiting:
-                                return Text(
-                                  'Thành Phố Hồ Chí Minh, Việt Nam',
-                                  style: TextStyle(
-                                    color: Colors.grey.shade800,
-                                    fontSize: _size.width / 26.0,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                );
-                              default:
-                                if (snapshot.hasError) {
-                                  return Text(
-                                    'Thành Phố Hồ Chí Minh, Việt Nam',
-                                    style: TextStyle(
-                                      color: Colors.grey.shade800,
-                                      fontSize: _size.width / 26.0,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  );
-                                }
+    final pickAddressController = Get.put(PickAddressController());
+    return FutureBuilder(
+      future: _myLocation,
+      builder: (context, AsyncSnapshot snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return _buildLocation(
+                context, title, 'Thành Phố Hồ Chí Minh, Việt Nam', icon);
+          default:
+            if (snapshot.hasError) {
+              return _buildLocation(
+                  context, title, 'Thành Phố Hồ Chí Minh, Việt Nam', icon);
+            }
 
-                                return Text(
-                                  snapshot.data.toString(),
-                                  style: TextStyle(
-                                    color: Colors.grey.shade800,
-                                    fontSize: _size.width / 26.0,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                );
-                            }
-                          },
-                        ),
-                  SizedBox(
-                    height: 12.0,
+            return GestureDetector(
+              onTap: () {
+                if (widget.mode == PICK_ON) {
+                  pickAddressController.pickFromAddress(
+                    currentLocation.latitude,
+                    currentLocation.longitude,
+                    snapshot.data,
+                  );
+                  Get.back();
+                }
+              },
+              child: _buildLocation(context, title, snapshot.data, icon),
+            );
+        }
+      },
+    );
+  }
+
+  Widget _buildLocation(context, title, value, icon) {
+    final _size = MediaQuery.of(context).size;
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: 12.0,
+        vertical: 16.0,
+      ),
+      decoration: BoxDecoration(
+        color: mC,
+        boxShadow: [
+          BoxShadow(
+            color: mCD,
+            offset: Offset(10, 10),
+            blurRadius: 10,
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            icon,
+            size: _size.width / 18.0,
+            color: colorTitle,
+          ),
+          SizedBox(
+            width: 12.0,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  value,
+                  style: TextStyle(
+                    color: Colors.grey.shade800,
+                    fontSize: _size.width / 26.0,
+                    fontWeight: FontWeight.w400,
                   ),
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: _size.width / 26.0,
-                      color: colorTitle,
-                      fontWeight: FontWeight.w500,
-                    ),
+                ),
+                SizedBox(
+                  height: 12.0,
+                ),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: _size.width / 26.0,
+                    color: colorTitle,
+                    fontWeight: FontWeight.w500,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

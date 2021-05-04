@@ -1,4 +1,5 @@
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/order/controllers/pick_address_controller.dart';
 import 'package:van_transport/src/pages/order/widgets/bottom_sheet_payment.dart';
 import 'package:van_transport/src/pages/order/widgets/product_order_card.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,14 @@ class CheckOutOrderPage extends StatefulWidget {
 }
 
 class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
+  final pickAddressController = Get.put(PickAddressController());
+
+  @override
+  void initState() {
+    super.initState();
+    pickAddressController.calDistance();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,8 +88,28 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          _buildPriceText(context, 'Total Weight', '2 Kg'),
-                          _buildPriceText(context, 'Taxes', '\$5'),
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _buildPriceText(
+                                    context, 'Total Weight', '2 Kg'),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GetBuilder<PickAddressController>(
+                                  builder: (_) => _buildPriceText(
+                                      context,
+                                      'Distance',
+                                      '${double.parse(_.distance.toStringAsFixed(2))} Km'),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -103,13 +132,13 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
             text: title,
             style: TextStyle(
               color: colorDarkGrey.withOpacity(.6),
-              fontSize: width / 24.0,
+              fontSize: width / 28.5,
               fontFamily: 'Lato',
               fontWeight: FontWeight.w600,
             ),
           ),
           TextSpan(
-            text: ':\t',
+            text: ':\t\t',
             style: TextStyle(
               color: colorDarkGrey,
               fontSize: width / 24.0,
@@ -121,7 +150,7 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
             text: value,
             style: TextStyle(
               color: colorBlack,
-              fontSize: width / 22.5,
+              fontSize: width / 25.0,
               fontFamily: 'Lato',
               fontWeight: FontWeight.bold,
             ),
@@ -165,9 +194,11 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
         child: Column(
           children: [
             _buildActionValue('Transport', 'Ahamove'),
-            SizedBox(height: 18.0),
+            SizedBox(height: 16.0),
             _buildActionValue('Coupon', 'Pick Coupon'),
-            SizedBox(height: 24.0),
+            SizedBox(height: 16.0),
+            _buildActionValue('Taxs', '100 đ'),
+            SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

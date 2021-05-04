@@ -1,10 +1,15 @@
+import 'package:google_maps_place_picker/google_maps_place_picker.dart';
+import 'package:van_transport/src/common/constant_code.dart';
+import 'package:van_transport/src/common/secret_key.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/order/controllers/pick_address_controller.dart';
 import 'package:van_transport/src/pages/order/widgets/product_order_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/services/string.dart';
 
 class PickAddressPage extends StatefulWidget {
   @override
@@ -12,6 +17,124 @@ class PickAddressPage extends StatefulWidget {
 }
 
 class _PickAddressPageState extends State<PickAddressPage> {
+  final pickAddressController = Get.put(PickAddressController());
+  final stringService = StringService();
+
+  void chooseLocation(context) {
+    try {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return PlacePicker(
+              apiKey: apiMap,
+              initialPosition: kInitialPosition,
+              useCurrentLocation: true,
+              selectInitialPosition: true,
+              onGeocodingSearchFailed: (error) => print(error),
+              usePlaceDetailSearch: true,
+              forceSearchOnZoomChanged: true,
+              automaticallyImplyAppBarLeading: false,
+              usePinPointingSearch: true,
+              autocompleteLanguage:
+                  Get.locale == Locale('vi', 'VN') ? 'vi' : 'en',
+              region: Get.locale == Locale('vi', 'VN') ? 'vn' : 'us',
+              selectedPlaceWidgetBuilder:
+                  (_, selectedP, state, isSearchBarFocused) {
+                print("state: $state, isSearchBarFocused: $isSearchBarFocused");
+                return isSearchBarFocused
+                    ? Container()
+                    : FloatingCard(
+                        bottomPosition: 0.0,
+                        leftPosition: 0.0,
+                        rightPosition: 0.0,
+                        width: 600.0,
+                        height: 125.0,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(12.0),
+                        ),
+                        child: state == SearchingState.Searching
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(
+                                    colorTitle,
+                                  ),
+                                ),
+                              )
+                            : Column(
+                                children: [
+                                  SizedBox(
+                                    height: 20.0,
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 12.0),
+                                    child: Text(
+                                      selectedP.formattedAddress,
+                                      style: TextStyle(
+                                          color: colorTitle,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 18.0,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      width: 600.0,
+                                      child: RaisedButton(
+                                        color: colorTitle,
+                                        child: Text(
+                                          'pick'.trArgs(),
+                                          style: TextStyle(
+                                            color: colorPrimaryTextOpacity,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          pickAddressController
+                                              .pickAddress(selectedP);
+                                          Get.back();
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      );
+              },
+              pinBuilder: (context, state) {
+                if (state == PinState.Idle) {
+                  return CircleAvatar(
+                    radius: 12.0,
+                    backgroundImage: NetworkImage(
+                      'https://avatars.githubusercontent.com/u/60530946?v=4',
+                    ),
+                  );
+                } else {
+                  return CircleAvatar(
+                    radius: 12.0,
+                    backgroundImage: NetworkImage(
+                      'https://avatars.githubusercontent.com/u/60530946?v=4',
+                    ),
+                  );
+                }
+              },
+            );
+          },
+        ),
+      );
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    pickAddressController.initData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,14 +201,20 @@ class _PickAddressPageState extends State<PickAddressPage> {
                 ),
               ),
             ),
-            _buildBottomCheckout(context),
+            GetBuilder<PickAddressController>(
+              builder: (_) => _buildBottomCheckout(
+                context,
+                _.placeFrom,
+                _.placeTo,
+              ),
+            )
           ],
         ),
       ),
     );
   }
 
-  Widget _buildBottomCheckout(context) {
+  Widget _buildBottomCheckout(context, fromAddress, toAddress) {
     return Container(
       color: mCM,
       child: Neumorphic(
@@ -103,9 +232,18 @@ class _PickAddressPageState extends State<PickAddressPage> {
         ),
         child: Column(
           children: [
-            _buildAddressValue('To Address', '1 Võ Văn Ngân,..'),
+            _buildAddressValue(
+              'fromAddress'.trArgs(),
+              fromAddress == ''
+                  ? 'pick'.trArgs()
+                  : stringService.formatString(18, fromAddress),
+            ),
             SizedBox(height: 18.0),
-            _buildAddressValue('From Address', 'Pick Address'),
+            _buildAddressValue(
+                'toAddress'.trArgs(),
+                toAddress == ''
+                    ? 'pick'.trArgs()
+                    : stringService.formatString(18, toAddress)),
             SizedBox(height: 24.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -192,13 +330,22 @@ class _PickAddressPageState extends State<PickAddressPage> {
             fontWeight: FontWeight.w400,
           ),
         ),
-        Text(
-          value,
-          style: TextStyle(
-            color: value == 'Pick Address' ? colorPrimary : colorTitle,
-            fontSize: width / 24.0,
-            fontFamily: 'Lato',
-            fontWeight: FontWeight.w400,
+        GestureDetector(
+          onTap: () {
+            if (value == 'pick'.trArgs()) {
+              title == 'toAddress'.trArgs()
+                  ? chooseLocation(context)
+                  : Get.toNamed(Routes.ADDRESS, arguments: PICK_ON);
+            }
+          },
+          child: Text(
+            value,
+            style: TextStyle(
+              color: value == 'pick'.trArgs() ? colorPrimary : colorTitle,
+              fontSize: width / 24.0,
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ),
       ],

@@ -71,6 +71,8 @@ const Map<String, String> vi_VN = {
   'currentLocation': 'Vị trí hiện tại',
   'homeAddress': 'Địa chỉ nhà',
   'pick': 'Chọn vị trí',
+  'fromAddress': 'Nơi lấy hàng',
+  'toAddress': 'Nơi nhận hàng',
 
   // Settings
   'notifications': 'Thông báo',

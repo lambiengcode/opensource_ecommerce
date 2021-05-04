@@ -169,7 +169,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.ADDRESS,
-      page: () => AddressPage(),
+      page: () => AddressPage(mode: Get.arguments),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 200),
       children: [],

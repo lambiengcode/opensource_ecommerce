@@ -55,6 +55,8 @@ const Map<String, String> en_US = {
   'currentLocation': 'Current Location',
   'homeAddress': 'Home Address',
   'pick': 'Pick Address',
+  'fromAddress': 'From Address',
+  'toAddress': 'To Address',
 
   // Settings
   'notifications': 'Notifications',
