@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:van_transport/src/pages/order/widgets/order_card.dart';
 
-class OngoingPage extends StatefulWidget {
+class ManageOrderPage extends StatefulWidget {
+  final String pageName;
+  ManageOrderPage({this.pageName});
   @override
-  State<StatefulWidget> createState() => _OngoingPageState();
+  State<StatefulWidget> createState() => _ManageOrderPageState();
 }
 
-class _OngoingPageState extends State<OngoingPage> {
+class _ManageOrderPageState extends State<ManageOrderPage> {
   @override
   Widget build(BuildContext context) {
     return Container(

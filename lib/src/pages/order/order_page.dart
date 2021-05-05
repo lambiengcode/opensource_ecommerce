@@ -1,6 +1,5 @@
 import 'package:van_transport/src/common/style.dart';
-import 'package:van_transport/src/pages/empty/empty_order_page.dart';
-import 'package:van_transport/src/pages/order/pages/ongoing_page.dart';
+import 'package:van_transport/src/pages/order/pages/manage_order_page.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -17,10 +16,10 @@ class _OrderPageState extends State<OrderPage>
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   var _pages = [
-    OngoingPage(),
-    Container(color: mC),
-    EmptyOrderPage(),
-    Container(color: mC),
+    ManageOrderPage(pageName: 'Ongoin'),
+    ManageOrderPage(pageName: 'WaitForConfirm'),
+    ManageOrderPage(pageName: 'ToYou'),
+    ManageOrderPage(pageName: 'History'),
   ];
 
   @override
