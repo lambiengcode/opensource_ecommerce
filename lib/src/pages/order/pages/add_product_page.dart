@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/pages/order/widgets/bottom_sheet_input_weight.dart';
+import 'package:van_transport/src/pages/order/widgets/bottom_sheet_product_type.dart';
 
 class AddProductPage extends StatefulWidget {
   @override
@@ -13,6 +15,7 @@ class AddProductPage extends StatefulWidget {
 }
 
 class _AddProductPageState extends State<AddProductPage> {
+  List<String> valueOfProductType = ['Basic', 'Frozen', 'Jewelry'];
   File _image;
 
   @override
@@ -49,6 +52,7 @@ class _AddProductPageState extends State<AddProductPage> {
             Expanded(
               child: Container(
                 margin: EdgeInsets.only(top: 16.0),
+                padding: EdgeInsets.only(top: 12.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.vertical(
                     top: Radius.circular(50.0),
@@ -62,7 +66,7 @@ class _AddProductPageState extends State<AddProductPage> {
                       height: width * .08,
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 24.0),
+                      padding: EdgeInsets.symmetric(horizontal: 28.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -104,9 +108,9 @@ class _AddProductPageState extends State<AddProductPage> {
         ),
         child: Column(
           children: [
-            _buildAddressValue('Weight', '2 Kg'),
+            _buildAddressValue('Weight', 'Input Weight'),
             SizedBox(height: 18.0),
-            _buildAddressValue('Type Product', 'Pick Type'),
+            _buildAddressValue('Type Product', valueOfProductType[0]),
             SizedBox(height: 24.0),
             NeumorphicButton(
               onPressed: () => Get.back(),
@@ -156,6 +160,25 @@ class _AddProductPageState extends State<AddProductPage> {
   }
 
   Widget _buildAddressValue(title, value) {
+    showProductTypeBottomSheet() {
+      showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.0),
+          ),
+        ),
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return title == 'Type Product'
+              ? BottomProductType(
+                  values: valueOfProductType,
+                )
+              : BottomInputWeight();
+        },
+      );
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -168,13 +191,21 @@ class _AddProductPageState extends State<AddProductPage> {
             fontWeight: FontWeight.w400,
           ),
         ),
-        Text(
-          value,
-          style: TextStyle(
-            color: value == 'Pick Type' ? colorPrimary : colorTitle,
-            fontSize: width / 24.0,
-            fontFamily: 'Lato',
-            fontWeight: FontWeight.w400,
+        GestureDetector(
+          onTap: () {
+            if (title == 'Type Product') showProductTypeBottomSheet();
+            if (value == 'Input Weight') showProductTypeBottomSheet();
+          },
+          child: Text(
+            value,
+            style: TextStyle(
+              color: title == 'Type Product' || value == 'Input Weight'
+                  ? colorPrimary
+                  : colorTitle,
+              fontSize: width / 22.5,
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ),
       ],
@@ -186,7 +217,7 @@ class _AddProductPageState extends State<AddProductPage> {
       height: width * .26,
       width: width * .26,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(12.0),
         border: Border.all(color: colorPrimary, width: 3.0),
       ),
       alignment: Alignment.center,
@@ -197,7 +228,7 @@ class _AddProductPageState extends State<AddProductPage> {
           borderRadius: BorderRadius.circular(8.0),
           image: DecorationImage(
             image: NetworkImage(
-                'https://images.unsplash.com/photo-1598313697935-b4d757c226c2?ixid=MXwxMjA3fDB8MHxzZWFyY2h8NXx8c2hvZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
+                'https://images.unsplash.com/photo-1618623583196-e4e9e11f8511?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjN8fHNob2V8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
             fit: BoxFit.cover,
           ),
         ),
