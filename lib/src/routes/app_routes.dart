@@ -6,6 +6,7 @@ abstract class Routes {
 
   // Auth
   static const VERIFY = '/verify';
+  static const FORGOTPASSWORD = '/forgotPassword';
 
   // Home
   static const HOME = '/home';

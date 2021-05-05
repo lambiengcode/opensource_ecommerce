@@ -1,4 +1,5 @@
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:van_transport/src/services/auth.dart';
 import 'package:van_transport/src/widgets/loading_page.dart';
 import 'package:flutter/material.dart';
@@ -201,14 +202,19 @@ class _LoginPageState extends State<LoginPage> {
                                             fontSize: _size.width / 26.0,
                                             fontWeight: FontWeight.w500,
                                           ),
-                                          suffix: GestureDetector(
-                                            onTap: () => print('forgot'),
-                                            child: Text(
-                                              'forgot'.trArgs(),
-                                              style: TextStyle(
-                                                color: colorPrimary,
-                                                fontSize: _size.width / 36.0,
-                                                fontWeight: FontWeight.w600,
+                                          suffixIcon: Padding(
+                                            padding: EdgeInsets.only(top: 24.0),
+                                            child: GestureDetector(
+                                              onTap: () => Get.toNamed(
+                                                Routes.FORGOTPASSWORD,
+                                              ),
+                                              child: Text(
+                                                'forgot'.trArgs(),
+                                                style: TextStyle(
+                                                  color: colorPrimary,
+                                                  fontSize: _size.width / 36.0,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -251,7 +257,7 @@ class _LoginPageState extends State<LoginPage> {
                                         email, password);
 
                                     if (res['status'] == 200) {
-                                      Get.offAndToNamed('/root');
+                                      Get.offAndToNamed(Routes.ROOT);
                                     } else {
                                       setState(() {
                                         loading = false;
