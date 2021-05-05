@@ -42,6 +42,9 @@ const Map<String, String> vi_VN = {
   'validPsw': 'Mật khẩu phải có ít nhất 6 ký tự',
   'validConfirmPsw': 'Mật khẩu không trùng khớp',
 
+  'verify': 'Xác thực',
+  'confirm': 'Xác nhận',
+
   // My Info
   'myInfo': 'Thông tin cá nhân',
   'joinDate': 'Gia nhập ngày',

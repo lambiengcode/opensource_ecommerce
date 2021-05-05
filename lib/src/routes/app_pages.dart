@@ -4,6 +4,7 @@ import 'package:van_transport/src/pages/admin/pages/manage_coupon_page.dart';
 import 'package:van_transport/src/pages/admin/pages/manage_merchant_page.dart';
 import 'package:van_transport/src/pages/admin/pages/manage_transport_page.dart';
 import 'package:van_transport/src/pages/auth/pages/signup_staff_page.dart';
+import 'package:van_transport/src/pages/auth/pages/verify_page.dart';
 import 'package:van_transport/src/pages/home/pages/details_product_page.dart';
 import 'package:van_transport/src/pages/home/pages/search_product_page.dart';
 import 'package:van_transport/src/pages/home/pages/store_page.dart';
@@ -44,6 +45,15 @@ class AppPages {
     GetPage(
       name: Routes.ROOT,
       page: () => App(),
+      children: [],
+    ),
+
+    // Auth
+    GetPage(
+      name: Routes.VERIFY,
+      page: () => VerifyPage(),
+      transition: Transition.rightToLeft,
+      transitionDuration: Duration(milliseconds: 200),
       children: [],
     ),
 

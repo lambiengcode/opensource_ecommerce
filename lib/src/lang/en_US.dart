@@ -85,6 +85,9 @@ const Map<String, String> en_US = {
   'validPsw': 'Password must be least 6 characters',
   'validConfirmPsw': 'Password don\'t match',
 
+  'verify': 'Verify',
+  'confirm': 'Confirm',
+
   // Admin
   'activeMerchant': 'Active Merchant',
   'activeDelivery': 'Active Delivery',

@@ -3,6 +3,10 @@ part of 'app_pages.dart';
 abstract class Routes {
   // Root
   static const ROOT = '/root';
+
+  // Auth
+  static const VERIFY = '/verify';
+
   // Home
   static const HOME = '/home';
   static const SEARCHPRODUCT = '/searchProduct';
