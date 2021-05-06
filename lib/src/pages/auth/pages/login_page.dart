@@ -258,6 +258,11 @@ class _LoginPageState extends State<LoginPage> {
 
                                     if (res['status'] == 200) {
                                       Get.offAndToNamed(Routes.ROOT);
+                                    } else if (res['status'] == 500 &&
+                                        res['message'] ==
+                                            'Please verify your account') {
+                                      Get.toNamed(Routes.VERIFY,
+                                          arguments: email);
                                     } else {
                                       setState(() {
                                         loading = false;

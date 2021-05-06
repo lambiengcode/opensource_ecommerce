@@ -52,7 +52,7 @@ class AppPages {
     // Auth
     GetPage(
       name: Routes.VERIFY,
-      page: () => VerifyPage(),
+      page: () => VerifyPage(email: Get.arguments),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 200),
       children: [],

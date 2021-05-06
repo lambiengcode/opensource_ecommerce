@@ -22,6 +22,9 @@ class AuthService {
     }
     return {
       'status': response.statusCode,
+      'message': response.statusCode == 500
+          ? convert.jsonDecode(response.body)['message']
+          : '',
       'email': username,
       'password': password,
     };
@@ -55,7 +58,7 @@ class AuthService {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     final SharedPreferences prefs = preferences;
     if (response.statusCode == 200) {
-      var token = convert.jsonDecode(response.body)['data']['token'];
+      var token = convert.jsonDecode(response.body)['data'];
       await prefs.setString('jwt', token);
       App.token = token;
     }
@@ -73,13 +76,7 @@ class AuthService {
     };
     var response =
         await http.post(baseUrl + ApiGateway.CHANGE_PASSWORD, body: body);
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    final SharedPreferences prefs = preferences;
-    if (response.statusCode == 200) {
-      var token = convert.jsonDecode(response.body)['data']['token'];
-      await prefs.setString('jwt', token);
-      App.token = token;
-    }
+    if (response.statusCode == 200) {}
     return {
       'status': response.statusCode,
       'oldPassword': oldPassword,
@@ -93,13 +90,7 @@ class AuthService {
     };
     var response =
         await http.post(baseUrl + ApiGateway.FORGOT_PASSWORD, body: body);
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    final SharedPreferences prefs = preferences;
-    if (response.statusCode == 200) {
-      var token = convert.jsonDecode(response.body)['data']['token'];
-      await prefs.setString('jwt', token);
-      App.token = token;
-    }
+    if (response.statusCode == 200) {}
     return {
       'status': response.statusCode,
       'email': email,

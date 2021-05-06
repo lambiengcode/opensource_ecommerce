@@ -171,44 +171,46 @@ class _SignupPageState extends State<SignupPage> {
                               SizedBox(height: 12.0),
                               GestureDetector(
                                 onTap: () async {
-                                  Get.toNamed(Routes.VERIFY);
-                                  // if (_formKey.currentState.validate()) {
-                                  //   setState(() {
-                                  //     loading = true;
-                                  //   });
+                                  if (_formKey.currentState.validate()) {
+                                    setState(() {
+                                      loading = true;
+                                    });
 
-                                  //   var res = await _authService.register(
-                                  //     email,
-                                  //     password,
-                                  //     phone,
-                                  //     fullName,
-                                  //   );
+                                    var res = await _authService.register(
+                                      email,
+                                      password,
+                                      phone,
+                                      fullName,
+                                    );
 
-                                  //   if (res['status'] == 200) {
-                                  //     Get.offAndToNamed('/root');
-                                  //   } else {
-                                  //     setState(() {
-                                  //       loading = false;
-                                  //       email = res['email'];
-                                  //       password = res['password'];
-                                  //       fullName = res['fullName'];
-                                  //       phone = res['phone'];
-                                  //       _confirmPswController.text =
-                                  //           res['password'];
-                                  //       _emailController.text = res['email'];
-                                  //       _passwordController.text =
-                                  //           res['password'];
-                                  //       _phoneController.text = res['phone'];
-                                  //       _fullNameController.text =
-                                  //           res['fullName'];
-                                  //     });
-                                  //     GetSnackBar snackBar = GetSnackBar(
-                                  //       title: 'Signup Fail!',
-                                  //       subTitle: 'Email exists, try again!',
-                                  //     );
-                                  //     snackBar.show();
-                                  //   }
-                                  // }
+                                    if (res['status'] == 200) {
+                                      Get.toNamed(
+                                        Routes.VERIFY,
+                                        arguments: email,
+                                      );
+                                    } else {
+                                      setState(() {
+                                        loading = false;
+                                        email = res['email'];
+                                        password = res['password'];
+                                        fullName = res['fullName'];
+                                        phone = res['phone'];
+                                        _confirmPswController.text =
+                                            res['password'];
+                                        _emailController.text = res['email'];
+                                        _passwordController.text =
+                                            res['password'];
+                                        _phoneController.text = res['phone'];
+                                        _fullNameController.text =
+                                            res['fullName'];
+                                      });
+                                      GetSnackBar snackBar = GetSnackBar(
+                                        title: 'Signup Fail!',
+                                        subTitle: 'Email exists, try again!',
+                                      );
+                                      snackBar.show();
+                                    }
+                                  }
                                 },
                                 child: Container(
                                   height: 46.8,
