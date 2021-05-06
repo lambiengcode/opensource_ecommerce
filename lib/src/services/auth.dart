@@ -6,6 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 
 class AuthService {
+  Map<String, String> requestHeaders = {
+    'Authorization': 'Bearer ${App.token}',
+  };
+
   Future<Map<String, dynamic>> loginByEmail(username, password) async {
     var body = {
       'email': username,
@@ -74,8 +78,11 @@ class AuthService {
       'oldPassword': oldPassword,
       'newPassword': newPassword,
     };
-    var response =
-        await http.post(baseUrl + ApiGateway.CHANGE_PASSWORD, body: body);
+    var response = await http.put(
+      baseUrl + ApiGateway.CHANGE_PASSWORD,
+      body: body,
+      headers: requestHeaders,
+    );
     if (response.statusCode == 200) {}
     return {
       'status': response.statusCode,
@@ -89,7 +96,7 @@ class AuthService {
       'email': email,
     };
     var response =
-        await http.post(baseUrl + ApiGateway.FORGOT_PASSWORD, body: body);
+        await http.put(baseUrl + ApiGateway.FORGOT_PASSWORD, body: body);
     if (response.statusCode == 200) {}
     return {
       'status': response.statusCode,
