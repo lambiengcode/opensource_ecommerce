@@ -1,6 +1,6 @@
 import UIKit
 import Flutter
-// import Firebase
+import Firebase
 import GoogleMaps
 
 @UIApplicationMain
@@ -14,7 +14,7 @@ import GoogleMaps
       }
       GMSServices.provideAPIKey("AIzaSyAURwoHCVzWdOHBMpP9vDsxgvZVB7-spLI")
       GeneratedPluginRegistrant.register(with: self)
-      // application.registerForRemoteNotifications()
+      application.registerForRemoteNotifications()
       return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

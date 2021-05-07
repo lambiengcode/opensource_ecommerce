@@ -1,4 +1,7 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/favourite/favourite_page.dart';
 import 'package:van_transport/src/pages/home/home_page.dart';
@@ -23,33 +26,31 @@ class _NavigationState extends State<Navigation> {
     ProfilePage(),
   ];
 
-  // final FirebaseMessaging _fcm = FirebaseMessaging();
-  // StreamSubscription iosSubscription;
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+  StreamSubscription iosSubscription;
 
-  // _saveDeviceToken() async {
-  //   // Get the token for this device
-  //   String fcmToken = await _fcm.getToken();
+  _saveDeviceToken() async {
+    // Get the token for this device
+    String fcmToken = await _fcm.getToken();
 
-  //   // Save it to Firestore
-  //   if (fcmToken != null) {
-  //     print(fcmToken + 'lambiengcode');
-  //   }
-  // }
+    // Save it to Firestore
+    if (fcmToken != null) {
+      print(fcmToken);
+    }
+  }
 
-  // @override
-  // void initState() {
-  //   super.initState();
+  @override
+  void initState() {
+    super.initState();
 
-  //   if (Platform.isIOS) {
-  //     iosSubscription = _fcm.onIosSettingsRegistered.listen((data) {
-  //       _saveDeviceToken();
-  //     });
+    if (Platform.isIOS) {
+      _saveDeviceToken();
 
-  //     _fcm.requestNotificationPermissions(IosNotificationSettings());
-  //   } else {
-  //     _saveDeviceToken();
-  //   }
-  // }
+      _fcm.requestNotificationPermissions(IosNotificationSettings());
+    } else {
+      _saveDeviceToken();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

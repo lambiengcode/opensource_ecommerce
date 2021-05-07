@@ -10,6 +10,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:van_transport/src/services/string.dart';
+import 'package:van_transport/src/widgets/snackbar.dart';
 
 class PickAddressPage extends StatefulWidget {
   @override
@@ -272,41 +273,53 @@ class _PickAddressPageState extends State<PickAddressPage> {
                     ],
                   ),
                 ),
-                NeumorphicButton(
-                  onPressed: () => Get.toNamed(Routes.CHECKOUTORDER),
-                  duration: Duration(milliseconds: 200),
-                  style: NeumorphicStyle(
-                    shape: NeumorphicShape.convex,
-                    boxShape: NeumorphicBoxShape.roundRect(
-                      BorderRadius.circular(20.0),
+                GetBuilder<PickAddressController>(
+                  builder: (_) => NeumorphicButton(
+                    onPressed: () {
+                      if (_.placeFrom != '' && _.placeTo != '') {
+                        Get.toNamed(Routes.CHECKOUTORDER);
+                      } else {
+                        GetSnackBar getSnackBar = GetSnackBar(
+                          title: 'Please pick address!',
+                          subTitle: 'Pick from and to address now.',
+                        );
+                        getSnackBar.show();
+                      }
+                    },
+                    duration: Duration(milliseconds: 200),
+                    style: NeumorphicStyle(
+                      shape: NeumorphicShape.convex,
+                      boxShape: NeumorphicBoxShape.roundRect(
+                        BorderRadius.circular(20.0),
+                      ),
+                      depth: 15.0,
+                      intensity: 1,
+                      color: colorPrimary.withOpacity(.85),
                     ),
-                    depth: 15.0,
-                    intensity: 1,
-                    color: colorPrimary.withOpacity(.85),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    vertical: 16.0,
-                    horizontal: 28.0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.sensor_door,
-                        color: mC,
-                        size: width / 18.0,
-                      ),
-                      SizedBox(width: 8.0),
-                      Text(
-                        'checkOut'.trArgs(),
-                        style: TextStyle(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 16.0,
+                      horizontal: 28.0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.sensor_door,
                           color: mC,
-                          fontSize: width / 26.0,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w600,
+                          size: width / 18.0,
                         ),
-                      ),
-                    ],
+                        SizedBox(width: 8.0),
+                        Text(
+                          'checkOut'.trArgs(),
+                          style: TextStyle(
+                            color: mC,
+                            fontSize: width / 26.0,
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

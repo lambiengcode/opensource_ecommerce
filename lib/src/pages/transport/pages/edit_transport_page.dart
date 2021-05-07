@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/transport/widgets/bottom_sheet_set_price.dart';
 import 'package:van_transport/src/pages/transport/widgets/vertical_transport_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,23 @@ class _EditTransportPageState extends State<EditTransportPage> {
       context: context,
       builder: (context) {
         return _chooseImage(context);
+      },
+    );
+  }
+
+  showSetPriceBottomSheet(title) {
+    showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.0),
+        ),
+      ),
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return BottomSetPrice(
+          title: title,
+        );
       },
     );
   }
@@ -128,7 +146,7 @@ class _EditTransportPageState extends State<EditTransportPage> {
         itemCount: categories.length,
         itemBuilder: (context, index) {
           return NeumorphicButton(
-            onPressed: () => null,
+            onPressed: () => showSetPriceBottomSheet(categories[index]),
             style: NeumorphicStyle(
               shape: NeumorphicShape.concave,
               boxShape: NeumorphicBoxShape.roundRect(

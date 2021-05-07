@@ -39,7 +39,7 @@ class _TransportPage extends State<TransportPage>
       if (_tabController.index != 4) {
         setState(() {
           _showFloatingButton = true;
-          _tabController.index == 3
+          _tabController.index != 3
               ? _createSubTransport = false
               : _createSubTransport = true;
         });
