@@ -16,7 +16,7 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
   TextEditingController _msgController = new TextEditingController();
   FocusNode _focusNode = new FocusNode();
   String price = 'VNĐ / Km';
-  String available = 'Off';
+  String available = 'On';
 
   @override
   Widget build(BuildContext context) {
@@ -55,17 +55,40 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
                 ],
               ),
             ),
-            SizedBox(height: 24.0),
-            Text(
-              widget.title + '\tService',
-              style: TextStyle(
-                color: colorDarkGrey,
-                fontFamily: 'Lato',
-                fontSize: width / 22.5,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
             SizedBox(height: 20.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.title + '\tService',
+                  style: TextStyle(
+                    color: colorDarkGrey,
+                    fontFamily: 'Lato',
+                    fontSize: width / 22.5,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => Get.back(),
+                  child: Text(
+                    'Save',
+                    style: TextStyle(
+                      color: colorPrimary,
+                      fontFamily: 'Lato',
+                      fontSize: width / 22.5,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 15.0),
+            Divider(
+              thickness: .15,
+              height: .15,
+              color: fCL,
+            ),
+            SizedBox(height: 15.0),
             Text(
               '• Setting Price',
               style: TextStyle(
@@ -198,45 +221,53 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
                 _buildButtonSwitch('Off', available == 'Off'),
               ],
             ),
-            SizedBox(height: 16.0),
+            SizedBox(height: 20.0),
             Divider(
-              thickness: .2,
-              height: .2,
-              color: colorDarkGrey,
+              thickness: .15,
+              height: .15,
+              color: fCL,
             ),
-            SizedBox(height: 16.0),
-            NeumorphicButton(
-              onPressed: () => Get.back(),
-              duration: Duration(milliseconds: 200),
-              style: NeumorphicStyle(
-                shape: NeumorphicShape.convex,
-                boxShape: NeumorphicBoxShape.roundRect(
-                  BorderRadius.circular(6.0),
-                ),
-                depth: 15.0,
-                intensity: 1,
-                color: colorPrimary.withOpacity(.85),
-              ),
-              padding: EdgeInsets.symmetric(
-                vertical: 14.5,
-                horizontal: 28.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'confirm'.trArgs(),
-                    style: TextStyle(
-                      color: mC,
-                      fontSize: width / 26.0,
-                      fontFamily: 'Lato',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 36.0),
+            // Divider(
+            //   thickness: .2,
+            //   height: .2,
+            //   color: colorDarkGrey,
+            //   endIndent: 6.0,
+            //   indent: 6.0,
+            // ),
+            // SizedBox(height: 4.0),
+            // NeumorphicButton(
+            //   onPressed: () => Get.back(),
+            //   duration: Duration(milliseconds: 200),
+            //   style: NeumorphicStyle(
+            //     shape: NeumorphicShape.convex,
+            //     boxShape: NeumorphicBoxShape.roundRect(
+            //       BorderRadius.circular(30.0),
+            //     ),
+            //     depth: 10.0,
+            //     intensity: .8,
+            //     color: colorPrimary.withOpacity(.85),
+            //   ),
+            //   margin: EdgeInsets.symmetric(horizontal: 6.0),
+            //   padding: EdgeInsets.symmetric(
+            //     vertical: 16.0,
+            //     horizontal: 28.0,
+            //   ),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       Text(
+            //         'confirm'.trArgs(),
+            //         style: TextStyle(
+            //           color: mC,
+            //           fontSize: width / 26.5,
+            //           fontFamily: 'Lato',
+            //           fontWeight: FontWeight.w600,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            SizedBox(height: 32.0),
           ],
         ),
       ),
@@ -261,11 +292,11 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
         style: NeumorphicStyle(
           shape: NeumorphicShape.convex,
           boxShape: NeumorphicBoxShape.roundRect(
-            BorderRadius.circular(6.0),
+            BorderRadius.circular(4.0),
           ),
-          depth: 5.0,
-          intensity: .65,
-          color: isActive ? colorPrimary.withOpacity(.8) : mCL,
+          depth: isActive ? 10.0 : 5.0,
+          intensity: isActive ? .8 : .65,
+          color: isActive ? colorPrimary.withOpacity(.725) : mCL,
         ),
         padding: EdgeInsets.symmetric(
           vertical: 16.0,
@@ -277,7 +308,7 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
             Text(
               title,
               style: TextStyle(
-                color: isActive ? mCL : colorDarkGrey,
+                color: isActive ? mC : colorDarkGrey,
                 fontSize: width / 28.5,
                 fontFamily: 'Lato',
                 fontWeight: FontWeight.w600,
