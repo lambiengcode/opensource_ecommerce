@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/services/string.dart';
 import 'package:van_transport/src/widgets/error_loading_image.dart';
 import 'package:van_transport/src/widgets/place_holder_image.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class VerticalTransportCard extends StatefulWidget {
 }
 
 class _VerticalTransportCardState extends State<VerticalTransportCard> {
+  StringService stringService = StringService();
   moneyToString(String money) {
     String result = '';
     int count = 0;
@@ -87,7 +89,7 @@ class _VerticalTransportCardState extends State<VerticalTransportCard> {
                     ),
                   ),
                 ),
-                SizedBox(height: 6.0),
+                SizedBox(height: 4.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -109,9 +111,11 @@ class _VerticalTransportCardState extends State<VerticalTransportCard> {
                     ),
                   ],
                 ),
-                SizedBox(height: 4.5),
+                SizedBox(height: 4.0),
                 Text(
-                  'address'.trArgs() + ': ' + widget.address,
+                  'address'.trArgs() +
+                      ': ' +
+                      stringService.formatString(25, widget.address),
                   style: TextStyle(
                     color: fCD,
                     fontSize: _size.width / 32.5,
@@ -133,7 +137,7 @@ class _VerticalTransportCardState extends State<VerticalTransportCard> {
                     fontFamily: 'Lato',
                   ),
                 ),
-                SizedBox(height: 16.0),
+                SizedBox(height: 12.0),
               ],
             ),
           ),

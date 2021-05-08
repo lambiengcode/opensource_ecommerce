@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/transport/widgets/vertical_transport_card.dart';
-import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -9,6 +8,10 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:van_transport/src/services/storage.dart';
+import 'package:van_transport/src/services/transport.dart';
+import 'package:van_transport/src/widgets/loading_page.dart';
+import 'package:van_transport/src/widgets/snackbar.dart';
 
 class RegisterTransportPage extends StatefulWidget {
   @override
@@ -16,6 +19,8 @@ class RegisterTransportPage extends StatefulWidget {
 }
 
 class _RegisterTransportPageState extends State<RegisterTransportPage> {
+  final _formKey = GlobalKey<FormState>();
+  TransportService transportService = TransportService();
   List<String> categories = [
     'Standard',
     'Frozen',
@@ -23,10 +28,12 @@ class _RegisterTransportPageState extends State<RegisterTransportPage> {
   ];
   File _image;
   File _imageVerify;
-  String _title, _desc, _address;
+  String _title, _desc, _address, _phone;
+  bool loading = false;
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
   void showImageBottomSheet(key) {
     showModalBottomSheet(
@@ -49,110 +56,183 @@ class _RegisterTransportPageState extends State<RegisterTransportPage> {
     _title = '';
     _desc = '';
     _address = '';
+    _phone = '';
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: mC,
-        elevation: .0,
-        centerTitle: true,
-        brightness: Brightness.light,
-        leading: IconButton(
-          onPressed: () => Get.back(),
-          icon: Icon(
-            Feather.arrow_left,
-            color: colorTitle,
-            size: width / 15.0,
-          ),
-        ),
-        title: Text(
-          'Register Company',
-          style: TextStyle(
-            color: colorTitle,
-            fontSize: width / 20.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Lato',
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => Get.toNamed(Routes.SETTINGS),
-            icon: Icon(
-              Feather.edit_3,
-              color: colorTitle,
-              size: width / 16.0,
-            ),
-          ),
-        ],
-      ),
-      body: Container(
-        color: mC,
-        child: Column(
-          children: [
-            SizedBox(height: 12.0),
-            GestureDetector(
-              onTap: () => showImageBottomSheet('Avatar'),
-              child: VerticalTransportCard(
-                image: _image,
-                address: _address,
-                title: _title,
-                urlToImage: '',
-                desc: _desc,
-              ),
-            ),
-            SizedBox(height: 16.0),
-            _buildLineInfo(context, 'Company Name', '', titleController),
-            _buildDivider(context),
-            _buildLineInfo(context, 'Address', '', addressController),
-            _buildDivider(context),
-            _buildLineInfo(context, 'Description', '', descController),
-            _buildDivider(context),
-            GestureDetector(
-              onTap: () => showImageBottomSheet('Verify'),
-              child: Container(
-                height: height * .16,
-                width: width,
-                margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  color: mC,
-                  boxShadow: [
-                    BoxShadow(
-                      color: mCD,
-                      offset: Offset(5, 5),
-                      blurRadius: 5,
-                    ),
-                    BoxShadow(
-                      color: mCL,
-                      offset: Offset(-5, -5),
-                      blurRadius: 5,
-                    ),
-                  ],
-                  image: _imageVerify != null
-                      ? DecorationImage(
-                          image: FileImage(_imageVerify),
-                          fit: BoxFit.cover,
-                        )
-                      : null,
+    return loading
+        ? Loading()
+        : Scaffold(
+            appBar: AppBar(
+              backgroundColor: mC,
+              elevation: .0,
+              centerTitle: true,
+              brightness: Brightness.light,
+              leading: IconButton(
+                onPressed: () => Get.back(),
+                icon: Icon(
+                  Feather.arrow_left,
+                  color: colorTitle,
+                  size: width / 15.0,
                 ),
-                alignment: Alignment.center,
-                child: Text(
-                  _imageVerify == null ? 'Upload your corporate documents' : '',
-                  style: TextStyle(
-                    color: colorDarkGrey,
-                    fontSize: width / 28.0,
-                    fontFamily: 'Lato',
+              ),
+              title: Text(
+                'Register Company',
+                style: TextStyle(
+                  color: colorTitle,
+                  fontSize: width / 20.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Lato',
+                ),
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () async {
+                    if (_formKey.currentState.validate()) {
+                      GetSnackBar getSnackBar;
+                      if (_image == null) {
+                        getSnackBar = GetSnackBar(
+                          title: 'Register fail!',
+                          subTitle: 'Let\'s choose a image for your company',
+                        );
+                        getSnackBar.show();
+                      } else if (_imageVerify == null) {
+                        getSnackBar = GetSnackBar(
+                          title: 'Register fail!',
+                          subTitle: 'Let\'s choose a corporate documents',
+                        );
+                        getSnackBar.show();
+                      } else {
+                        setState(() {
+                          loading = true;
+                        });
+                        StorageService storageService = StorageService();
+                        String urlAvatar =
+                            await storageService.uploadImageNotProfile(_image);
+                        String urlImageVerify = await storageService
+                            .uploadImageNotProfile(_imageVerify);
+                        var res = await transportService.registerTransport(
+                            _title,
+                            _desc,
+                            urlAvatar,
+                            urlImageVerify,
+                            _phone,
+                            _address);
+
+                        if (res['status'] == 200) {
+                          Get.back();
+                          GetSnackBar snackBar = GetSnackBar(
+                            title: 'Register Successfully!',
+                            subTitle: 'Waitting for response from admin.',
+                          );
+                          snackBar.show();
+                        } else {
+                          setState(() {
+                            loading = false;
+                            _title = res['name'];
+                            _desc = res['description'];
+                            _phone = res['phone'];
+                            _address = res['headquarters'];
+                            titleController.text = res['name'];
+                            descController.text = res['description'];
+                            phoneController.text = res['phone'];
+                            addressController.text = res['headquarters'];
+                          });
+                          GetSnackBar snackBar = GetSnackBar(
+                            title: 'Register Fail!',
+                            subTitle: 'Internal Server Error.',
+                          );
+                          snackBar.show();
+                        }
+                      }
+                    }
+                  },
+                  icon: Icon(
+                    Feather.check,
+                    color: colorPrimary,
+                    size: width / 16.0,
                   ),
                 ),
+              ],
+            ),
+            body: Container(
+              color: mC,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    SizedBox(height: 12.0),
+                    GestureDetector(
+                      onTap: () => showImageBottomSheet('Avatar'),
+                      child: VerticalTransportCard(
+                        image: _image,
+                        address: _address,
+                        title: _title,
+                        urlToImage: '',
+                        desc: _desc,
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                    _buildLineInfo(
+                        context, 'Company Name', '', titleController),
+                    _buildDivider(context),
+                    _buildLineInfo(
+                        context, 'phone'.trArgs(), '', phoneController),
+                    _buildDivider(context),
+                    _buildLineInfo(
+                        context, 'address'.trArgs(), '', addressController),
+                    _buildDivider(context),
+                    _buildLineInfo(context, 'Description', '', descController),
+                    _buildDivider(context),
+                    GestureDetector(
+                      onTap: () => showImageBottomSheet('Verify'),
+                      child: Container(
+                        height: height * .155,
+                        width: width,
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 24.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: mC,
+                          boxShadow: [
+                            BoxShadow(
+                              color: mCD,
+                              offset: Offset(5, 5),
+                              blurRadius: 5,
+                            ),
+                            BoxShadow(
+                              color: mCL,
+                              offset: Offset(-5, -5),
+                              blurRadius: 5,
+                            ),
+                          ],
+                          image: _imageVerify != null
+                              ? DecorationImage(
+                                  image: FileImage(_imageVerify),
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          _imageVerify == null
+                              ? 'Upload your corporate documents'
+                              : '',
+                          style: TextStyle(
+                            color: colorDarkGrey,
+                            fontSize: width / 28.0,
+                            fontFamily: 'Lato',
+                          ),
+                        ),
+                      ),
+                    ),
+                    // _buildListCategories()
+                  ],
+                ),
               ),
             ),
-            _buildListCategories()
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   Widget _buildListCategories() {
@@ -214,17 +294,14 @@ class _RegisterTransportPageState extends State<RegisterTransportPage> {
         validator: (val) => val.trim().length == 0 ? 'Input value here' : null,
         onChanged: (val) {
           setState(() {
-            switch (title) {
-              // en-US
-              case 'Title':
-                _title = val.trim();
-                break;
-              case 'Description':
-                _desc = val.trim();
-                break;
-
-              default:
-                break;
+            if (title == 'Company Name') {
+              _title = val.trim();
+            } else if (title == 'phone'.trArgs()) {
+              _phone = val.trim();
+            } else if (title == 'address'.trArgs()) {
+              _address = val.trim();
+            } else {
+              _desc = val.trim();
             }
           });
         },

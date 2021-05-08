@@ -5,4 +5,7 @@ class ApiGateway {
   static const VERIFY = '/Auth/Verify';
   static const FORGOT_PASSWORD = '/Auth/ForgotPassword';
   static const CHANGE_PASSWORD = '/Auth/ChangePassword';
+
+  // Transport
+  static const REGISTER_TRANSPORT = '/Transport/Create';
 }

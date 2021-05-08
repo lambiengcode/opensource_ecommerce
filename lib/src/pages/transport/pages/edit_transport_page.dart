@@ -23,10 +23,11 @@ class _EditTransportPageState extends State<EditTransportPage> {
     'Jewelry',
   ];
   File _image;
-  String _title, _desc, _address;
+  String _title, _desc, _address, _phone;
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
   void showImageBottomSheet() {
     showModalBottomSheet(
@@ -122,11 +123,11 @@ class _EditTransportPageState extends State<EditTransportPage> {
             SizedBox(height: 16.0),
             _buildLineInfo(context, 'Company Name', '', titleController),
             _buildDivider(context),
-            _buildLineInfo(context, 'Address', '', addressController),
+            _buildLineInfo(context, 'phone'.trArgs(), '', titleController),
+            _buildDivider(context),
+            _buildLineInfo(context, 'address'.trArgs(), '', addressController),
             _buildDivider(context),
             _buildLineInfo(context, 'Description', '', descController),
-            _buildDivider(context),
-            _buildLineInfo(context, 'Support Delivery', '', titleController),
             _buildDivider(context),
             SizedBox(height: 24.0),
             _buildListCategories()
@@ -195,20 +196,14 @@ class _EditTransportPageState extends State<EditTransportPage> {
         validator: (val) => val.trim().length == 0 ? 'Input value here' : null,
         onChanged: (val) {
           setState(() {
-            switch (title) {
-              // en-US
-              case 'Title':
-                _title = val.trim();
-                break;
-              case 'Description':
-                _desc = val.trim();
-                break;
-              case 'Address':
-                _address = val.trim();
-                break;
-
-              default:
-                break;
+            if (title == 'Company Name') {
+              _title = val.trim();
+            } else if (title == 'phone'.trArgs()) {
+              _phone = val.trim();
+            } else if (title == 'address'.trArgs()) {
+              _address = val.trim();
+            } else {
+              _desc = val.trim();
             }
           });
         },
