@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "682633805775",
+    "project_id": "van-transport-780b7",
+    "storage_bucket": "van-transport-780b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682633805775:android:41a73605a19024cf951cba",
+        "android_client_info": {
+          "package_name": "com.vanth.van_transport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "682633805775-8pulbsl1dq3lphoctc5mlffvheoormmb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtRUcvN9IIIkr3FcyjWJPhOiW45JCYNv8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682633805775-8pulbsl1dq3lphoctc5mlffvheoormmb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "682633805775-qq2fn8rndblkjiahk3635eg2h9gf3ncg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vanth.van-transport"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
