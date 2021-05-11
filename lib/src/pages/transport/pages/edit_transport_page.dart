@@ -48,7 +48,7 @@ class _EditTransportPageState extends State<EditTransportPage> {
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
-          Radius.circular(20.0),
+          Radius.circular(30.0),
         ),
       ),
       isScrollControlled: true,
