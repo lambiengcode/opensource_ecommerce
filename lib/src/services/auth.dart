@@ -1,3 +1,9 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:device_info/device_info.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
 import 'package:van_transport/src/app.dart';
 import 'package:van_transport/src/common/routes.dart';
 import 'package:van_transport/src/common/secret_key.dart';
@@ -6,8 +12,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 
 class AuthService {
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+  StreamSubscription iosSubscription;
   Map<String, String> requestHeaders = {
-    'Authorization': 'Bearer ${App.token}',
+    'authorization': 'Bearer ${App.token}',
   };
 
   Future<Map<String, dynamic>> loginByEmail(username, password) async {
@@ -109,5 +117,54 @@ class AuthService {
     final SharedPreferences prefs = preferences;
     await prefs.setString('jwt', '');
     App.token = '';
+  }
+
+  Future<List<String>> getDeviceDetails() async {
+    String deviceName;
+    String deviceVersion;
+    String identifier;
+    String appVersion;
+    final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
+    try {
+      if (Platform.isAndroid) {
+        var build = await deviceInfoPlugin.androidInfo;
+        deviceName = build.model;
+        deviceVersion = build.version.toString();
+        identifier = build.androidId; //UUID for Android
+        appVersion = "1.0.0";
+      } else if (Platform.isIOS) {
+        var data = await deviceInfoPlugin.iosInfo;
+        deviceName = data.name;
+        deviceVersion = data.systemVersion;
+        identifier = data.identifierForVendor; //UUID for iOS
+        appVersion = "1.0.0";
+      }
+    } on PlatformException {
+      print('Failed to get platform version');
+    }
+    return [deviceName, deviceVersion, identifier, appVersion];
+  }
+
+  _saveDeviceToken() async {
+    // Get the token for this device
+    String fcmToken = await _fcm.getToken();
+    // Save it to Firestore
+    if (fcmToken != null) {
+      var infoDevice = await getDeviceDetails();
+      // Call api save device
+    }
+  }
+
+  Future<void> saveToken() async {
+    if (Platform.isIOS) {
+      iosSubscription = _fcm.onIosSettingsRegistered.listen((data) {
+        _saveDeviceToken();
+      });
+
+      _fcm.requestNotificationPermissions(const IosNotificationSettings(
+          sound: true, badge: true, alert: true, provisional: false));
+    } else {
+      _saveDeviceToken();
+    }
   }
 }

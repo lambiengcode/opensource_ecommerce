@@ -53,6 +53,7 @@ dependencies:
   flutter_neumorphic: ^3.0.4+1
 
   fl_chart: ^0.12.3
+  device_info: ^1.0.0
 
 dev_dependencies:
   flutter_test:
