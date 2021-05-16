@@ -328,7 +328,7 @@ class _ProfilePageState extends State<ProfilePage> {
         } else if (title == 'settings'.trArgs()) {
           Get.toNamed(Routes.SETTINGS);
         } else if (title == 'owner'.trArgs()) {
-          Get.toNamed(Routes.MERCHANT);
+          Get.toNamed(Routes.MERCHANT + Routes.MIDDLEWAREMERCHANT);
         } else if (title == 'transportOwner'.trArgs()) {
           Get.toNamed(Routes.DELIVERY);
         } else {

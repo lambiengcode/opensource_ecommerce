@@ -39,6 +39,7 @@ abstract class Routes {
   static const MANAGEPROMO = '/managePromo';
 
   // Merchant
+  static const MIDDLEWAREMERCHANT = '/middlewareMerchant';
   static const MERCHANT = '/merchant';
   static const REGISTERMERCHANT = '/registerMerchant';
   static const EDITMERCHANT = '/editMerchant';

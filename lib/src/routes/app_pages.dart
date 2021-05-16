@@ -1,4 +1,5 @@
 import 'package:van_transport/src/app.dart';
+import 'package:van_transport/src/middleware/merchant_middleware.dart';
 import 'package:van_transport/src/pages/admin/admin_page.dart';
 import 'package:van_transport/src/pages/admin/pages/manage_coupon_page.dart';
 import 'package:van_transport/src/pages/admin/pages/manage_merchant_page.dart';
@@ -246,6 +247,13 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 200),
       children: [
+        GetPage(
+          name: Routes.MIDDLEWAREMERCHANT,
+          page: () => MerchantMiddleware(),
+          transition: Transition.rightToLeft,
+          transitionDuration: Duration(milliseconds: 200),
+          children: [],
+        ),
         GetPage(
           name: Routes.REGISTERMERCHANT,
           page: () => RegisterMerchantPage(),

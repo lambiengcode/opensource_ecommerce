@@ -8,6 +8,8 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 
 class MerchantPage extends StatefulWidget {
+  final merchantInfo;
+  MerchantPage({this.merchantInfo});
   @override
   State<StatefulWidget> createState() => _TransportPage();
 }
