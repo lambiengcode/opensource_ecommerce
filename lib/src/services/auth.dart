@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +12,6 @@ import 'dart:convert' as convert;
 
 class AuthService {
   final FirebaseMessaging _fcm = FirebaseMessaging();
-  StreamSubscription iosSubscription;
   Map<String, String> requestHeaders = {
     'authorization': 'Bearer ${App.token}',
   };
@@ -31,6 +29,7 @@ class AuthService {
       var token = convert.jsonDecode(response.body)['data']['token'];
       await prefs.setString('jwt', token);
       App.token = token;
+      await saveToken();
     }
     return {
       'status': response.statusCode,
@@ -51,7 +50,6 @@ class AuthService {
       'fullName': fullName,
     };
     var response = await http.post(baseUrl + ApiGateway.REGISTER, body: body);
-    if (response.statusCode == 200) {}
     return {
       'status': response.statusCode,
       'email': email,
@@ -105,7 +103,6 @@ class AuthService {
     };
     var response =
         await http.put(baseUrl + ApiGateway.FORGOT_PASSWORD, body: body);
-    if (response.statusCode == 200) {}
     return {
       'status': response.statusCode,
       'email': email,
@@ -146,25 +143,16 @@ class AuthService {
   }
 
   _saveDeviceToken() async {
-    // Get the token for this device
     String fcmToken = await _fcm.getToken();
-    // Save it to Firestore
     if (fcmToken != null) {
       var infoDevice = await getDeviceDetails();
-      // Call api save device
+      print(infoDevice);
     }
   }
 
   Future<void> saveToken() async {
-    if (Platform.isIOS) {
-      iosSubscription = _fcm.onIosSettingsRegistered.listen((data) {
-        _saveDeviceToken();
-      });
-
-      _fcm.requestNotificationPermissions(const IosNotificationSettings(
-          sound: true, badge: true, alert: true, provisional: false));
-    } else {
-      _saveDeviceToken();
-    }
+    await _saveDeviceToken();
+    _fcm.requestNotificationPermissions(const IosNotificationSettings(
+        sound: true, badge: true, alert: true, provisional: false));
   }
 }
