@@ -146,7 +146,17 @@ class AuthService {
     String fcmToken = await _fcm.getToken();
     if (fcmToken != null) {
       var infoDevice = await getDeviceDetails();
-      print(infoDevice);
+      var body = {
+        'fcmToken': fcmToken,
+        'deviceUUid': infoDevice[2],
+        'deviceModel': infoDevice[0],
+        'appVersion': infoDevice[3],
+      };
+      var response =
+          await http.post(baseUrl + ApiGateway.CREATE_DEVICE, body: body);
+      if (response.statusCode == 200) {
+        print('save fcmToken successfully');
+      }
     }
   }
 

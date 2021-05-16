@@ -10,6 +10,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
+import 'package:van_transport/src/services/storage.dart';
 
 class MyProfilePage extends StatefulWidget {
   final String urlToImage;
@@ -35,10 +37,10 @@ class MyProfilePage extends StatefulWidget {
 
 class _MyProfilePageState extends State<MyProfilePage> {
   final _formKey = GlobalKey<FormState>();
-  //var controller = Get.put(ProfileController());
+  final profileController = Get.put(ProfileController());
   File _image;
   String _fullName;
-  String _email;
+  String _phone;
 
   String code = '';
 
@@ -110,7 +112,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
   void initState() {
     super.initState();
     _fullName = widget.fullName;
-    _email = widget.email;
+    _phone = widget.phoneNumber;
     _fullNameController.text = widget.fullName;
     _phoneController.text = widget.phoneNumber;
     _emailController.text = widget.email;
@@ -146,9 +148,28 @@ class _MyProfilePageState extends State<MyProfilePage> {
           IconButton(
             onPressed: () async {
               if (_formKey.currentState.validate()) {
+                setState(() {
+                  loading = true;
+                });
                 if (_image != null) {
-                } else {}
-                Get.back();
+                  StorageService storageService = StorageService();
+                  String urlToImage =
+                      await storageService.uploadImage(_image, widget.email);
+                  profileController.updateProfile(
+                    _fullName,
+                    _phone,
+                    urlToImage,
+                  );
+                } else {
+                  profileController.updateProfile(
+                    _fullName,
+                    _phone,
+                    widget.urlToImage,
+                  );
+                }
+                setState(() {
+                  loading = false;
+                });
               }
             },
             icon: Icon(
@@ -325,7 +346,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
       padding: EdgeInsets.fromLTRB(14.0, 18.0, 18.0, 4.0),
       child: TextFormField(
         controller: controller,
-        enabled: title == 'fullname'.trArgs() || title == 'email'.trArgs(),
+        enabled: title == 'fullName'.trArgs() || title == 'phone'.trArgs(),
         cursorColor: colorTitle,
         cursorRadius: Radius.circular(30.0),
         style: TextStyle(
@@ -334,20 +355,20 @@ class _MyProfilePageState extends State<MyProfilePage> {
           fontWeight: FontWeight.w500,
         ),
         validator: (val) {
-          if (title == 'fullname'.trArgs()) {
+          if (title == 'fullName'.trArgs()) {
             return val.trim().length == 0 ? valid : null;
-          } else if (title == 'email'.trArgs()) {
-            return GetUtils.isEmail(val.trim()) ? null : valid;
+          } else if (title == 'phone'.trArgs()) {
+            return GetUtils.isPhoneNumber(val.trim()) ? null : valid;
           } else {
             return null;
           }
         },
         onChanged: (val) {
           setState(() {
-            if (title == 'fullname'.trArgs()) {
+            if (title == 'fullName'.trArgs()) {
               _fullName = val.trim();
             } else {
-              _email = val.trim();
+              _phone = val.trim();
             }
           });
         },
