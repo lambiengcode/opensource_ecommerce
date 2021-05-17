@@ -2,31 +2,57 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 
 class ProductPage extends StatefulWidget {
+  final String idMerchant;
+  ProductPage({this.idMerchant});
   @override
   State<StatefulWidget> createState() => _ProductPageState();
 }
 
 class _ProductPageState extends State<ProductPage> {
+  final merchantController = Get.put(MerchantController());
+
+  @override
+  void initState() {
+    super.initState();
+    merchantController.getGroupProduct(widget.idMerchant);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 8.0),
       color: mC,
-      child: ListView.builder(
-        itemCount: 1,
-        itemBuilder: (context, index) {
-          return _buildGroupCard();
+      child: StreamBuilder(
+        stream: merchantController.getGroupProductStream,
+        builder: (context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            return Container();
+          }
+
+          var mGroupProduct = snapshot.data;
+
+          return ListView.builder(
+            itemCount: mGroupProduct.length,
+            itemBuilder: (context, index) {
+              return _buildGroupCard(mGroupProduct[index]['name']);
+            },
+          );
         },
       ),
     );
   }
 
-  Widget _buildGroupCard() {
+  Widget _buildGroupCard(title) {
     return NeumorphicButton(
-      onPressed: () => Get.toNamed(Routes.MERCHANT + Routes.DETAILSGROUP),
+      onPressed: () =>
+          Get.toNamed(Routes.MERCHANT + Routes.DETAILSGROUP, arguments: {
+        'title': title,
+        'idMerchant': widget.idMerchant,
+      }),
       style: NeumorphicStyle(
         shape: NeumorphicShape.concave,
         boxShape: NeumorphicBoxShape.roundRect(
@@ -46,7 +72,7 @@ class _ProductPageState extends State<ProductPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Shoes',
+                title,
                 style: TextStyle(
                   color: colorTitle,
                   fontFamily: 'Lato',
@@ -56,7 +82,7 @@ class _ProductPageState extends State<ProductPage> {
               ),
               SizedBox(height: 4.0),
               Text(
-                'All shoes in my store',
+                title,
                 style: TextStyle(
                   color: colorDarkGrey,
                   fontFamily: 'Lato',

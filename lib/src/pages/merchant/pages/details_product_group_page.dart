@@ -7,6 +7,9 @@ import 'package:van_transport/src/pages/home/widget/vertical_store_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 
 class DetailsProductGroupPage extends StatefulWidget {
+  final String title;
+  final String idMerchant;
+  DetailsProductGroupPage({this.title, this.idMerchant});
   @override
   State<StatefulWidget> createState() => _DetailsProductGroupPageState();
 }
@@ -38,7 +41,7 @@ class _DetailsProductGroupPageState extends State<DetailsProductGroupPage> {
           ),
         ),
         title: Text(
-          'Shoes',
+          widget.title,
           style: TextStyle(
             color: colorTitle,
             fontSize: width / 20.0,

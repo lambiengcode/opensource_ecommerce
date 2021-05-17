@@ -270,14 +270,19 @@ class AppPages {
         ),
         GetPage(
           name: Routes.CREATEGROUP,
-          page: () => CreateGroupPage(),
+          page: () => CreateGroupPage(
+            idMerchant: Get.arguments,
+          ),
           transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 200),
           children: [],
         ),
         GetPage(
           name: Routes.DETAILSGROUP,
-          page: () => DetailsProductGroupPage(),
+          page: () => DetailsProductGroupPage(
+            title: Get.arguments['title'],
+            idMerchant: Get.arguments['idMerchant'],
+          ),
           transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 200),
           children: [],

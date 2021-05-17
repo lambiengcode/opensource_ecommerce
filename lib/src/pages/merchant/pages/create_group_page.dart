@@ -4,22 +4,24 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
 
 class CreateGroupPage extends StatefulWidget {
+  final String idMerchant;
+  CreateGroupPage({this.idMerchant});
   @override
   State<StatefulWidget> createState() => _CreateGroupPageState();
 }
 
 class _CreateGroupPageState extends State<CreateGroupPage> {
-  String _title, _desc;
+  final merchantController = Get.put(MerchantController());
+  String _title;
   TextEditingController titleController = TextEditingController();
-  TextEditingController descController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _title = '';
-    _desc = '';
   }
 
   @override
@@ -49,7 +51,12 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
         ),
         actions: [
           IconButton(
-            onPressed: () => null,
+            onPressed: () {
+              merchantController.createGroupProduct(
+                _title,
+                widget.idMerchant,
+              );
+            },
             icon: Icon(
               Feather.check,
               color: colorPrimary,
@@ -64,8 +71,6 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
           children: [
             SizedBox(height: 12.0),
             _buildLineInfo(context, 'Group Name', '', titleController),
-            _buildDivider(context),
-            _buildLineInfo(context, 'Description', '', descController),
             _buildDivider(context),
           ],
         ),
@@ -91,11 +96,8 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
           setState(() {
             switch (title) {
               // en-US
-              case 'Title':
+              case 'Group Name':
                 _title = val.trim();
-                break;
-              case 'Description':
-                _desc = val.trim();
                 break;
               default:
                 break;

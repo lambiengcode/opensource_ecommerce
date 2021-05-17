@@ -20,13 +20,7 @@ class _TransportPage extends State<MerchantPage>
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _showFloatingButton = false;
 
-  var _pages = [
-    EmptyOrderPage(),
-    Container(color: mC),
-    EmptyOrderPage(),
-    ProductPage(),
-    RevenuePage(),
-  ];
+  List<Widget> _pages = [];
 
   @override
   void initState() {
@@ -43,6 +37,13 @@ class _TransportPage extends State<MerchantPage>
             : _showFloatingButton = false;
       });
     });
+    _pages = [
+      EmptyOrderPage(),
+      Container(color: mC),
+      EmptyOrderPage(),
+      ProductPage(idMerchant: widget.merchantInfo['_id']),
+      RevenuePage(),
+    ];
   }
 
   @override
@@ -59,8 +60,10 @@ class _TransportPage extends State<MerchantPage>
                   color: colorPrimaryTextOpacity,
                   size: width / 16.0,
                 ),
-                onPressed: () =>
-                    Get.toNamed(Routes.MERCHANT + Routes.CREATEGROUP),
+                onPressed: () => Get.toNamed(
+                  Routes.MERCHANT + Routes.CREATEGROUP,
+                  arguments: widget.merchantInfo['_id'],
+                ),
               ),
             )
           : null,

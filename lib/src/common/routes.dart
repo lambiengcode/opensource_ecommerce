@@ -21,4 +21,10 @@ class ApiGateway {
   static const GET_MERCHANT = '/Merchant/GetInfo';
   static const CREATE_MERCHANT = '/Merchant/Create';
   static const UPDATE_MERCHANT = '/Merchant/Update';
+
+  // Group Product
+  static const CREATE_GROUP_PRODUCT = '/GroupProduct/Create';
+  static const UPDATE_GROUP_PRODUCT = '/GroupProduct/Update';
+  static const GET_GROUP_PRODUCT = '/GroupProduct/GetAll?idMerchant=';
+  static const DELETE_GROUP_PRODUCT = '/GroupProduct/Delete';
 }

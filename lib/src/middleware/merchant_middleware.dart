@@ -33,6 +33,7 @@ class _MerchantMiddlewareState extends State<MerchantMiddleware> {
         }
 
         var mMerchant = snapshot.data;
+        print(mMerchant);
 
         return mMerchant['status'] == 200
             ? MerchantPage(merchantInfo: mMerchant)

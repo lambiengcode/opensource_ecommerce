@@ -19,7 +19,24 @@ class MerchantService {
         ? convert.jsonDecode(response.body)['data']
         : convert.jsonDecode(response.body);
     json['status'] = response.statusCode;
-    print(json);
     return json;
+  }
+
+  Future<List<dynamic>> getGroupProduct(idMerchant) async {
+    var response = await http.get(
+      baseUrl + ApiGateway.GET_GROUP_PRODUCT + idMerchant,
+      headers: requestHeaders,
+    );
+    return convert.jsonDecode(response.body)['data'];
+  }
+
+  Future<int> createGroupProduct(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.CREATE_GROUP_PRODUCT,
+      body: body,
+      headers: requestHeaders,
+    );
+    print(response.body);
+    return response.statusCode;
   }
 }
