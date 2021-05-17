@@ -112,6 +112,30 @@ class MerchantController extends GetxController {
     }
   }
 
+  updateGroupProduct(
+    idMerchant,
+    idGroup,
+    name,
+    description,
+  ) async {
+    var body = {
+      '_id': idGroup,
+      'name': name,
+      'description': description,
+    };
+    int status = await merchantService.updateGroupProduct(body);
+    if (status == 200) {
+      getGroupProduct(idMerchant);
+      Get.back();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Update failure!',
+        subTitle: 'Check again group product infomations.',
+      );
+      getSnackBar.show();
+    }
+  }
+
   deleteProduct(idProduct, idGroup) async {
     int status = await merchantService.deleteProduct(idProduct);
     if (status == 200) {

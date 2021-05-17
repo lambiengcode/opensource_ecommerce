@@ -17,7 +17,7 @@ class _ProductPageState extends State<ProductPage> {
   final merchantController = Get.put(MerchantController());
   List<String> values = ['Edit Product', 'Delete Product'];
 
-  showGroupProductSettings(idGroup) {
+  showGroupProductSettings(groupProductInfo) {
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
@@ -29,8 +29,7 @@ class _ProductPageState extends State<ProductPage> {
       builder: (context) {
         return BottomSettingsProduct(
           values: values,
-          idGroup: idGroup,
-          idMerchant: widget.idMerchant,
+          groupProductInfo: groupProductInfo,
         );
       },
     );
@@ -69,7 +68,7 @@ class _ProductPageState extends State<ProductPage> {
 
   Widget _buildGroupCard(groupProduct) {
     return GestureDetector(
-      onLongPress: () => showGroupProductSettings(groupProduct['_id']),
+      onLongPress: () => showGroupProductSettings(groupProduct),
       child: NeumorphicButton(
         onPressed: () =>
             Get.toNamed(Routes.MERCHANT + Routes.DETAILSGROUP, arguments: {
@@ -106,7 +105,7 @@ class _ProductPageState extends State<ProductPage> {
                 ),
                 SizedBox(height: 4.0),
                 Text(
-                  groupProduct['name'],
+                  groupProduct['description'],
                   style: TextStyle(
                     color: colorDarkGrey,
                     fontFamily: 'Lato',

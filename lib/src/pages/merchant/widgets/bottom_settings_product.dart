@@ -3,12 +3,12 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
 
 class BottomSettingsProduct extends StatefulWidget {
   final List<String> values;
-  final String idMerchant;
-  final String idGroup;
-  BottomSettingsProduct({this.values, this.idGroup, this.idMerchant});
+  final groupProductInfo;
+  BottomSettingsProduct({this.values, this.groupProductInfo});
   @override
   State<StatefulWidget> createState() => _BottomSettingsProductState();
 }
@@ -85,13 +85,18 @@ class _BottomSettingsProductState extends State<BottomSettingsProduct> {
 
     return GestureDetector(
       onTap: () {
+        Get.back();
         if (title == widget.values[1]) {
           merchantController.deleteGroupProduct(
-            widget.idGroup,
-            widget.idMerchant,
+            widget.groupProductInfo['_id'],
+            widget.groupProductInfo['FK_merchant'],
           );
-        } else {}
-        Get.back();
+        } else {
+          Get.toNamed(
+            Routes.MERCHANT + Routes.EDITGROUP,
+            arguments: widget.groupProductInfo,
+          );
+        }
       },
       child: Container(
         width: _size.width,

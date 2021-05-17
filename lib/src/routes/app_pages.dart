@@ -14,6 +14,7 @@ import 'package:van_transport/src/pages/merchant/merchant_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/create_group_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/create_product_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/details_product_group_page.dart';
+import 'package:van_transport/src/pages/merchant/pages/edit_group_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/edit_merchant_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/edit_product_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/register_merchant_page.dart';
@@ -272,6 +273,15 @@ class AppPages {
           name: Routes.CREATEGROUP,
           page: () => CreateGroupPage(
             idMerchant: Get.arguments,
+          ),
+          transition: Transition.rightToLeft,
+          transitionDuration: Duration(milliseconds: 200),
+          children: [],
+        ),
+        GetPage(
+          name: Routes.EDITGROUP,
+          page: () => EditGroupPage(
+            groupProductInfo: Get.arguments,
           ),
           transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 200),
