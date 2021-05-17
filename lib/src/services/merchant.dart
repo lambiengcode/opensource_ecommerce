@@ -30,13 +30,71 @@ class MerchantService {
     return convert.jsonDecode(response.body)['data'];
   }
 
+  Future<List<dynamic>> getProductByGroup(idGroup) async {
+    var response = await http.get(
+      baseUrl + ApiGateway.GET_PRODUCT_BY_GROUP + idGroup,
+      headers: requestHeaders,
+    );
+    return convert.jsonDecode(response.body)['data'];
+  }
+
+  Future<List<dynamic>> getProductByMerchant(idMerchant) async {
+    var response = await http.get(
+      baseUrl + ApiGateway.GET_PRODUCT_BY_MERCHANT + idMerchant,
+      headers: requestHeaders,
+    );
+    return convert.jsonDecode(response.body)['data'];
+  }
+
   Future<int> createGroupProduct(body) async {
     var response = await http.post(
       baseUrl + ApiGateway.CREATE_GROUP_PRODUCT,
       body: body,
       headers: requestHeaders,
     );
-    print(response.body);
+    return response.statusCode;
+  }
+
+  Future<int> createProduct(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.CREATE_PRODUCT,
+      body: body,
+      headers: requestHeaders,
+    );
+    return response.statusCode;
+  }
+
+  Future<int> updateGroupProduct(body) async {
+    var response = await http.put(
+      baseUrl + ApiGateway.UPDATE_GROUP_PRODUCT,
+      body: body,
+      headers: requestHeaders,
+    );
+    return response.statusCode;
+  }
+
+  Future<int> updateProduct(body) async {
+    var response = await http.put(
+      baseUrl + ApiGateway.UPDATE_PRODUCT,
+      body: body,
+      headers: requestHeaders,
+    );
+    return response.statusCode;
+  }
+
+  Future<int> deleteGroupProduct(idGroup) async {
+    var response = await http.delete(
+      baseUrl + ApiGateway.DELETE_GROUP_PRODUCT + idGroup,
+      headers: requestHeaders,
+    );
+    return response.statusCode;
+  }
+
+  Future<int> deleteProduct(idProduct) async {
+    var response = await http.delete(
+      baseUrl + ApiGateway.DELETE_GROUP_PRODUCT + idProduct,
+      headers: requestHeaders,
+    );
     return response.statusCode;
   }
 }

@@ -282,6 +282,7 @@ class AppPages {
           page: () => DetailsProductGroupPage(
             title: Get.arguments['title'],
             idMerchant: Get.arguments['idMerchant'],
+            idGroup: Get.arguments['idGroup'],
           ),
           transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 200),

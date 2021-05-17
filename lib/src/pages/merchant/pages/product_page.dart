@@ -38,7 +38,7 @@ class _ProductPageState extends State<ProductPage> {
           return ListView.builder(
             itemCount: mGroupProduct.length,
             itemBuilder: (context, index) {
-              return _buildGroupCard(mGroupProduct[index]['name']);
+              return _buildGroupCard(mGroupProduct[index]);
             },
           );
         },
@@ -46,12 +46,13 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  Widget _buildGroupCard(title) {
+  Widget _buildGroupCard(groupProduct) {
     return NeumorphicButton(
       onPressed: () =>
           Get.toNamed(Routes.MERCHANT + Routes.DETAILSGROUP, arguments: {
-        'title': title,
+        'title': groupProduct['name'],
         'idMerchant': widget.idMerchant,
+        'idGroup': groupProduct['_id'],
       }),
       style: NeumorphicStyle(
         shape: NeumorphicShape.concave,
@@ -72,7 +73,7 @@ class _ProductPageState extends State<ProductPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                title,
+                groupProduct['name'],
                 style: TextStyle(
                   color: colorTitle,
                   fontFamily: 'Lato',
@@ -82,7 +83,7 @@ class _ProductPageState extends State<ProductPage> {
               ),
               SizedBox(height: 4.0),
               Text(
-                title,
+                groupProduct['name'],
                 style: TextStyle(
                   color: colorDarkGrey,
                   fontFamily: 'Lato',

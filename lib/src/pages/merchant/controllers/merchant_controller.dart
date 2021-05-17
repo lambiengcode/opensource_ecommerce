@@ -10,6 +10,8 @@ class MerchantController extends GetxController {
       StreamController<dynamic>.broadcast();
   StreamController<List<dynamic>> groupProductController =
       StreamController<List<dynamic>>.broadcast();
+  StreamController<List<dynamic>> productController =
+      StreamController<List<dynamic>>.broadcast();
 
   getMerchant() async {
     var res = await merchantService.getMerchant();
@@ -19,6 +21,11 @@ class MerchantController extends GetxController {
   getGroupProduct(idMerchant) async {
     var res = await merchantService.getGroupProduct(idMerchant);
     groupProductController.add(res);
+  }
+
+  getProductByGroup(idGroup) async {
+    var res = await merchantService.getProductByGroup(idGroup);
+    productController.add(res);
   }
 
   createGroupProduct(name, idMerchant) async {
@@ -32,8 +39,32 @@ class MerchantController extends GetxController {
       Get.back();
     } else {
       GetSnackBar getSnackBar = GetSnackBar(
-        title: 'Create failure',
+        title: 'Create failure!',
         subTitle: 'Group product name exists',
+      );
+      getSnackBar.show();
+    }
+  }
+
+  createProduct(
+      name, description, price, total, image, idMerchant, idGroup) async {
+    var body = {
+      'name': name,
+      'description': description,
+      'price': price,
+      'total': total,
+      'image': image,
+      'FK_merchant': idMerchant,
+      'FK_groupProduct': idGroup,
+    };
+    int status = await merchantService.createProduct(body);
+    if (status == 200) {
+      getProductByGroup(idGroup);
+      Get.back();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Create failure!',
+        subTitle: 'Check again product infomations.',
       );
       getSnackBar.show();
     }
@@ -42,4 +73,5 @@ class MerchantController extends GetxController {
   Stream<dynamic> get getMerchantStream => merchantController.stream;
   Stream<List<dynamic>> get getGroupProductStream =>
       groupProductController.stream;
+  Stream<List<dynamic>> get getProductStream => productController.stream;
 }
