@@ -79,6 +79,57 @@ class MerchantController extends GetxController {
     }
   }
 
+  updateProduct(
+    idProduct,
+    name,
+    description,
+    price,
+    total,
+    image,
+    idMerchant,
+    idGroup,
+  ) async {
+    var body = {
+      'idProduct': idProduct,
+      'name': name,
+      'description': description,
+      'price': price.toString().replaceAll(',', ''),
+      'total': total,
+      'image': image,
+      'FK_merchant': idMerchant,
+      'FK_groupProduct': idGroup,
+    };
+    int status = await merchantService.updateProduct(body);
+    if (status == 200) {
+      getProductByGroup(idGroup);
+      Get.back();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Create failure!',
+        subTitle: 'Check again product infomations.',
+      );
+      getSnackBar.show();
+    }
+  }
+
+  deleteProduct(idProduct, idGroup) async {
+    int status = await merchantService.deleteProduct(idProduct);
+    if (status == 200) {
+      getProductByGroup(idGroup);
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Delete product success!',
+        subTitle: 'Your list product already update.',
+      );
+      getSnackBar.show();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Delete product failure!',
+        subTitle: 'Check again product infomations.',
+      );
+      getSnackBar.show();
+    }
+  }
+
   Stream<dynamic> get getMerchantStream => merchantController.stream;
   Stream<List<dynamic>> get getGroupProductStream =>
       groupProductController.stream;

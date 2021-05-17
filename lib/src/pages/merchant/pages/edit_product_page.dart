@@ -6,20 +6,28 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
 import 'package:van_transport/src/pages/transport/widgets/vertical_transport_card.dart';
-import 'package:van_transport/src/routes/app_pages.dart';
+import 'package:van_transport/src/services/storage.dart';
+import 'package:van_transport/src/widgets/loading_page.dart';
 
 class EditProductPage extends StatefulWidget {
+  final infoProduct;
+  EditProductPage({this.infoProduct});
   @override
   State<StatefulWidget> createState() => _EditProductPageState();
 }
 
 class _EditProductPageState extends State<EditProductPage> {
+  final _formKey = GlobalKey<FormState>();
+  final merchantController = Get.put(MerchantController());
   File _image;
-  String _title, _desc, _price;
+  String _title, _desc, _price, _total;
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController priceController = TextEditingController();
+  TextEditingController totalController = TextEditingController();
+  bool loading = false;
 
   void showImageBottomSheet() {
     showModalBottomSheet(
@@ -39,73 +47,124 @@ class _EditProductPageState extends State<EditProductPage> {
   @override
   void initState() {
     super.initState();
-    _title = '';
-    _desc = '';
-    _price = '';
+    _title = widget.infoProduct['name'];
+    _desc = widget.infoProduct['description'];
+    _price = widget.infoProduct['price'];
+    _total = widget.infoProduct['total'];
+    titleController.text = widget.infoProduct['name'];
+    descController.text = widget.infoProduct['description'];
+    priceController.text = widget.infoProduct['price'];
+    totalController.text = widget.infoProduct['total'];
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: mC,
-        elevation: .0,
-        centerTitle: true,
-        brightness: Brightness.light,
-        leading: IconButton(
-          onPressed: () => Get.back(),
-          icon: Icon(
-            Feather.arrow_left,
-            color: colorTitle,
-            size: width / 15.0,
-          ),
-        ),
-        title: Text(
-          'Edit Product',
-          style: TextStyle(
-            color: colorTitle,
-            fontSize: width / 20.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Lato',
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => Get.toNamed(Routes.SETTINGS),
-            icon: Icon(
-              Feather.check,
-              color: colorPrimary,
-              size: width / 16.0,
+    return loading
+        ? Loading()
+        : Scaffold(
+            appBar: AppBar(
+              backgroundColor: mC,
+              elevation: .0,
+              centerTitle: true,
+              brightness: Brightness.light,
+              leading: IconButton(
+                onPressed: () => Get.back(),
+                icon: Icon(
+                  Feather.arrow_left,
+                  color: colorTitle,
+                  size: width / 15.0,
+                ),
+              ),
+              title: Text(
+                'Edit Product',
+                style: TextStyle(
+                  color: colorTitle,
+                  fontSize: width / 20.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Lato',
+                ),
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () async {
+                    if (_formKey.currentState.validate()) {
+                      setState(() {
+                        loading = true;
+                      });
+                      if (_image != null) {
+                        StorageService storageService = StorageService();
+                        String urlToImage =
+                            await storageService.uploadImageNotProfile(_image);
+                        merchantController.updateProduct(
+                          widget.infoProduct['_id'],
+                          _title,
+                          _desc,
+                          _price,
+                          _total,
+                          urlToImage,
+                          widget.infoProduct['FK_merchant'],
+                          widget.infoProduct['FK_groupProduct'],
+                        );
+                      } else {
+                        merchantController.updateProduct(
+                          widget.infoProduct['_id'],
+                          _title,
+                          _desc,
+                          _price,
+                          _total,
+                          widget.infoProduct['image'],
+                          widget.infoProduct['FK_merchant'],
+                          widget.infoProduct['FK_groupProduct'],
+                        );
+                      }
+                      setState(() {
+                        loading = false;
+                      });
+                    }
+                  },
+                  icon: Icon(
+                    Feather.check,
+                    color: colorPrimary,
+                    size: width / 16.0,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-      body: Container(
-        color: mC,
-        child: Column(
-          children: [
-            SizedBox(height: 12.0),
-            GestureDetector(
-              onTap: () => showImageBottomSheet(),
-              child: VerticalTransportCard(
-                image: _image,
-                address: _price,
-                title: _title,
-                urlToImage: '',
-                desc: _desc,
+            body: Container(
+              color: mC,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    SizedBox(height: 12.0),
+                    GestureDetector(
+                      onTap: () => showImageBottomSheet(),
+                      child: VerticalTransportCard(
+                        image: _image,
+                        address: _price,
+                        title: _title,
+                        urlToImage: widget.infoProduct['image'],
+                        desc: _desc,
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                    _buildLineInfo(
+                        context, 'title'.trArgs(), '', titleController),
+                    _buildDivider(context),
+                    _buildLineInfo(
+                        context, 'price'.trArgs(), '', priceController),
+                    _buildDivider(context),
+                    _buildLineInfo(
+                        context, 'total'.trArgs(), '', totalController),
+                    _buildDivider(context),
+                    _buildLineInfo(
+                        context, 'description'.trArgs(), '', descController),
+                    _buildDivider(context),
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 16.0),
-            _buildLineInfo(context, 'Merchant Name', '', titleController),
-            _buildDivider(context),
-            _buildLineInfo(context, 'Price', '', priceController),
-            _buildDivider(context),
-            _buildLineInfo(context, 'Description', '', descController),
-            _buildDivider(context),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   Widget _buildLineInfo(context, title, valid, controller) {
@@ -124,24 +183,18 @@ class _EditProductPageState extends State<EditProductPage> {
         validator: (val) => val.trim().length == 0 ? 'Input value here' : null,
         onChanged: (val) {
           setState(() {
-            switch (title) {
-              // en-US
-              case 'Title':
-                _title = val.trim();
-                break;
-              case 'Description':
-                _desc = val.trim();
-                break;
-              case 'Address':
-                _price = val.trim();
-                break;
-
-              default:
-                break;
+            if (title == 'title'.trArgs()) {
+              _title = val.trim();
+            } else if (title == 'price'.trArgs()) {
+              _price = val.trim();
+            } else if (title == 'total'.trArgs()) {
+              _total = val.trim();
+            } else {
+              _desc = val.trim();
             }
           });
         },
-        inputFormatters: title == 'Price - VNĐ'
+        inputFormatters: title == 'price'.trArgs()
             ? [
                 FilteringTextInputFormatter.digitsOnly,
                 TextInputFormatter.withFunction((oldValue, newValue) {
@@ -165,9 +218,13 @@ class _EditProductPageState extends State<EditProductPage> {
                   }
                 })
               ]
-            : [
-                FilteringTextInputFormatter.singleLineFormatter,
-              ],
+            : title == 'total'.trArgs()
+                ? [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ]
+                : [
+                    FilteringTextInputFormatter.singleLineFormatter,
+                  ],
         decoration: InputDecoration(
           floatingLabelBehavior: FloatingLabelBehavior.always,
           contentPadding: EdgeInsets.only(

@@ -7,8 +7,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 class VerticalStoreCard extends StatefulWidget {
-  final infoProduct;
-  VerticalStoreCard({this.infoProduct});
   @override
   State<StatefulWidget> createState() => _VerticalStoreCardState();
 }
@@ -51,7 +49,7 @@ class _VerticalStoreCardState extends State<VerticalStoreCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      widget.infoProduct['name'],
+                      'Highlands Coffee',
                       style: TextStyle(
                         color: colorTitle,
                         fontSize: _size.width / 30.0,
@@ -72,9 +70,7 @@ class _VerticalStoreCardState extends State<VerticalStoreCard> {
                         Padding(
                           padding: EdgeInsets.only(top: 3.2),
                           child: Text(
-                            'price'.trArgs() +
-                                ': ' +
-                                widget.infoProduct['price'],
+                            '4.6',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: _size.width / 32.0,

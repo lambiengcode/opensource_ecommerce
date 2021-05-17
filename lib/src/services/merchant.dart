@@ -92,7 +92,7 @@ class MerchantService {
 
   Future<int> deleteProduct(idProduct) async {
     var response = await http.delete(
-      baseUrl + ApiGateway.DELETE_GROUP_PRODUCT + idProduct,
+      baseUrl + ApiGateway.DELETE_PRODUCT + idProduct,
       headers: requestHeaders,
     );
     return response.statusCode;

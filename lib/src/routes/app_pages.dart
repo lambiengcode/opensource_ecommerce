@@ -300,7 +300,9 @@ class AppPages {
         ),
         GetPage(
           name: Routes.EDITPRODUCT,
-          page: () => EditProductPage(),
+          page: () => EditProductPage(
+            infoProduct: Get.arguments,
+          ),
           transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 200),
           children: [],

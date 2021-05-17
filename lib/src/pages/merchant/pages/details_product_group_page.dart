@@ -113,8 +113,10 @@ class _DetailsProductGroupPageState extends State<DetailsProductGroupPage> {
                       actionExtentRatio: 0.25,
                       controller: slidableController,
                       child: GestureDetector(
-                        onTap: () =>
-                            Get.toNamed(Routes.MERCHANT + Routes.EDITPRODUCT),
+                        onTap: () => Get.toNamed(
+                          Routes.MERCHANT + Routes.EDITPRODUCT,
+                          arguments: mProducts[index],
+                        ),
                         child: VerticalTransportCard(
                           image: null,
                           address: stringService
@@ -126,7 +128,13 @@ class _DetailsProductGroupPageState extends State<DetailsProductGroupPage> {
                       ),
                       secondaryActions: <Widget>[
                         GestureDetector(
-                          onTap: () => slidableController.activeState.close(),
+                          onTap: () {
+                            slidableController.activeState.close();
+                            merchantController.deleteProduct(
+                              mProducts[index]['_id'],
+                              mProducts[index]['FK_groupProduct'],
+                            );
+                          },
                           child: Container(
                             margin: EdgeInsets.fromLTRB(12.0, 12.0, 6.0, 18.0),
                             decoration: BoxDecoration(
