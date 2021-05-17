@@ -25,12 +25,14 @@ class MerchantController extends GetxController {
 
   getProductByGroup(idGroup) async {
     var res = await merchantService.getProductByGroup(idGroup);
+    print(res);
     productController.add(res);
   }
 
-  createGroupProduct(name, idMerchant) async {
+  createGroupProduct(name, description, idMerchant) async {
     var body = {
       'name': name,
+      'description': description,
       'FK_merchant': idMerchant,
     };
     int status = await merchantService.createGroupProduct(body);
@@ -47,11 +49,18 @@ class MerchantController extends GetxController {
   }
 
   createProduct(
-      name, description, price, total, image, idMerchant, idGroup) async {
+    name,
+    description,
+    price,
+    total,
+    image,
+    idMerchant,
+    idGroup,
+  ) async {
     var body = {
       'name': name,
       'description': description,
-      'price': price,
+      'price': price.toString().replaceAll(',', ''),
       'total': total,
       'image': image,
       'FK_merchant': idMerchant,

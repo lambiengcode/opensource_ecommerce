@@ -16,12 +16,15 @@ class CreateGroupPage extends StatefulWidget {
 class _CreateGroupPageState extends State<CreateGroupPage> {
   final merchantController = Get.put(MerchantController());
   String _title;
+  String _desc;
   TextEditingController titleController = TextEditingController();
+  TextEditingController desController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _title = '';
+    _desc = '';
   }
 
   @override
@@ -54,6 +57,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
             onPressed: () {
               merchantController.createGroupProduct(
                 _title,
+                _desc,
                 widget.idMerchant,
               );
             },
@@ -70,7 +74,10 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
         child: Column(
           children: [
             SizedBox(height: 12.0),
-            _buildLineInfo(context, 'Group Name', '', titleController),
+            _buildLineInfo(context, 'groupName'.trArgs(), '', titleController),
+            _buildDivider(context),
+            _buildLineInfo(
+                context, 'description'.trArgs(), '', titleController),
             _buildDivider(context),
           ],
         ),
@@ -94,13 +101,10 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
         validator: (val) => val.trim().length == 0 ? 'Input value here' : null,
         onChanged: (val) {
           setState(() {
-            switch (title) {
-              // en-US
-              case 'Group Name':
-                _title = val.trim();
-                break;
-              default:
-                break;
+            if (title == 'groupName'.trArgs()) {
+              _title = val.trim();
+            } else {
+              _desc = val.trim();
             }
           });
         },

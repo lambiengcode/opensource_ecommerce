@@ -3,9 +3,10 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:van_transport/src/common/style.dart';
-import 'package:van_transport/src/pages/home/widget/vertical_store_card.dart';
 import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
+import 'package:van_transport/src/pages/transport/widgets/vertical_transport_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
+import 'package:van_transport/src/services/string.dart';
 
 class DetailsProductGroupPage extends StatefulWidget {
   final String title;
@@ -19,6 +20,7 @@ class DetailsProductGroupPage extends StatefulWidget {
 class _DetailsProductGroupPageState extends State<DetailsProductGroupPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final merchantController = Get.put(MerchantController());
+  final stringService = StringService();
   SlidableController slidableController = new SlidableController();
 
   @override
@@ -74,7 +76,11 @@ class _DetailsProductGroupPageState extends State<DetailsProductGroupPage> {
             color: colorPrimaryTextOpacity,
             size: width / 16.0,
           ),
-          onPressed: () => Get.toNamed(Routes.MERCHANT + Routes.CREATEPRODUCT),
+          onPressed: () =>
+              Get.toNamed(Routes.MERCHANT + Routes.CREATEPRODUCT, arguments: {
+            'idGroup': widget.idGroup,
+            'idMerchant': widget.idMerchant,
+          }),
         ),
       ),
       key: _scaffoldKey,
@@ -89,7 +95,7 @@ class _DetailsProductGroupPageState extends State<DetailsProductGroupPage> {
             return true;
           },
           child: StreamBuilder(
-            stream: merchantController.getGroupProductStream,
+            stream: merchantController.getProductStream,
             builder: (context, AsyncSnapshot snapshot) {
               if (!snapshot.hasData) {
                 return Container();
@@ -109,7 +115,14 @@ class _DetailsProductGroupPageState extends State<DetailsProductGroupPage> {
                       child: GestureDetector(
                         onTap: () =>
                             Get.toNamed(Routes.MERCHANT + Routes.EDITPRODUCT),
-                        child: VerticalStoreCard(),
+                        child: VerticalTransportCard(
+                          image: null,
+                          address: stringService
+                              .formatPrice(mProducts[index]['price']),
+                          title: mProducts[index]['name'],
+                          urlToImage: mProducts[index]['image'],
+                          desc: mProducts[index]['description'],
+                        ),
                       ),
                       secondaryActions: <Widget>[
                         GestureDetector(
@@ -121,10 +134,11 @@ class _DetailsProductGroupPageState extends State<DetailsProductGroupPage> {
                               color: mCD,
                               boxShadow: [
                                 BoxShadow(
-                                    color: mCL,
-                                    offset: Offset(3, 3),
-                                    blurRadius: 3,
-                                    spreadRadius: -3),
+                                  color: mCL,
+                                  offset: Offset(3, 3),
+                                  blurRadius: 3,
+                                  spreadRadius: -3,
+                                ),
                               ],
                             ),
                             alignment: Alignment.center,

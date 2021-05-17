@@ -102,6 +102,11 @@ const Map<String, String> vi_VN = {
   // Merchant
   'product': 'Sản phẩm',
   'statistics': 'Thống kê',
+  'description': 'Mô tả',
+  'groupName': 'Tên nhóm',
+  'title': 'Tiêu đề',
+  'price': 'Gía sản phẩm',
+  'total': 'Số lượng sản phẩm',
 
   // Staff
   'staff': 'Nhân viên',

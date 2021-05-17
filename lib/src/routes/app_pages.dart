@@ -290,7 +290,10 @@ class AppPages {
         ),
         GetPage(
           name: Routes.CREATEPRODUCT,
-          page: () => CreateProductPage(),
+          page: () => CreateProductPage(
+            idGroup: Get.arguments['idGroup'],
+            idMerchant: Get.arguments['idMerchant'],
+          ),
           transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 200),
           children: [],
