@@ -130,6 +130,24 @@ class MerchantController extends GetxController {
     }
   }
 
+  deleteGroupProduct(idGroup, idMerchant) async {
+    int status = await merchantService.deleteGroupProduct(idGroup);
+    if (status == 200) {
+      getGroupProduct(idMerchant);
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Delete group product success!',
+        subTitle: 'Your group product already update.',
+      );
+      getSnackBar.show();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Delete group product failure!',
+        subTitle: 'Check again group product infomations.',
+      );
+      getSnackBar.show();
+    }
+  }
+
   Stream<dynamic> get getMerchantStream => merchantController.stream;
   Stream<List<dynamic>> get getGroupProductStream =>
       groupProductController.stream;

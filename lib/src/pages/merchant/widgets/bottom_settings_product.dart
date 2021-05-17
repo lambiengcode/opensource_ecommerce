@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:get/get.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
 
 class BottomSettingsProduct extends StatefulWidget {
   final List<String> values;
-  BottomSettingsProduct({this.values});
+  final String idMerchant;
+  final String idGroup;
+  BottomSettingsProduct({this.values, this.idGroup, this.idMerchant});
   @override
   State<StatefulWidget> createState() => _BottomSettingsProductState();
 }
 
 class _BottomSettingsProductState extends State<BottomSettingsProduct> {
+  final merchantController = Get.put(MerchantController());
   @override
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
@@ -48,7 +54,12 @@ class _BottomSettingsProductState extends State<BottomSettingsProduct> {
               ),
             ),
             SizedBox(height: 8.0),
-            _buildAction(context, widget.values[0]),
+            _buildAction(
+              context,
+              widget.values[0],
+              colorDarkGrey,
+              Feather.edit_3,
+            ),
             Divider(
               color: mCH,
               thickness: .2,
@@ -56,7 +67,12 @@ class _BottomSettingsProductState extends State<BottomSettingsProduct> {
               indent: 12.0,
               endIndent: 12.0,
             ),
-            _buildAction(context, widget.values[1]),
+            _buildAction(
+              context,
+              widget.values[1],
+              colorHigh,
+              Feather.trash,
+            ),
             SizedBox(height: 16.0),
           ],
         ),
@@ -64,23 +80,40 @@ class _BottomSettingsProductState extends State<BottomSettingsProduct> {
     );
   }
 
-  Widget _buildAction(context, title) {
+  Widget _buildAction(context, title, color, icon) {
     final _size = MediaQuery.of(context).size;
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        if (title == widget.values[1]) {
+          merchantController.deleteGroupProduct(
+            widget.idGroup,
+            widget.idMerchant,
+          );
+        } else {}
+        Get.back();
+      },
       child: Container(
         width: _size.width,
         color: mC,
-        padding: EdgeInsets.fromLTRB(24.0, 15.0, 20.0, 15.0),
-        alignment: Alignment.center,
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: _size.width / 24.0,
-            color: colorDarkGrey,
-            fontWeight: FontWeight.w600,
-          ),
+        padding: EdgeInsets.fromLTRB(28.0, 15.0, 20.0, 15.0),
+        child: Row(
+          children: [
+            Icon(icon, size: width / 20.0, color: color),
+            SizedBox(width: 10.0),
+            Padding(
+              padding: EdgeInsets.only(top: 2.0),
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: _size.width / 22.5,
+                  color: color,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Lato',
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
