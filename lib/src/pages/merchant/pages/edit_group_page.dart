@@ -6,14 +6,14 @@ import 'package:intl/intl.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
 
-class CreateGroupPage extends StatefulWidget {
-  final String idMerchant;
-  CreateGroupPage({this.idMerchant});
+class EditGroupPage extends StatefulWidget {
+  final groupProductInfo;
+  EditGroupPage({this.groupProductInfo});
   @override
-  State<StatefulWidget> createState() => _CreateGroupPageState();
+  State<StatefulWidget> createState() => _EditGroupPageState();
 }
 
-class _CreateGroupPageState extends State<CreateGroupPage> {
+class _EditGroupPageState extends State<EditGroupPage> {
   final merchantController = Get.put(MerchantController());
   String _title;
   String _desc;
@@ -23,8 +23,10 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
   @override
   void initState() {
     super.initState();
-    _title = '';
-    _desc = '';
+    _title = widget.groupProductInfo['name'];
+    _desc = widget.groupProductInfo['description'];
+    titleController.text = widget.groupProductInfo['name'];
+    descController.text = widget.groupProductInfo['description'];
   }
 
   @override
@@ -55,10 +57,11 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
         actions: [
           IconButton(
             onPressed: () {
-              merchantController.createGroupProduct(
+              merchantController.updateGroupProduct(
+                widget.groupProductInfo['FK_merchant'],
+                widget.groupProductInfo['_id'],
                 _title,
                 _desc,
-                widget.idMerchant,
               );
             },
             icon: Icon(

@@ -1,4 +1,5 @@
 import 'package:van_transport/src/app.dart';
+import 'package:van_transport/src/middleware/merchant_middleware.dart';
 import 'package:van_transport/src/pages/admin/admin_page.dart';
 import 'package:van_transport/src/pages/admin/pages/manage_coupon_page.dart';
 import 'package:van_transport/src/pages/admin/pages/manage_merchant_page.dart';
@@ -13,6 +14,7 @@ import 'package:van_transport/src/pages/merchant/merchant_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/create_group_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/create_product_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/details_product_group_page.dart';
+import 'package:van_transport/src/pages/merchant/pages/edit_group_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/edit_merchant_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/edit_product_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/register_merchant_page.dart';
@@ -247,6 +249,13 @@ class AppPages {
       transitionDuration: Duration(milliseconds: 200),
       children: [
         GetPage(
+          name: Routes.MIDDLEWAREMERCHANT,
+          page: () => MerchantMiddleware(),
+          transition: Transition.rightToLeft,
+          transitionDuration: Duration(milliseconds: 200),
+          children: [],
+        ),
+        GetPage(
           name: Routes.REGISTERMERCHANT,
           page: () => RegisterMerchantPage(),
           transition: Transition.rightToLeft,
@@ -262,28 +271,48 @@ class AppPages {
         ),
         GetPage(
           name: Routes.CREATEGROUP,
-          page: () => CreateGroupPage(),
+          page: () => CreateGroupPage(
+            idMerchant: Get.arguments,
+          ),
+          transition: Transition.rightToLeft,
+          transitionDuration: Duration(milliseconds: 200),
+          children: [],
+        ),
+        GetPage(
+          name: Routes.EDITGROUP,
+          page: () => EditGroupPage(
+            groupProductInfo: Get.arguments,
+          ),
           transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 200),
           children: [],
         ),
         GetPage(
           name: Routes.DETAILSGROUP,
-          page: () => DetailsProductGroupPage(),
+          page: () => DetailsProductGroupPage(
+            title: Get.arguments['title'],
+            idMerchant: Get.arguments['idMerchant'],
+            idGroup: Get.arguments['idGroup'],
+          ),
           transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 200),
           children: [],
         ),
         GetPage(
           name: Routes.CREATEPRODUCT,
-          page: () => CreateProductPage(),
+          page: () => CreateProductPage(
+            idGroup: Get.arguments['idGroup'],
+            idMerchant: Get.arguments['idMerchant'],
+          ),
           transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 200),
           children: [],
         ),
         GetPage(
           name: Routes.EDITPRODUCT,
-          page: () => EditProductPage(),
+          page: () => EditProductPage(
+            infoProduct: Get.arguments,
+          ),
           transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 200),
           children: [],

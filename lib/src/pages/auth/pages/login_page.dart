@@ -257,9 +257,6 @@ class _LoginPageState extends State<LoginPage> {
                                         email, password);
 
                                     if (res['status'] == 200) {
-                                      setState(() {
-                                        loading = false;
-                                      });
                                       Get.offAndToNamed(Routes.ROOT);
                                     } else if (res['status'] == 500 &&
                                         res['message'] ==

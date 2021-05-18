@@ -22,21 +22,22 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
     return Container(
+      height: height * .88,
       padding: EdgeInsets.symmetric(horizontal: 24.0),
       decoration: BoxDecoration(
         color: mC,
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20.0),
+          top: Radius.circular(30.0),
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          SizedBox(height: 12.5),
+          SizedBox(height: 24.0),
           Container(
             height: 4.0,
-            margin: EdgeInsets.symmetric(horizontal: _size.width * .35),
+            margin: EdgeInsets.symmetric(horizontal: _size.width * .325),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30.0),
               color: mCD,
@@ -54,7 +55,7 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
               ],
             ),
           ),
-          SizedBox(height: 20.0),
+          SizedBox(height: 24.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -99,7 +100,7 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
           ),
           SizedBox(height: 4.0),
           Container(
-            height: width * .19,
+            height: 75.0,
             child: Row(
               children: [
                 Expanded(
@@ -142,8 +143,8 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
                       textAlign: TextAlign.start,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.only(
-                          top: 16.0,
-                          left: 16.0,
+                          top: 15.0,
+                          left: 18.0,
                         ),
                         border: InputBorder.none,
                         hintText: "Type price...",

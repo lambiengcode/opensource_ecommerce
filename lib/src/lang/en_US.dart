@@ -102,6 +102,11 @@ const Map<String, String> en_US = {
   // Merchant
   'product': 'Product',
   'statistics': 'Statistics',
+  'description': 'Description',
+  'groupName': 'Group Name',
+  'title': 'Title',
+  'price': 'Price',
+  'total': 'Total',
 
   // Staff
   'staff': 'Staff',

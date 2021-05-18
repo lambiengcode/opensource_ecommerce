@@ -5,7 +5,7 @@ import 'package:van_transport/src/common/secret_key.dart';
 
 class TransportService {
   Map<String, String> requestHeaders = {
-    'Authorization': 'Bearer ${App.token}',
+    'authorization': 'Bearer ${App.token}',
   };
 
   Future<Map<String, dynamic>> registerTransport(
