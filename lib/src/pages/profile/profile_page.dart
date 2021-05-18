@@ -233,6 +233,16 @@ class _ProfilePageState extends State<ProfilePage> {
                           _padding(context),
                           _buildAction(context, 'transportOwner'.trArgs(),
                               Feather.truck),
+                          _padding(context),
+                          _buildAction(context, 'For SubTransport'.trArgs(),
+                              Feather.truck),
+                          _padding(context),
+                          _buildAction(
+                              context, 'For SubCity'.trArgs(), Feather.truck),
+                          _padding(context),
+                          _buildAction(
+                              context, 'For Staff'.trArgs(), Feather.truck),
+                          _padding(context),
                         ],
                       ),
                     ),
@@ -331,6 +341,12 @@ class _ProfilePageState extends State<ProfilePage> {
           Get.toNamed(Routes.MERCHANT + Routes.MIDDLEWAREMERCHANT);
         } else if (title == 'transportOwner'.trArgs()) {
           Get.toNamed(Routes.DELIVERY);
+        } else if (title == 'For SubTransport'.trArgs()) {
+          Get.toNamed(Routes.SUBTRANSPORT);
+        } else if (title == 'For SubCity'.trArgs()) {
+          Get.toNamed(Routes.SUBCITY);
+        } else if (title == 'For Staff'.trArgs()) {
+          Get.toNamed(Routes.STAFFDELIVERY);
         } else {
           getSnackBar.show();
         }

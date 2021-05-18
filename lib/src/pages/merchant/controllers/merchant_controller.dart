@@ -29,6 +29,19 @@ class MerchantController extends GetxController {
     productController.add(res);
   }
 
+  createMerchant() async {}
+
+  editMerchant(name, description, image, address, idCategory, phone) async {
+    var body = {
+      "name": name,
+      "description": description,
+      "image": image,
+      "address": address,
+      "FK_category": idCategory,
+      "phone": phone,
+    };
+  }
+
   createGroupProduct(name, description, idMerchant) async {
     var body = {
       'name': name,
