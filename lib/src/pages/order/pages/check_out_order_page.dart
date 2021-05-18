@@ -18,7 +18,6 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
   @override
   void initState() {
     super.initState();
-    pickAddressController.calDistance();
   }
 
   @override
@@ -105,7 +104,7 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
                                   builder: (_) => _buildPriceText(
                                       context,
                                       'Distance',
-                                      '${double.parse(_.distance.toStringAsFixed(2))} Km'),
+                                      '${_.distance == null ? 'Calculating' : _.distance}'),
                                 ),
                               ],
                             ),

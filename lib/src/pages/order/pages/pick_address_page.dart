@@ -277,6 +277,7 @@ class _PickAddressPageState extends State<PickAddressPage> {
                   builder: (_) => NeumorphicButton(
                     onPressed: () {
                       if (_.placeFrom != '' && _.placeTo != '') {
+                        pickAddressController.calDistance();
                         Get.toNamed(Routes.CHECKOUTORDER);
                       } else {
                         GetSnackBar getSnackBar = GetSnackBar(

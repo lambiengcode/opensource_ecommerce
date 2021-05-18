@@ -7,7 +7,7 @@ class PickAddressController extends GetxController {
   final DistanceService distanceService = DistanceService();
   String placeTo, placeFrom;
   LatLng locationTo, locationFrom;
-  double distance;
+  String distance;
 
   initData() {
     placeTo = '';
@@ -33,12 +33,14 @@ class PickAddressController extends GetxController {
     update();
   }
 
-  calDistance() {
-    distance = distanceService.calculateDistance(
+  calDistance() async {
+    var res = await distanceService.calculateDistance(
       locationFrom.latitude,
       locationFrom.longitude,
       locationTo.latitude,
       locationTo.longitude,
     );
+    distance = res['rows'][0]['elements'][0]['distance']['text'];
+    update();
   }
 }

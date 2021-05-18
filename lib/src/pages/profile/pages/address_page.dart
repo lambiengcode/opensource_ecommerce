@@ -189,17 +189,6 @@ class _AddressPageState extends State<AddressPage> {
   void initState() {
     super.initState();
     _myLocation = getUserLocation();
-    //controller.streamProfile();
-    double totalDistance = 0;
-    for (var i = 0; i < data.length; i++) {
-      totalDistance = distance.calculateDistance(
-        data[i]["lat"],
-        data[i]["lng"],
-        kInitialPosition.latitude,
-        kInitialPosition.longitude,
-      );
-      print(totalDistance);
-    }
   }
 
   @override

@@ -1,12 +1,11 @@
-import 'dart:math';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 class DistanceService {
-  double calculateDistance(lat1, lon1, lat2, lon2) {
-    var p = 0.017453292519943295;
-    var c = cos;
-    var a = 0.5 -
-        c((lat2 - lat1) * p) / 2 +
-        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
-    return 12742 * asin(sqrt(a));
+  Future<Map<String, dynamic>> calculateDistance(lat1, lon1, lat2, lon2) async {
+    var res = await http.get(
+        'https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=$lat1,$lon1&destinations=$lat2,$lon2&key=AIzaSyAURwoHCVzWdOHBMpP9vDsxgvZVB7-spLI&mode=driving');
+
+    return convert.jsonDecode(res.body);
   }
 }
