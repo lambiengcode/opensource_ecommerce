@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'package:google_maps_place_picker/google_maps_place_picker.dart';
+import 'package:location/location.dart';
+import 'package:van_transport/src/common/secret_key.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/transport/widgets/vertical_transport_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
@@ -21,6 +24,8 @@ class _RegisterMerchantPageState extends State<RegisterMerchantPage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  PickResult selectedPlace;
+  LocationData currentLocation;
 
   void showImageBottomSheet() {
     showModalBottomSheet(
@@ -35,6 +40,119 @@ class _RegisterMerchantPageState extends State<RegisterMerchantPage> {
         return _chooseImage(context);
       },
     );
+  }
+
+  void chooseLocation(context) {
+    try {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return PlacePicker(
+              apiKey: apiMap,
+              initialPosition: kInitialPosition,
+              useCurrentLocation: true,
+              selectInitialPosition: true,
+              onGeocodingSearchFailed: (error) => print(error),
+              usePlaceDetailSearch: true,
+              forceSearchOnZoomChanged: true,
+              automaticallyImplyAppBarLeading: false,
+              usePinPointingSearch: true,
+              autocompleteLanguage:
+                  Get.locale == Locale('vi', 'VN') ? 'vi' : 'en',
+              region: Get.locale == Locale('vi', 'VN') ? 'vn' : 'us',
+              selectedPlaceWidgetBuilder:
+                  (_, selectedP, state, isSearchBarFocused) {
+                print("state: $state, isSearchBarFocused: $isSearchBarFocused");
+                return isSearchBarFocused
+                    ? Container()
+                    : FloatingCard(
+                        bottomPosition: 0.0,
+                        leftPosition: 0.0,
+                        rightPosition: 0.0,
+                        width: 600.0,
+                        height: 125.0,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(12.0),
+                        ),
+                        child: state == SearchingState.Searching
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(
+                                    colorTitle,
+                                  ),
+                                ),
+                              )
+                            : Column(
+                                children: [
+                                  SizedBox(
+                                    height: 20.0,
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 12.0),
+                                    child: Text(
+                                      selectedP.formattedAddress,
+                                      style: TextStyle(
+                                          color: colorTitle,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 18.0,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      width: 600.0,
+                                      child: RaisedButton(
+                                        color: colorTitle,
+                                        child: Text(
+                                          'pick'.trArgs(),
+                                          style: TextStyle(
+                                            color: colorPrimaryTextOpacity,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            selectedPlace = selectedP;
+                                            addressController.text =
+                                                selectedPlace.formattedAddress
+                                                    .toString();
+                                          });
+                                          Get.back();
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      );
+              },
+              pinBuilder: (context, state) {
+                if (state == PinState.Idle) {
+                  return CircleAvatar(
+                    radius: 12.0,
+                    backgroundImage: NetworkImage(
+                      'https://avatars.githubusercontent.com/u/60530946?v=4',
+                    ),
+                  );
+                } else {
+                  return CircleAvatar(
+                    radius: 12.0,
+                    backgroundImage: NetworkImage(
+                      'https://avatars.githubusercontent.com/u/60530946?v=4',
+                    ),
+                  );
+                }
+              },
+            );
+          },
+        ),
+      );
+    } catch (error) {
+      print(error);
+    }
   }
 
   @override
@@ -97,11 +215,11 @@ class _RegisterMerchantPageState extends State<RegisterMerchantPage> {
               ),
             ),
             SizedBox(height: 16.0),
-            _buildLineInfo(context, 'Merchant Name', '', titleController),
+            _buildLineInfo(context, 'title'.trArgs(), '', titleController),
             _buildDivider(context),
-            _buildLineInfo(context, 'Address', '', addressController),
+            _buildLineInfo(context, 'address'.trArgs(), '', addressController),
             _buildDivider(context),
-            _buildLineInfo(context, 'Description', '', descController),
+            _buildLineInfo(context, 'description'.trArgs(), '', descController),
             _buildDivider(context),
             _buildLineInfo(context, 'Type Merchant', '', titleController),
             _buildDivider(context),
@@ -114,72 +232,79 @@ class _RegisterMerchantPageState extends State<RegisterMerchantPage> {
 
   Widget _buildLineInfo(context, title, valid, controller) {
     final _size = MediaQuery.of(context).size;
-    return Container(
-      padding: EdgeInsets.fromLTRB(14.0, 18.0, 14.0, 4.0),
-      child: TextFormField(
-        controller: controller,
-        cursorColor: colorTitle,
-        cursorRadius: Radius.circular(30.0),
-        style: TextStyle(
-          color: colorTitle,
-          fontSize: _size.width / 26.0,
-          fontWeight: FontWeight.w500,
-        ),
-        validator: (val) => val.trim().length == 0 ? 'Input value here' : null,
-        onChanged: (val) {
-          setState(() {
-            switch (title) {
-              // en-US
-              case 'Title':
-                _title = val.trim();
-                break;
-              case 'Description':
-                _desc = val.trim();
-                break;
-
-              default:
-                break;
+    return GestureDetector(
+      onTap: () {
+        if (title == 'address'.trArgs()) {
+          chooseLocation(context);
+        }
+      },
+      child: Container(
+        padding: EdgeInsets.fromLTRB(14.0, 18.0, 14.0, 4.0),
+        child: TextFormField(
+          onTap: () {
+            if (title == 'address'.trArgs()) {
+              chooseLocation(context);
             }
-          });
-        },
-        inputFormatters: title == 'Price - VNĐ'
-            ? [
-                FilteringTextInputFormatter.digitsOnly,
-                TextInputFormatter.withFunction((oldValue, newValue) {
-                  if (newValue.text.isEmpty) {
-                    return newValue.copyWith(text: '');
-                  } else if (newValue.text.compareTo(oldValue.text) != 0) {
-                    final int selectionIndexFromTheRight =
-                        newValue.text.length - newValue.selection.end;
-                    final f = NumberFormat("#,###");
-                    final number = int.parse(
-                        newValue.text.replaceAll(f.symbols.GROUP_SEP, ''));
-                    final newString = f.format(number);
-                    return TextEditingValue(
-                      text: newString,
-                      selection: TextSelection.collapsed(
-                          offset:
-                              newString.length - selectionIndexFromTheRight),
-                    );
-                  } else {
-                    return newValue;
-                  }
-                })
-              ]
-            : [
-                FilteringTextInputFormatter.singleLineFormatter,
-              ],
-        decoration: InputDecoration(
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          contentPadding: EdgeInsets.only(
-            left: 12.0,
-          ),
-          border: InputBorder.none,
-          labelText: title,
-          labelStyle: TextStyle(
+          },
+          enabled: !(title == 'address'.trArgs()),
+          controller: controller,
+          cursorColor: colorTitle,
+          cursorRadius: Radius.circular(30.0),
+          style: TextStyle(
             color: colorTitle,
             fontSize: _size.width / 26.0,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
+          ),
+          validator: (val) =>
+              val.trim().length == 0 ? 'Input value here' : null,
+          onChanged: (val) {
+            setState(() {
+              if (title == 'title'.trArgs()) {
+                _title = val.trim();
+              } else if (title == 'description'.trArgs()) {
+                _desc = val.trim();
+              }
+            });
+          },
+          inputFormatters: title == 'Price - VNĐ'
+              ? [
+                  FilteringTextInputFormatter.digitsOnly,
+                  TextInputFormatter.withFunction((oldValue, newValue) {
+                    if (newValue.text.isEmpty) {
+                      return newValue.copyWith(text: '');
+                    } else if (newValue.text.compareTo(oldValue.text) != 0) {
+                      final int selectionIndexFromTheRight =
+                          newValue.text.length - newValue.selection.end;
+                      final f = NumberFormat("#,###");
+                      final number = int.parse(
+                          newValue.text.replaceAll(f.symbols.GROUP_SEP, ''));
+                      final newString = f.format(number);
+                      return TextEditingValue(
+                        text: newString,
+                        selection: TextSelection.collapsed(
+                            offset:
+                                newString.length - selectionIndexFromTheRight),
+                      );
+                    } else {
+                      return newValue;
+                    }
+                  })
+                ]
+              : [
+                  FilteringTextInputFormatter.singleLineFormatter,
+                ],
+          decoration: InputDecoration(
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            contentPadding: EdgeInsets.only(
+              left: 12.0,
+            ),
+            border: InputBorder.none,
+            labelText: title,
+            labelStyle: TextStyle(
+              color: colorTitle,
+              fontSize: _size.width / 26.0,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ),

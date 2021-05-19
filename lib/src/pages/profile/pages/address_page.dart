@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:location/location.dart';
 import 'package:van_transport/src/pages/order/controllers/pick_address_controller.dart';
+import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
 import 'package:van_transport/src/services/distance.dart';
 
 class AddressPage extends StatefulWidget {
@@ -20,7 +21,7 @@ class AddressPage extends StatefulWidget {
 }
 
 class _AddressPageState extends State<AddressPage> {
-  // var controller = Get.put(ProfileController());
+  final profileController = Get.put(ProfileController());
   final distance = DistanceService();
   PickResult selectedPlace;
   LocationData currentLocation;
@@ -188,6 +189,7 @@ class _AddressPageState extends State<AddressPage> {
   @override
   void initState() {
     super.initState();
+    profileController.getProfile();
     _myLocation = getUserLocation();
   }
 
@@ -218,12 +220,25 @@ class _AddressPageState extends State<AddressPage> {
           ),
         ),
       ),
+      floatingActionButton: Container(
+        height: width / 6.25,
+        width: width / 6.25,
+        child: FloatingActionButton(
+          backgroundColor: colorTitle,
+          child: Icon(
+            Feather.plus,
+            color: colorPrimaryTextOpacity,
+            size: width / 16.0,
+          ),
+          onPressed: () => null,
+        ),
+      ),
       body: Container(
         color: mC,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 2.0),
+            SizedBox(height: 4.0),
             Container(
               height: 4.0,
               margin: EdgeInsets.symmetric(
@@ -246,117 +261,37 @@ class _AddressPageState extends State<AddressPage> {
                 ],
               ),
             ),
-            SizedBox(height: 4.0),
             _buildCurrentLocation(
               context,
               'currentLocation'.trArgs(),
               selectedPlace == null ? "" : selectedPlace.formattedAddress,
               Feather.target,
             ),
-            SizedBox(height: 12.0),
-            // StreamBuilder(
-            //   stream: controller.profileController.stream,
-            //   builder: (context, AsyncSnapshot snapshot) {
-            //     if (!snapshot.hasData) {
-            //       return Container();
-            //     }
-            //     var mProfile = convert.jsonDecode(snapshot.data)['data'];
+            SizedBox(height: 4.0),
+            Expanded(
+              child: StreamBuilder(
+                stream: profileController.profileController.stream,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
+                    return Container();
+                  }
 
-            //     return _buildActionLine(
-            //       context,
-            //       'homeadd'.trArgs(),
-            //       mProfile['address'] == '' || mProfile['address'] == null
-            //           ? 'Chọn địa chỉ'
-            //           : mProfile['address'].toString().length < 10
-            //               ? mProfile['address']
-            //               : mProfile['address'].toString().substring(0, 10) +
-            //                   '...',
-            //       Feather.home,
-            //       mProfile['address'],
-            //     );
-            //   },
-            // ),
-            _buildActionLine(
-              context,
-              'homeAddress'.trArgs(),
-              'Pick Home Address',
-              Feather.home,
-              '',
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+                  var mProfile = snapshot.data['address'];
 
-  Widget _buildActionLine(context, title, value, icon, fullValue) {
-    final _size = MediaQuery.of(context).size;
-    return GestureDetector(
-      onTap: () => Get.toNamed('/homeAddress', arguments: fullValue),
-      child: Container(
-        padding: EdgeInsets.fromLTRB(12.0, 18.0, 12.0, 20.0),
-        decoration: BoxDecoration(
-          color: mC,
-          boxShadow: [
-            BoxShadow(
-              color: mCD,
-              offset: Offset(10, 10),
-              blurRadius: 10,
-            ),
-            BoxShadow(
-              color: mCL,
-              offset: Offset(-10, -10),
-              blurRadius: 10,
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  icon,
-                  size: _size.width / 18.0,
-                  color: colorTitle,
-                ),
-                SizedBox(
-                  width: 12.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 4.0),
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: _size.width / 26.8,
-                      color: colorTitle,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: _size.width / 27.5,
-                    color: Colors.grey.shade800,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(
-                  width: 6.0,
-                ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.grey.shade700,
-                  size: _size.width / 24.0,
-                ),
-              ],
+                  return ListView.builder(
+                    itemCount: mProfile.length,
+                    itemBuilder: (context, index) {
+                      return _buildLocation(
+                        context,
+                        'address'.trArgs() + ' $index',
+                        mProfile[index]['fullAddress'],
+                        Feather.map_pin,
+                        mProfile[index]['phoneNumber'],
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -372,11 +307,11 @@ class _AddressPageState extends State<AddressPage> {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             return _buildLocation(
-                context, title, 'Thành Phố Hồ Chí Minh, Việt Nam', icon);
+                context, title, 'Thành Phố Hồ Chí Minh, Việt Nam', icon, '');
           default:
             if (snapshot.hasError) {
               return _buildLocation(
-                  context, title, 'Thành Phố Hồ Chí Minh, Việt Nam', icon);
+                  context, title, 'Thành Phố Hồ Chí Minh, Việt Nam', icon, '');
             }
 
             return GestureDetector(
@@ -390,16 +325,18 @@ class _AddressPageState extends State<AddressPage> {
                   Get.back();
                 }
               },
-              child: _buildLocation(context, title, snapshot.data, icon),
+              child: _buildLocation(
+                  context, title, snapshot.data, icon, '09889917877'),
             );
         }
       },
     );
   }
 
-  Widget _buildLocation(context, title, value, icon) {
+  Widget _buildLocation(context, title, value, icon, phone) {
     final _size = MediaQuery.of(context).size;
     return Container(
+      margin: EdgeInsets.only(bottom: 12.0),
       padding: EdgeInsets.symmetric(
         horizontal: 12.0,
         vertical: 16.0,
@@ -412,6 +349,17 @@ class _AddressPageState extends State<AddressPage> {
             offset: Offset(10, 10),
             blurRadius: 10,
           ),
+          title != 'currentLocation'.trArgs()
+              ? BoxShadow(
+                  color: mCL,
+                  offset: Offset(-5, -5),
+                  blurRadius: 4,
+                )
+              : BoxShadow(
+                  color: mCL,
+                  offset: Offset(-0, -0),
+                  blurRadius: 0,
+                ),
         ],
       ),
       child: Row(
@@ -433,8 +381,21 @@ class _AddressPageState extends State<AddressPage> {
                   value,
                   style: TextStyle(
                     color: Colors.grey.shade800,
-                    fontSize: _size.width / 26.0,
+                    fontSize: _size.width / 25.0,
                     fontWeight: FontWeight.w400,
+                    fontFamily: 'Lato',
+                  ),
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                Text(
+                  '${'phone'.trArgs()}: $phone',
+                  style: TextStyle(
+                    color: Colors.grey.shade800,
+                    fontSize: _size.width / 26.5,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Lato',
                   ),
                 ),
                 SizedBox(
@@ -445,7 +406,7 @@ class _AddressPageState extends State<AddressPage> {
                   style: TextStyle(
                     fontSize: _size.width / 26.0,
                     color: colorTitle,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],

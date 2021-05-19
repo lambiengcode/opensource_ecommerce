@@ -63,7 +63,7 @@ class _OrderCardState extends State<OrderCard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Mã ĐH: 18110239',
+                'Mã ĐH: Grab1621353522646',
                 style: TextStyle(
                   color: colorTitle,
                   fontSize: width / 24.0,
