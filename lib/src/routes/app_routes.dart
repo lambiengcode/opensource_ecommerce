@@ -31,6 +31,9 @@ abstract class Routes {
   static const ADDRESS = '/address';
   static const SETTINGS = '/settings';
   static const CHANGEPASSWORD = '/changePassword';
+  static const CREATEADDRESS = '/createAddress';
+  static const EDITADDRESS = '/editAddress';
+  static const PAYMENTWEBVIEW = '/paymentWebView';
 
   // Admin
   static const ADMIN = '/admin';

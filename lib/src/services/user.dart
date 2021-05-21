@@ -27,4 +27,15 @@ class UserService {
     );
     return response.statusCode;
   }
+
+  Future<String> buyPoint(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.BUY_POINT,
+      headers: requestHeaders,
+      body: body,
+    );
+    return response.statusCode == 200
+        ? convert.jsonDecode(response.body)['data']
+        : null;
+  }
 }

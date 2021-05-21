@@ -24,9 +24,12 @@ import 'package:van_transport/src/pages/order/pages/check_out_order_page.dart';
 import 'package:van_transport/src/pages/order/pages/check_out_page.dart';
 import 'package:van_transport/src/pages/order/pages/create_order_page.dart';
 import 'package:van_transport/src/pages/order/pages/pick_address_page.dart';
+import 'package:van_transport/src/pages/payment/web_view_payment.dart';
 import 'package:van_transport/src/pages/profile/pages/add_friend_page.dart';
 import 'package:van_transport/src/pages/profile/pages/address_page.dart';
 import 'package:van_transport/src/pages/profile/pages/change_password_page.dart';
+import 'package:van_transport/src/pages/profile/pages/create_address_page.dart';
+import 'package:van_transport/src/pages/profile/pages/edit_address_page.dart';
 import 'package:van_transport/src/pages/profile/pages/edit_profile_page.dart';
 import 'package:van_transport/src/pages/profile/pages/friends_page.dart';
 import 'package:van_transport/src/pages/profile/pages/my_point_page.dart';
@@ -190,6 +193,31 @@ class AppPages {
     GetPage(
       name: Routes.ADDRESS,
       page: () => AddressPage(mode: Get.arguments),
+      transition: Transition.rightToLeft,
+      transitionDuration: Duration(milliseconds: 200),
+      children: [],
+    ),
+    GetPage(
+      name: Routes.CREATEADDRESS,
+      page: () => CreateAddressPage(),
+      transition: Transition.rightToLeft,
+      transitionDuration: Duration(milliseconds: 200),
+      children: [],
+    ),
+    GetPage(
+      name: Routes.EDITADDRESS,
+      page: () => EditAddressPage(
+        addressInfo: Get.arguments,
+      ),
+      transition: Transition.rightToLeft,
+      transitionDuration: Duration(milliseconds: 200),
+      children: [],
+    ),
+    GetPage(
+      name: Routes.PAYMENTWEBVIEW,
+      page: () => WebViewPage(
+        urlToWeb: Get.arguments,
+      ),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 200),
       children: [],

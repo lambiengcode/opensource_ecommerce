@@ -1,8 +1,11 @@
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:van_transport/src/services/auth.dart';
+import 'package:van_transport/src/widgets/error_loading_image.dart';
+import 'package:van_transport/src/widgets/place_holder_image.dart';
 import 'package:van_transport/src/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -45,6 +48,8 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Container(
         color: mC,
+        height: height,
+        width: width,
         child: NotificationListener<OverscrollIndicatorNotification>(
           onNotification: (overscroll) {
             overscroll.disallowGlow();
@@ -100,25 +105,18 @@ class _ProfilePageState extends State<ProfilePage> {
                               children: [
                                 Column(
                                   children: [
-                                    Container(
-                                      height: _size.width * .315,
-                                      width: _size.width * .315,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: mCD,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: mCL,
-                                            offset: Offset(3, 3),
-                                            blurRadius: 3,
-                                            spreadRadius: -3,
-                                          ),
-                                        ],
-                                        image: DecorationImage(
-                                          image:
-                                              NetworkImage(mProfile['image']),
-                                          fit: BoxFit.cover,
-                                        ),
+                                    ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.circular(1000.0),
+                                      child: CachedNetworkImage(
+                                        width: _size.width * .315,
+                                        height: _size.width * .315,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                            PlaceHolderImage(),
+                                        errorWidget: (context, url, error) =>
+                                            ErrorLoadingImage(),
+                                        imageUrl: mProfile['image'],
                                       ),
                                     ),
                                     SizedBox(
@@ -158,17 +156,17 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       child: Column(
                         children: [
-                          _buildAction(
-                              context, 'myvoucher'.trArgs(), Feather.tag),
+                          _buildAction(context, 'myvoucher'.trArgs(),
+                              Feather.tag, mProfile['role']),
                           _padding(context),
-                          _buildAction(
-                              context, 'mypoints'.trArgs(), Feather.database),
+                          _buildAction(context, 'mypoints'.trArgs(),
+                              Feather.database, mProfile['role']),
                           _padding(context),
-                          _buildAction(
-                              context, 'myFriends'.trArgs(), Feather.users),
+                          _buildAction(context, 'myFriends'.trArgs(),
+                              Feather.users, mProfile['role']),
                           _padding(context),
-                          _buildAction(
-                              context, 'address'.trArgs(), Feather.map_pin),
+                          _buildAction(context, 'address'.trArgs(),
+                              Feather.map_pin, mProfile['role']),
                         ],
                       ),
                     ),
@@ -195,14 +193,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       child: Column(
                         children: [
-                          _buildAction(
-                              context, 'term'.trArgs(), Feather.help_circle),
+                          _buildAction(context, 'term'.trArgs(),
+                              Feather.help_circle, mProfile['role']),
                           _padding(context),
-                          _buildAction(
-                              context, 'settings'.trArgs(), Feather.settings),
+                          _buildAction(context, 'settings'.trArgs(),
+                              Feather.settings, mProfile['role']),
                           _padding(context),
-                          _buildAction(
-                              context, 'about'.trArgs(), Feather.alert_circle),
+                          _buildAction(context, 'about'.trArgs(),
+                              Feather.alert_circle, mProfile['role']),
                         ],
                       ),
                     ),
@@ -228,11 +226,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       child: Column(
                         children: [
-                          _buildAction(
-                              context, 'owner'.trArgs(), Feather.shopping_bag),
+                          _buildAction(context, 'owner'.trArgs(),
+                              Feather.shopping_bag, mProfile['role']),
                           _padding(context),
                           _buildAction(context, 'transportOwner'.trArgs(),
-                              Feather.truck),
+                              Feather.truck, mProfile['role']),
                         ],
                       ),
                     ),
@@ -299,6 +297,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+//m
   Widget _padding(context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -312,7 +311,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildAction(context, title, icon) {
+  Widget _buildAction(context, title, icon, role) {
     GetSnackBar getSnackBar = GetSnackBar(
       title: 'Comming Soon!',
       subTitle: 'This feature will available in next update',
@@ -328,7 +327,11 @@ class _ProfilePageState extends State<ProfilePage> {
         } else if (title == 'settings'.trArgs()) {
           Get.toNamed(Routes.SETTINGS);
         } else if (title == 'owner'.trArgs()) {
-          Get.toNamed(Routes.MERCHANT + Routes.REGISTERMERCHANT);
+          Get.toNamed(
+            role == 'MERCHANT'
+                ? Routes.MERCHANT + Routes.REGISTERMERCHANT
+                : Routes.ADMIN,
+          );
         } else if (title == 'transportOwner'.trArgs()) {
           Get.toNamed(Routes.DELIVERY);
         } else {

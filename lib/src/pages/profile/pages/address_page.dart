@@ -10,6 +10,8 @@ import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:location/location.dart';
 import 'package:van_transport/src/pages/order/controllers/pick_address_controller.dart';
 import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
+import 'package:van_transport/src/pages/profile/widgets/bottom_settings_address.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:van_transport/src/services/distance.dart';
 
 class AddressPage extends StatefulWidget {
@@ -21,11 +23,13 @@ class AddressPage extends StatefulWidget {
 }
 
 class _AddressPageState extends State<AddressPage> {
+  final pickAddressController = Get.put(PickAddressController());
   final profileController = Get.put(ProfileController());
   final distance = DistanceService();
   PickResult selectedPlace;
   LocationData currentLocation;
   Future<dynamic> _myLocation;
+  List<String> values = ['Delete Address'];
 
   List<dynamic> data = [
     {"lat": 44.968046, "lng": -94.420307},
@@ -39,6 +43,21 @@ class _AddressPageState extends State<AddressPage> {
     {"lat": 33.755783, "lng": -116.360066},
     {"lat": 33.844847, "lng": -116.549069},
   ];
+
+  void showAddressBottomSheet() {
+    showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(30.0),
+        ),
+      ),
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return BottomSettingsAddress(values: values);
+      },
+    );
+  }
 
   getUserLocation() async {
     //call this async method from whereever you need
@@ -230,7 +249,7 @@ class _AddressPageState extends State<AddressPage> {
             color: colorPrimaryTextOpacity,
             size: width / 16.0,
           ),
-          onPressed: () => null,
+          onPressed: () => Get.toNamed(Routes.CREATEADDRESS),
         ),
       ),
       body: Container(
@@ -281,12 +300,32 @@ class _AddressPageState extends State<AddressPage> {
                   return ListView.builder(
                     itemCount: mProfile.length,
                     itemBuilder: (context, index) {
-                      return _buildLocation(
-                        context,
-                        'address'.trArgs() + ' $index',
-                        mProfile[index]['fullAddress'],
-                        Feather.map_pin,
-                        mProfile[index]['phoneNumber'],
+                      return GestureDetector(
+                        onLongPress: () {
+                          showAddressBottomSheet();
+                        },
+                        onTap: () {
+                          if (widget.mode == PICK_ON) {
+                            pickAddressController.pickFromAddress(
+                              currentLocation.latitude,
+                              currentLocation.longitude,
+                              snapshot.data,
+                            );
+                            Get.back();
+                          } else {
+                            Get.toNamed(
+                              Routes.EDITADDRESS,
+                              arguments: mProfile[index],
+                            );
+                          }
+                        },
+                        child: _buildLocation(
+                          context,
+                          'address'.trArgs() + ' $index',
+                          mProfile[index]['fullAddress'],
+                          Feather.map_pin,
+                          mProfile[index]['phoneNumber'],
+                        ),
                       );
                     },
                   );
@@ -300,7 +339,6 @@ class _AddressPageState extends State<AddressPage> {
   }
 
   Widget _buildCurrentLocation(context, title, value, icon) {
-    final pickAddressController = Get.put(PickAddressController());
     return FutureBuilder(
       future: _myLocation,
       builder: (context, AsyncSnapshot snapshot) {

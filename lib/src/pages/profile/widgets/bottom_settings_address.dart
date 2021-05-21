@@ -5,15 +5,15 @@ import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 
-class BottomSettingsProduct extends StatefulWidget {
+class BottomSettingsAddress extends StatefulWidget {
   final List<String> values;
   final groupProductInfo;
-  BottomSettingsProduct({this.values, this.groupProductInfo});
+  BottomSettingsAddress({this.values, this.groupProductInfo});
   @override
-  State<StatefulWidget> createState() => _BottomSettingsProductState();
+  State<StatefulWidget> createState() => _BottomSettingsAddressState();
 }
 
-class _BottomSettingsProductState extends State<BottomSettingsProduct> {
+class _BottomSettingsAddressState extends State<BottomSettingsAddress> {
   final merchantController = Get.put(MerchantController());
   @override
   Widget build(BuildContext context) {
@@ -57,19 +57,6 @@ class _BottomSettingsProductState extends State<BottomSettingsProduct> {
             _buildAction(
               context,
               widget.values[0],
-              colorDarkGrey,
-              Feather.edit_3,
-            ),
-            Divider(
-              color: mCH,
-              thickness: .2,
-              height: .2,
-              indent: 12.0,
-              endIndent: 12.0,
-            ),
-            _buildAction(
-              context,
-              widget.values[1],
               colorHigh,
               Feather.trash,
             ),
@@ -86,7 +73,7 @@ class _BottomSettingsProductState extends State<BottomSettingsProduct> {
     return GestureDetector(
       onTap: () {
         Get.back();
-        if (title == widget.values[1]) {
+        if (title == widget.values[0]) {
           merchantController.deleteGroupProduct(
             widget.groupProductInfo['_id'],
             widget.groupProductInfo['FK_merchant'],

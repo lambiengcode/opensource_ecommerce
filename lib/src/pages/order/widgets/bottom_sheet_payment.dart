@@ -1,16 +1,28 @@
+import 'package:van_transport/src/common/constant_code.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
 
 class BottomSheetPayment extends StatefulWidget {
+  final String typeOrders;
+  final String point;
+  BottomSheetPayment({this.typeOrders, this.point});
   @override
   State<StatefulWidget> createState() => _BottomSheetPaymentState();
 }
 
 class _BottomSheetPaymentState extends State<BottomSheetPayment> {
-  String paymentMethod = 'Point';
-  List<String> methods = ['Point', 'Paypal', 'Momo'];
+  final profileController = Get.put(ProfileController());
+  String paymentMethod;
+  List<String> methods = ['Point', 'Paypal', 'VNPay'];
+
+  @override
+  void initState() {
+    super.initState();
+    paymentMethod = widget.typeOrders == BUY_POINT ? methods[1] : methods[0];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,16 +91,24 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
                         methods[1]),
                 paymentMethod == methods[2]
                     ? _buildActiveMethodButton(
-                        'https://upload.wikimedia.org/wikipedia/vi/archive/f/fe/20201011055543%21MoMo_Logo.png',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL-yFFVmVJBIWNZCACMRFgDWwFDJUehcizg_gmf8Xvri1fgzNVGSQxt8AzuJgbjj0ep1I&usqp=CAU',
                         methods[2])
                     : _buildInactiveMethodButton(
-                        'https://upload.wikimedia.org/wikipedia/vi/archive/f/fe/20201011055543%21MoMo_Logo.png',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL-yFFVmVJBIWNZCACMRFgDWwFDJUehcizg_gmf8Xvri1fgzNVGSQxt8AzuJgbjj0ep1I&usqp=CAU',
                         methods[2]),
               ],
             ),
             SizedBox(height: 24.0),
             NeumorphicButton(
-              onPressed: () => Get.back(),
+              onPressed: () {
+                Get.back();
+                if (widget.typeOrders == BUY_POINT) {
+                  profileController.buyPoint(
+                    widget.point,
+                    paymentMethod.toUpperCase(),
+                  );
+                }
+              },
               duration: Duration(milliseconds: 200),
               style: NeumorphicStyle(
                 shape: NeumorphicShape.convex,
@@ -141,7 +161,7 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
           borderRadius: BorderRadius.circular(8.0),
           image: DecorationImage(
             image: NetworkImage(image),
-            fit: BoxFit.cover,
+            fit: BoxFit.fitWidth,
           ),
         ),
       ),
@@ -151,9 +171,11 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
   Widget _buildInactiveMethodButton(image, title) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          paymentMethod = title;
-        });
+        if (widget.typeOrders != BUY_POINT || title != methods[0]) {
+          setState(() {
+            paymentMethod = title;
+          });
+        }
       },
       child: Container(
         height: width * .2,
@@ -162,7 +184,7 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
           borderRadius: BorderRadius.circular(8.0),
           image: DecorationImage(
             image: NetworkImage(image),
-            fit: BoxFit.cover,
+            fit: BoxFit.fitWidth,
           ),
         ),
       ),

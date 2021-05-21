@@ -3,7 +3,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
-import 'package:van_transport/src/pages/merchant/widgets/bottom_settings_product.dart';
+import 'package:van_transport/src/pages/profile/widgets/bottom_settings_address.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 
 class ProductPage extends StatefulWidget {
@@ -27,7 +27,7 @@ class _ProductPageState extends State<ProductPage> {
       isScrollControlled: true,
       context: context,
       builder: (context) {
-        return BottomSettingsProduct(
+        return BottomSettingsAddress(
           values: values,
           groupProductInfo: groupProductInfo,
         );
