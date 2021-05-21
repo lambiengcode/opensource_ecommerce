@@ -44,7 +44,7 @@ class _AddressPageState extends State<AddressPage> {
     {"lat": 33.844847, "lng": -116.549069},
   ];
 
-  void showAddressBottomSheet() {
+  void showAddressBottomSheet(id) {
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
@@ -54,7 +54,7 @@ class _AddressPageState extends State<AddressPage> {
       isScrollControlled: true,
       context: context,
       builder: (context) {
-        return BottomSettingsAddress(values: values);
+        return BottomSettingsAddress(values: values, idAddress: id);
       },
     );
   }
@@ -302,7 +302,7 @@ class _AddressPageState extends State<AddressPage> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onLongPress: () {
-                          showAddressBottomSheet();
+                          showAddressBottomSheet(mProfile[index]['id']);
                         },
                         onTap: () {
                           if (widget.mode == PICK_ON) {
@@ -321,7 +321,7 @@ class _AddressPageState extends State<AddressPage> {
                         },
                         child: _buildLocation(
                           context,
-                          'address'.trArgs() + ' $index',
+                          'address'.trArgs() + ' ${index + 1}',
                           mProfile[index]['fullAddress'],
                           Feather.map_pin,
                           mProfile[index]['phoneNumber'],

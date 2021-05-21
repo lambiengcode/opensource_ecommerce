@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:van_transport/src/common/style.dart';
-import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
-import 'package:van_transport/src/routes/app_pages.dart';
+import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
 
 class BottomSettingsAddress extends StatefulWidget {
   final List<String> values;
-  final groupProductInfo;
-  BottomSettingsAddress({this.values, this.groupProductInfo});
+  final String idAddress;
+  BottomSettingsAddress({this.values, this.idAddress});
   @override
   State<StatefulWidget> createState() => _BottomSettingsAddressState();
 }
 
 class _BottomSettingsAddressState extends State<BottomSettingsAddress> {
-  final merchantController = Get.put(MerchantController());
+  final profileController = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
@@ -73,17 +72,7 @@ class _BottomSettingsAddressState extends State<BottomSettingsAddress> {
     return GestureDetector(
       onTap: () {
         Get.back();
-        if (title == widget.values[0]) {
-          merchantController.deleteGroupProduct(
-            widget.groupProductInfo['_id'],
-            widget.groupProductInfo['FK_merchant'],
-          );
-        } else {
-          Get.toNamed(
-            Routes.MERCHANT + Routes.EDITGROUP,
-            arguments: widget.groupProductInfo,
-          );
-        }
+        profileController.deleteAddress(widget.idAddress);
       },
       child: Container(
         width: _size.width,

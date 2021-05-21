@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:van_transport/src/common/secret_key.dart';
 import 'package:van_transport/src/common/style.dart';
-import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
+import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
 
 class CreateAddressPage extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class CreateAddressPage extends StatefulWidget {
 }
 
 class _CreateAddressPageState extends State<CreateAddressPage> {
-  final merchantController = Get.put(MerchantController());
+  final profileController = Get.put(ProfileController());
   String _address;
   String _phone;
   TextEditingController addressController = TextEditingController();
@@ -177,7 +177,9 @@ class _CreateAddressPageState extends State<CreateAddressPage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              profileController.addAddress(selectedPlace, _phone);
+            },
             icon: Icon(
               Feather.check,
               color: colorPrimary,

@@ -28,6 +28,23 @@ class UserService {
     return response.statusCode;
   }
 
+  Future<int> addAddress(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.ADD_ADDRESS,
+      headers: requestHeaders,
+      body: body,
+    );
+    return response.statusCode;
+  }
+
+  Future<int> deleteAddress(id) async {
+    var response = await http.delete(
+      baseUrl + ApiGateway.DELETE_ADDRESS + id,
+      headers: requestHeaders,
+    );
+    return response.statusCode;
+  }
+
   Future<String> buyPoint(body) async {
     var response = await http.post(
       baseUrl + ApiGateway.BUY_POINT,

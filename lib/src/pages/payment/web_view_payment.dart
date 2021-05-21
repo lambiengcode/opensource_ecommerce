@@ -32,7 +32,7 @@ class WebViewPageState extends State<WebViewPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: mC,
+        backgroundColor: mCL,
         centerTitle: true,
         elevation: .0,
         leading: IconButton(
@@ -59,14 +59,14 @@ class WebViewPageState extends State<WebViewPage> {
           _controller = controller;
         },
         onPageFinished: (url) {
-          if (url.startsWith('$baseUrl/Payment/Success')) {
+          if (url.startsWith('$baseUrl/Payment/Paypal/Success')) {
             getSnackBar = GetSnackBar(
               title: 'Payment Successful',
               subTitle: 'Let\'s check your order again',
             );
             Get.offAndToNamed(Routes.ROOT);
             getSnackBar.show();
-          } else if (url.startsWith('$baseUrl/Payment/Cancel')) {
+          } else if (url.startsWith('$baseUrl/Payment/Paypal/Cancel')) {
             getSnackBar = GetSnackBar(
               title: 'Payment Failure',
               subTitle: 'An error occurred',

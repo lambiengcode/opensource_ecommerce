@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:van_transport/src/pages/order/widgets/bottom_sheet_payment.dart';
+import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
 
 class MyPointPage extends StatefulWidget {
   @override
@@ -12,7 +13,14 @@ class MyPointPage extends StatefulWidget {
 }
 
 class _MyPointPageState extends State<MyPointPage> {
+  final profileController = Get.put(ProfileController());
   String password = '';
+
+  @override
+  void initState() {
+    super.initState();
+    profileController.getProfile();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,25 +57,41 @@ class _MyPointPageState extends State<MyPointPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 6.0),
-              Text(
-                '69',
-                style: TextStyle(
-                  color: colorPrimary,
-                  fontSize: _size.width / 12.5,
-                  fontWeight: FontWeight.bold,
-                ),
+              SizedBox(height: 12.0),
+              StreamBuilder(
+                stream: profileController.getProfileController,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
+                    return Text(
+                      'Loading...',
+                      style: TextStyle(
+                        color: colorPrimary,
+                        fontSize: _size.width / 16.0,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'Lato',
+                      ),
+                    );
+                  }
+                  return Text(
+                    snapshot.data['point'].toString(),
+                    style: TextStyle(
+                      color: colorPrimary,
+                      fontSize: _size.width / 14.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                },
               ),
-              SizedBox(height: 4.0),
+              SizedBox(height: 6.0),
               Text(
                 'points'.trArgs(),
                 style: TextStyle(
                   color: Colors.grey.shade600,
                   fontSize: _size.width / 26.0,
-                  fontWeight: FontWeight.w300,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
-              SizedBox(height: 24.0),
+              SizedBox(height: 28.0),
               _buildMoneyToPoint(context, '200', '20,000'),
               _buildShadow(context),
               _buildMoneyToPoint(context, '400', '40,000'),
@@ -78,37 +102,10 @@ class _MyPointPageState extends State<MyPointPage> {
               _buildShadow(context),
               _buildMoneyToPoint(context, '10000', '1,000,000'),
               _buildShadow(context),
-              Container(
-                padding: EdgeInsets.fromLTRB(14.0, 18.0, 12.0, 20.0),
-                margin: EdgeInsets.symmetric(horizontal: 36.0, vertical: 8.0),
-                decoration: BoxDecoration(
-                  color: colorTitle,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Feather.plus,
-                      color: colorPrimaryTextOpacity,
-                      size: _size.width / 25.0,
-                    ),
-                    SizedBox(
-                      width: 8.0,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 1.25),
-                      child: Text(
-                        'customizePoint'.trArgs(),
-                        style: TextStyle(
-                          color: colorPrimaryTextOpacity,
-                          fontSize: _size.width / 30.0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
+              _buildMoneyToPoint(context, '20000', '2,000,000'),
+              _buildShadow(context),
+              _buildMoneyToPoint(context, '50000', '5,000,000'),
+              _buildShadow(context),
             ],
           ),
         ),

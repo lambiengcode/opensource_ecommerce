@@ -97,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               'phone': mProfile['phone'],
                               'email': mProfile['email'],
                               'createdAt': mProfile['createdAt'],
-                              'point': '100000',
+                              'point': mProfile['point'],
                               'role': mProfile['role'],
                             }),
                             child: Row(

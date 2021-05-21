@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:van_transport/src/services/user.dart';
 import 'package:van_transport/src/widgets/snackbar.dart';
@@ -46,6 +47,39 @@ class ProfileController extends GetxController {
       GetSnackBar getSnackBar = GetSnackBar(
         title: 'Buy point failure!',
         subTitle: 'Check again your infomation',
+      );
+      getSnackBar.show();
+    }
+  }
+
+  addAddress(PickResult pickResult, phone) async {
+    var body = {
+      'fullAddress': pickResult.formattedAddress.toString(),
+      'lat': pickResult.geometry.location.lat.toString(),
+      'lng': pickResult.geometry.location.lng.toString(),
+      'phone': phone,
+    };
+    int status = await userService.addAddress(body);
+    if (status == 200) {
+      getProfile();
+      Get.back();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Add address failure!',
+        subTitle: 'Check again your address infomation',
+      );
+      getSnackBar.show();
+    }
+  }
+
+  deleteAddress(id) async {
+    int status = await userService.deleteAddress(id);
+    if (status == 200) {
+      getProfile();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Delete address failure!',
+        subTitle: 'Check again your address infomation',
       );
       getSnackBar.show();
     }
