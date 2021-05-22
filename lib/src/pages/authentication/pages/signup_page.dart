@@ -1,35 +1,39 @@
+import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
+import 'package:van_transport/src/services/authentication_service.dart';
+import 'package:van_transport/src/widgets/loading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
-import 'package:van_transport/src/common/style.dart';
-import 'package:van_transport/src/routes/app_pages.dart';
-import 'package:van_transport/src/services/auth.dart';
-import 'package:van_transport/src/widgets/loading_page.dart';
 import 'package:van_transport/src/widgets/snackbar.dart';
 
-class ForgotPasswordPage extends StatefulWidget {
+class SignupPage extends StatefulWidget {
+  final VoidCallback toggleView;
+
+  SignupPage({this.toggleView});
   @override
-  _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
+  _SignupPageState createState() => _SignupPageState();
 }
 
-class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
-  final AuthService _authService = AuthService();
-
+  AuthService _authService = AuthService();
   TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _confirmPswController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _fullNameController = TextEditingController();
   FocusNode textFieldFocus = FocusNode();
-  String _email = '';
+  String fullName = '';
+  String phone = '';
+  String email = '';
+  String password = '';
 
   bool hidePassword = true;
   bool loading = false;
 
   hideKeyboard() => textFieldFocus.unfocus();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +48,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               backgroundColor: mC,
               brightness: Brightness.light,
               leading: IconButton(
-                onPressed: () => Get.back(),
+                onPressed: () => widget.toggleView(),
                 icon: Icon(
                   Feather.arrow_left,
                   color: colorTitle,
@@ -52,7 +56,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 ),
               ),
               title: Text(
-                'forgot'.trArgs().replaceAll('?', ''),
+                'getStarted'.trArgs(),
                 style: TextStyle(
                   color: colorTitle,
                   fontSize: _size.width / 20.5,
@@ -100,16 +104,71 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                     SizedBox(height: 12.0),
                                     _buildLineInfo(
                                       context,
+                                      'phone'.trArgs(),
+                                      'validPhone'.trArgs(),
+                                      _phoneController,
+                                    ),
+                                    _buildDivider(context),
+                                    _buildLineInfo(
+                                      context,
+                                      'fullName'.trArgs(),
+                                      'validFullName'.trArgs(),
+                                      _fullNameController,
+                                    ),
+                                    _buildDivider(context),
+                                    _buildLineInfo(
+                                      context,
                                       'email'.trArgs(),
                                       'validEmail'.trArgs(),
                                       _emailController,
+                                    ),
+                                    _buildDivider(context),
+                                    _buildLineInfo(
+                                      context,
+                                      'password'.trArgs(),
+                                      'validPsw'.trArgs(),
+                                      _passwordController,
+                                    ),
+                                    _buildDivider(context),
+                                    Container(
+                                      padding: EdgeInsets.fromLTRB(
+                                          14.0, 24.0, 18.0, 4.0),
+                                      child: TextFormField(
+                                        controller: _confirmPswController,
+                                        cursorColor: colorTitle,
+                                        cursorRadius: Radius.circular(30.0),
+                                        style: TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: _size.width / 26.0,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        validator: (val) =>
+                                            val.trim() != password
+                                                ? 'validConfirmPsw'.trArgs()
+                                                : null,
+                                        obscureText: hidePassword,
+                                        decoration: InputDecoration(
+                                          floatingLabelBehavior:
+                                              FloatingLabelBehavior.always,
+                                          contentPadding: EdgeInsets.only(
+                                            left: 12.0,
+                                          ),
+                                          border: InputBorder.none,
+                                          labelText: 'confirmPsw'.trArgs(),
+                                          labelStyle: TextStyle(
+                                            color: colorTitle,
+                                            fontSize: _size.width / 26.0,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                     _buildDivider(context),
                                     SizedBox(height: 8.0),
                                   ],
                                 ),
                               ),
-                              SizedBox(height: 24.0),
+                              SizedBox(height: 12.0),
                               GestureDetector(
                                 onTap: () async {
                                   if (_formKey.currentState.validate()) {
@@ -117,20 +176,37 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                       loading = true;
                                     });
 
-                                    var res = await _authService
-                                        .forgotPassword(_email);
+                                    var res = await _authService.register(
+                                      email,
+                                      password,
+                                      phone,
+                                      fullName,
+                                    );
 
                                     if (res['status'] == 200) {
-                                      Get.toNamed(Routes.VERIFY);
+                                      Get.toNamed(
+                                        Routes.VERIFY,
+                                        arguments: email,
+                                      );
                                     } else {
                                       setState(() {
                                         loading = false;
-                                        _email = res['email'];
+                                        email = res['email'];
+                                        password = res['password'];
+                                        fullName = res['fullName'];
+                                        phone = res['phone'];
+                                        _confirmPswController.text =
+                                            res['password'];
                                         _emailController.text = res['email'];
+                                        _passwordController.text =
+                                            res['password'];
+                                        _phoneController.text = res['phone'];
+                                        _fullNameController.text =
+                                            res['fullName'];
                                       });
                                       GetSnackBar snackBar = GetSnackBar(
-                                        title: 'Email not exists!',
-                                        subTitle: 'Check again your email.',
+                                        title: 'Signup Fail!',
+                                        subTitle: 'Email exists, try again!',
                                       );
                                       snackBar.show();
                                     }
@@ -139,7 +215,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 child: Container(
                                   height: 46.8,
                                   margin: EdgeInsets.symmetric(
-                                    horizontal: _size.width * .16,
+                                    horizontal: _size.width * .12,
                                   ),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(40.0),
@@ -147,7 +223,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                   ),
                                   child: Center(
                                     child: Text(
-                                      'confirm'.trArgs(),
+                                      'createAccount'.trArgs(),
                                       style: TextStyle(
                                         color: colorPrimaryTextOpacity,
                                         fontSize: 12.0,
@@ -196,7 +272,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         },
         onChanged: (val) {
           setState(() {
-            _email = val.trim();
+            if (title == 'phone'.trArgs()) {
+              phone = val.trim();
+            } else if (title == 'fullName'.trArgs()) {
+              fullName = val.trim();
+            } else if (title == 'email'.trArgs()) {
+              email = val.trim();
+            } else {
+              password = val.trim();
+            }
           });
         },
         inputFormatters: [

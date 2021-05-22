@@ -1,7 +1,5 @@
 import 'dart:io';
 import 'dart:ui';
-import 'package:van_transport/src/app.dart';
-import 'package:van_transport/src/common/secret_key.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,9 +7,8 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
 import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
-import 'package:van_transport/src/services/storage.dart';
+import 'package:van_transport/src/services/storage_service.dart';
 import 'package:van_transport/src/widgets/loading_page.dart';
 
 class MyProfilePage extends StatefulWidget {
@@ -64,30 +61,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
         return _chooseImage(context);
       },
     );
-  }
-
-  // void scanner() async {
-  //   String codeSanner = await BarcodeScanner.scan(); //barcode scnner
-  //   setState(() {
-  //     _scanController.text = codeSanner;
-  //     code = codeSanner;
-  //   });
-  // }
-
-  Future<String> get child async {
-    Map<String, String> requestHeaders = {
-      'Authorization': 'Bearer ${App.token}',
-    };
-
-    var response = await http.get(
-      '$baseUrl/api/revenue',
-      headers: requestHeaders,
-    );
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return '';
-    }
   }
 
   moneyToString(String money) {

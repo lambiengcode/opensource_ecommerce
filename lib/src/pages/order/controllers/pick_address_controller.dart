@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
-import 'package:van_transport/src/services/distance.dart';
+import 'package:van_transport/src/services/distance_service.dart';
 
 class PickAddressController extends GetxController {
   final DistanceService distanceService = DistanceService();

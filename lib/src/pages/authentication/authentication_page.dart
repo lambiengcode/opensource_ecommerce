@@ -1,6 +1,6 @@
-import 'package:van_transport/src/pages/auth/pages/login_page.dart';
-import 'package:van_transport/src/pages/auth/pages/signup_page.dart';
 import 'package:flutter/material.dart';
+import 'package:van_transport/src/pages/authentication/pages/login_page.dart';
+import 'package:van_transport/src/pages/authentication/pages/signup_page.dart';
 
 class AuthenticatePage extends StatefulWidget {
   @override

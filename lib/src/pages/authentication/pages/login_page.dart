@@ -1,6 +1,6 @@
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
-import 'package:van_transport/src/services/auth.dart';
+import 'package:van_transport/src/services/authentication_service.dart';
 import 'package:van_transport/src/widgets/loading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

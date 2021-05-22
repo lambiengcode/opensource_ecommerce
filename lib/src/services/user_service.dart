@@ -6,23 +6,18 @@ import 'package:van_transport/src/app.dart';
 import 'package:van_transport/src/common/secret_key.dart';
 
 class UserService {
-  Map<String, String> requestHeaders = {
-    'authorization': 'Bearer ${App.token}',
-  };
-
   Future<Map<String, dynamic>> getProfile() async {
     var response = await http.get(
       baseUrl + ApiGateway.GET_PROFILE,
-      headers: requestHeaders,
+      headers: getHeaders(),
     );
-
     return convert.jsonDecode(response.body)['data'];
   }
 
   Future<int> updateProfile(body) async {
     var response = await http.put(
       baseUrl + ApiGateway.UPDATE_PROFILE,
-      headers: requestHeaders,
+      headers: getHeaders(),
       body: body,
     );
     return response.statusCode;
@@ -31,7 +26,7 @@ class UserService {
   Future<int> addAddress(body) async {
     var response = await http.post(
       baseUrl + ApiGateway.ADD_ADDRESS,
-      headers: requestHeaders,
+      headers: getHeaders(),
       body: body,
     );
     return response.statusCode;
@@ -40,7 +35,7 @@ class UserService {
   Future<int> updateAddress(body) async {
     var response = await http.put(
       baseUrl + ApiGateway.UPDATE_ADDRESS,
-      headers: requestHeaders,
+      headers: getHeaders(),
       body: body,
     );
     return response.statusCode;
@@ -49,7 +44,24 @@ class UserService {
   Future<int> deleteAddress(id) async {
     var response = await http.delete(
       baseUrl + ApiGateway.DELETE_ADDRESS + id,
-      headers: requestHeaders,
+      headers: getHeaders(),
+    );
+    return response.statusCode;
+  }
+
+  Future<int> favorite(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.FAVORITE,
+      headers: getHeaders(),
+      body: body,
+    );
+    return response.statusCode;
+  }
+
+  Future<int> getFavorites() async {
+    var response = await http.get(
+      baseUrl + ApiGateway.GET_FAVORITE,
+      headers: getHeaders(),
     );
     return response.statusCode;
   }
@@ -57,11 +69,17 @@ class UserService {
   Future<String> buyPoint(body) async {
     var response = await http.post(
       baseUrl + ApiGateway.BUY_POINT,
-      headers: requestHeaders,
+      headers: getHeaders(),
       body: body,
     );
     return response.statusCode == 200
         ? convert.jsonDecode(response.body)['data']
         : null;
+  }
+
+  Map<String, String> getHeaders() {
+    return {
+      'authorization': 'Bearer ${App.token}',
+    };
   }
 }

@@ -4,10 +4,6 @@ import 'package:van_transport/src/common/routes.dart';
 import 'package:van_transport/src/common/secret_key.dart';
 
 class TransportService {
-  Map<String, String> requestHeaders = {
-    'authorization': 'Bearer ${App.token}',
-  };
-
   Future<Map<String, dynamic>> registerTransport(
       name, description, avatar, imageVerify, phone, headquarters) async {
     var body = {
@@ -21,10 +17,8 @@ class TransportService {
     var response = await http.post(
       baseUrl + ApiGateway.REGISTER_TRANSPORT,
       body: body,
-      headers: requestHeaders,
+      headers: getHeaders(),
     );
-    print(body);
-    print(response.body);
     if (response.statusCode == 200) {}
     return {
       'status': response.statusCode,
@@ -34,6 +28,12 @@ class TransportService {
       "imageVerify": imageVerify,
       "phone": phone,
       "headquarters": headquarters,
+    };
+  }
+
+  Map<String, String> getHeaders() {
+    return {
+      'authorization': 'Bearer ${App.token}',
     };
   }
 }

@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
-import 'package:van_transport/src/services/auth.dart';
+import 'package:van_transport/src/services/authentication_service.dart';
 import 'package:van_transport/src/widgets/error_loading_image.dart';
 import 'package:van_transport/src/widgets/place_holder_image.dart';
 import 'package:van_transport/src/widgets/snackbar.dart';
@@ -328,9 +328,9 @@ class _ProfilePageState extends State<ProfilePage> {
           Get.toNamed(Routes.SETTINGS);
         } else if (title == 'owner'.trArgs()) {
           Get.toNamed(
-            role == 'MERCHANT'
-                ? Routes.MERCHANT + Routes.MIDDLEWAREMERCHANT
-                : Routes.ADMIN,
+            role == 'ADMIN'
+                ? Routes.ADMIN
+                : Routes.MERCHANT + Routes.MIDDLEWAREMERCHANT,
           );
         } else if (title == 'transportOwner'.trArgs()) {
           Get.toNamed(Routes.DELIVERY);

@@ -194,8 +194,6 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
           children: [
             _buildActionValue('Transport', 'Ahamove'),
             SizedBox(height: 16.0),
-            _buildActionValue('Coupon', 'Pick Coupon'),
-            SizedBox(height: 16.0),
             _buildActionValue('Taxs', '100 đ'),
             SizedBox(height: 16.0),
             Row(

@@ -1,39 +1,35 @@
-import 'package:van_transport/src/common/style.dart';
-import 'package:van_transport/src/routes/app_pages.dart';
-import 'package:van_transport/src/services/auth.dart';
-import 'package:van_transport/src/widgets/loading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
+import 'package:van_transport/src/services/authentication_service.dart';
+import 'package:van_transport/src/widgets/loading_page.dart';
 import 'package:van_transport/src/widgets/snackbar.dart';
 
-class SignupPage extends StatefulWidget {
-  final VoidCallback toggleView;
-
-  SignupPage({this.toggleView});
+class ForgotPasswordPage extends StatefulWidget {
   @override
-  _SignupPageState createState() => _SignupPageState();
+  _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _formKey = GlobalKey<FormState>();
-  AuthService _authService = AuthService();
+  final AuthService _authService = AuthService();
+
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPswController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _fullNameController = TextEditingController();
   FocusNode textFieldFocus = FocusNode();
-  String fullName = '';
-  String phone = '';
-  String email = '';
-  String password = '';
+  String _email = '';
 
   bool hidePassword = true;
   bool loading = false;
 
   hideKeyboard() => textFieldFocus.unfocus();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +44,7 @@ class _SignupPageState extends State<SignupPage> {
               backgroundColor: mC,
               brightness: Brightness.light,
               leading: IconButton(
-                onPressed: () => widget.toggleView(),
+                onPressed: () => Get.back(),
                 icon: Icon(
                   Feather.arrow_left,
                   color: colorTitle,
@@ -56,7 +52,7 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
               title: Text(
-                'getStarted'.trArgs(),
+                'forgot'.trArgs().replaceAll('?', ''),
                 style: TextStyle(
                   color: colorTitle,
                   fontSize: _size.width / 20.5,
@@ -104,71 +100,16 @@ class _SignupPageState extends State<SignupPage> {
                                     SizedBox(height: 12.0),
                                     _buildLineInfo(
                                       context,
-                                      'phone'.trArgs(),
-                                      'validPhone'.trArgs(),
-                                      _phoneController,
-                                    ),
-                                    _buildDivider(context),
-                                    _buildLineInfo(
-                                      context,
-                                      'fullName'.trArgs(),
-                                      'validFullName'.trArgs(),
-                                      _fullNameController,
-                                    ),
-                                    _buildDivider(context),
-                                    _buildLineInfo(
-                                      context,
                                       'email'.trArgs(),
                                       'validEmail'.trArgs(),
                                       _emailController,
-                                    ),
-                                    _buildDivider(context),
-                                    _buildLineInfo(
-                                      context,
-                                      'password'.trArgs(),
-                                      'validPsw'.trArgs(),
-                                      _passwordController,
-                                    ),
-                                    _buildDivider(context),
-                                    Container(
-                                      padding: EdgeInsets.fromLTRB(
-                                          14.0, 24.0, 18.0, 4.0),
-                                      child: TextFormField(
-                                        controller: _confirmPswController,
-                                        cursorColor: colorTitle,
-                                        cursorRadius: Radius.circular(30.0),
-                                        style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: _size.width / 26.0,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        validator: (val) =>
-                                            val.trim() != password
-                                                ? 'validConfirmPsw'.trArgs()
-                                                : null,
-                                        obscureText: hidePassword,
-                                        decoration: InputDecoration(
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.always,
-                                          contentPadding: EdgeInsets.only(
-                                            left: 12.0,
-                                          ),
-                                          border: InputBorder.none,
-                                          labelText: 'confirmPsw'.trArgs(),
-                                          labelStyle: TextStyle(
-                                            color: colorTitle,
-                                            fontSize: _size.width / 26.0,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
                                     ),
                                     _buildDivider(context),
                                     SizedBox(height: 8.0),
                                   ],
                                 ),
                               ),
-                              SizedBox(height: 12.0),
+                              SizedBox(height: 24.0),
                               GestureDetector(
                                 onTap: () async {
                                   if (_formKey.currentState.validate()) {
@@ -176,37 +117,20 @@ class _SignupPageState extends State<SignupPage> {
                                       loading = true;
                                     });
 
-                                    var res = await _authService.register(
-                                      email,
-                                      password,
-                                      phone,
-                                      fullName,
-                                    );
+                                    var res = await _authService
+                                        .forgotPassword(_email);
 
                                     if (res['status'] == 200) {
-                                      Get.toNamed(
-                                        Routes.VERIFY,
-                                        arguments: email,
-                                      );
+                                      Get.toNamed(Routes.VERIFY);
                                     } else {
                                       setState(() {
                                         loading = false;
-                                        email = res['email'];
-                                        password = res['password'];
-                                        fullName = res['fullName'];
-                                        phone = res['phone'];
-                                        _confirmPswController.text =
-                                            res['password'];
+                                        _email = res['email'];
                                         _emailController.text = res['email'];
-                                        _passwordController.text =
-                                            res['password'];
-                                        _phoneController.text = res['phone'];
-                                        _fullNameController.text =
-                                            res['fullName'];
                                       });
                                       GetSnackBar snackBar = GetSnackBar(
-                                        title: 'Signup Fail!',
-                                        subTitle: 'Email exists, try again!',
+                                        title: 'Email not exists!',
+                                        subTitle: 'Check again your email.',
                                       );
                                       snackBar.show();
                                     }
@@ -215,7 +139,7 @@ class _SignupPageState extends State<SignupPage> {
                                 child: Container(
                                   height: 46.8,
                                   margin: EdgeInsets.symmetric(
-                                    horizontal: _size.width * .12,
+                                    horizontal: _size.width * .16,
                                   ),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(40.0),
@@ -223,7 +147,7 @@ class _SignupPageState extends State<SignupPage> {
                                   ),
                                   child: Center(
                                     child: Text(
-                                      'createAccount'.trArgs(),
+                                      'confirm'.trArgs(),
                                       style: TextStyle(
                                         color: colorPrimaryTextOpacity,
                                         fontSize: 12.0,
@@ -272,15 +196,7 @@ class _SignupPageState extends State<SignupPage> {
         },
         onChanged: (val) {
           setState(() {
-            if (title == 'phone'.trArgs()) {
-              phone = val.trim();
-            } else if (title == 'fullName'.trArgs()) {
-              fullName = val.trim();
-            } else if (title == 'email'.trArgs()) {
-              email = val.trim();
-            } else {
-              password = val.trim();
-            }
+            _email = val.trim();
           });
         },
         inputFormatters: [

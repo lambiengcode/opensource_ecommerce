@@ -6,6 +6,12 @@ class ApiGateway {
   static const FORGOT_PASSWORD = '/Auth/ForgotPassword';
   static const CHANGE_PASSWORD = '/Auth/ChangePassword';
 
+  // Category
+  static const CREATE_CATEGORY = '/Category/Create';
+  static const UPDATE_CATEGORY = '/Category/Update';
+  static const GET_CATEGORIES = '/Category/GetAll';
+  static const DELETE_CATEGORY = '/Category/Delete?id=';
+
   // User
   static const GET_PROFILE = '/User/GetInfo';
   static const UPDATE_PROFILE = '/User/Update';
@@ -13,6 +19,8 @@ class ApiGateway {
   static const ADD_ADDRESS = '/User/AddAddress';
   static const UPDATE_ADDRESS = '/User/UpdateAddress';
   static const DELETE_ADDRESS = '/User/DeleteAddress?id=';
+  static const FAVORITE = '/Favorite';
+  static const GET_FAVORITE = '/GetFavorites';
 
   // Device
   static const CREATE_DEVICE = '/Device/Create';

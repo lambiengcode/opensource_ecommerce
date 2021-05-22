@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
 import 'package:van_transport/src/pages/transport/widgets/vertical_transport_card.dart';
-import 'package:van_transport/src/services/storage.dart';
+import 'package:van_transport/src/services/storage_service.dart';
 import 'package:van_transport/src/widgets/loading_page.dart';
 import 'package:van_transport/src/widgets/snackbar.dart';
 

@@ -11,7 +11,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:van_transport/src/services/storage.dart';
+import 'package:van_transport/src/services/storage_service.dart';
 import 'package:van_transport/src/widgets/loading_page.dart';
 
 class EditMerchantPage extends StatefulWidget {

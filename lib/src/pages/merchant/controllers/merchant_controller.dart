@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:van_transport/src/services/merchant.dart';
+import 'package:van_transport/src/services/merchant_service.dart';
 import 'package:van_transport/src/widgets/snackbar.dart';
 
 class MerchantController extends GetxController {
@@ -28,7 +28,38 @@ class MerchantController extends GetxController {
     productController.add(res);
   }
 
-  createMerchant() async {}
+  createMerchant(
+    name,
+    description,
+    image,
+    address,
+    idCategory,
+    phone,
+    lat,
+    lng,
+  ) async {
+    var body = {
+      "name": name,
+      "description": description,
+      "image": image,
+      "FK_category": idCategory,
+      "phone": phone,
+      "fullAddress": address,
+      "lat": lat,
+      "lng": lng,
+    };
+    int status = await merchantService.createMerchant(body);
+    if (status == 200) {
+      getMerchant();
+      Get.back();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Create merchant successfully',
+        subTitle: 'Please wait for admin check your request.',
+      );
+      getSnackBar.show();
+    }
+  }
 
   editMerchant(
     id,

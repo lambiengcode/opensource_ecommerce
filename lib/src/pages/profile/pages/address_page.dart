@@ -12,7 +12,7 @@ import 'package:van_transport/src/pages/order/controllers/pick_address_controlle
 import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
 import 'package:van_transport/src/pages/profile/widgets/bottom_settings_address.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
-import 'package:van_transport/src/services/distance.dart';
+import 'package:van_transport/src/services/distance_service.dart';
 
 class AddressPage extends StatefulWidget {
   final String mode;

@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
-import 'package:van_transport/src/services/string.dart';
+import 'package:van_transport/src/services/string_service.dart';
 import 'package:van_transport/src/widgets/snackbar.dart';
 
 class PickAddressPage extends StatefulWidget {

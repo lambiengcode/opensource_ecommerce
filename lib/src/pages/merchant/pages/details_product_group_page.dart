@@ -6,7 +6,7 @@ import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
 import 'package:van_transport/src/pages/transport/widgets/vertical_transport_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
-import 'package:van_transport/src/services/string.dart';
+import 'package:van_transport/src/services/string_service.dart';
 
 class DetailsProductGroupPage extends StatefulWidget {
   final String title;

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:van_transport/src/pages/auth/auth_page.dart';
+import 'package:van_transport/src/pages/authentication/authentication_page.dart';
 import 'package:van_transport/src/pages/navigation/navigation_page.dart';
 import 'package:van_transport/src/pages/splash/splash.dart';
 import 'package:van_transport/src/widgets/loading_page.dart';

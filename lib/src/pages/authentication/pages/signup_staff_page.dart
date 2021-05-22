@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:van_transport/src/common/style.dart';
-import 'package:van_transport/src/services/auth.dart';
+import 'package:van_transport/src/services/authentication_service.dart';
 import 'package:van_transport/src/widgets/loading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

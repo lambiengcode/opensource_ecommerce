@@ -8,8 +8,8 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:van_transport/src/services/storage.dart';
-import 'package:van_transport/src/services/transport.dart';
+import 'package:van_transport/src/services/storage_service.dart';
+import 'package:van_transport/src/services/transport_service.dart';
 import 'package:van_transport/src/widgets/loading_page.dart';
 import 'package:van_transport/src/widgets/snackbar.dart';
 

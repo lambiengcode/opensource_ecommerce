@@ -12,9 +12,6 @@ import 'dart:convert' as convert;
 
 class AuthService {
   final FirebaseMessaging _fcm = FirebaseMessaging();
-  Map<String, String> requestHeaders = {
-    'authorization': 'Bearer ${App.token}',
-  };
 
   Future<Map<String, dynamic>> loginByEmail(username, password) async {
     var body = {
@@ -87,7 +84,7 @@ class AuthService {
     var response = await http.put(
       baseUrl + ApiGateway.CHANGE_PASSWORD,
       body: body,
-      headers: requestHeaders,
+      headers: getHeaders(),
     );
     if (response.statusCode == 200) {}
     return {
@@ -164,5 +161,11 @@ class AuthService {
     await _saveDeviceToken();
     _fcm.requestNotificationPermissions(const IosNotificationSettings(
         sound: true, badge: true, alert: true, provisional: false));
+  }
+
+  Map<String, String> getHeaders() {
+    return {
+      'authorization': 'Bearer ${App.token}',
+    };
   }
 }
