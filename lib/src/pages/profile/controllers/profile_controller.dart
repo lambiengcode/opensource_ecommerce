@@ -10,6 +10,7 @@ class ProfileController extends GetxController {
   UserService userService = UserService();
   StreamController<dynamic> profileController =
       StreamController<dynamic>.broadcast();
+  bool loading = false;
 
   getProfile() async {
     var mProfile = await userService.getProfile();
@@ -36,11 +37,15 @@ class ProfileController extends GetxController {
   }
 
   buyPoint(point, method) async {
+    loading = true;
+    update();
     var body = {
       'point': point.toString().replaceAll(',', '').replaceAll(' points', ''),
       'typePayment': method,
     };
     String url = await userService.buyPoint(body);
+    loading = false;
+    update();
     if (url != null) {
       Get.toNamed(Routes.PAYMENTWEBVIEW, arguments: url);
     } else {
@@ -66,6 +71,26 @@ class ProfileController extends GetxController {
     } else {
       GetSnackBar getSnackBar = GetSnackBar(
         title: 'Add address failure!',
+        subTitle: 'Check again your address infomation',
+      );
+      getSnackBar.show();
+    }
+  }
+
+  updateAddress(lat, lng, fullAddress, phone) async {
+    var body = {
+      'fullAddress': fullAddress,
+      'lat': lat,
+      'lng': lng,
+      'phone': phone,
+    };
+    int status = await userService.updateAddress(body);
+    if (status == 200) {
+      getProfile();
+      Get.back();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Update address failure!',
         subTitle: 'Check again your address infomation',
       );
       getSnackBar.show();

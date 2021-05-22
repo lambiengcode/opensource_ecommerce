@@ -26,6 +26,7 @@ class DetailsProductPage extends StatefulWidget {
 }
 
 class _DetailsProductPageState extends State<DetailsProductPage> {
+  int _quantity = 1;
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -139,43 +140,62 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
                         ),
                       ),
                       SizedBox(height: 32.0),
-                      Text(
-                        widget.name,
-                        style: TextStyle(
-                          color: colorBlack,
-                          fontSize: width / 20.0,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 10.0),
-                      GestureDetector(
-                        onTap: () => Get.toNamed(Routes.STORE),
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                  text: 'Store: ',
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.name,
                                   style: TextStyle(
-                                    color: colorTitle,
-                                    fontSize: width / 24.0,
+                                    color: colorBlack,
+                                    fontSize: width / 20.0,
                                     fontFamily: 'Lato',
-                                    fontWeight: FontWeight.w400,
-                                  )),
-                              TextSpan(
-                                text: widget.owner,
-                                style: TextStyle(
-                                  color: colorPrimary,
-                                  fontSize: width / 24.0,
-                                  fontFamily: 'Lato',
-                                  fontWeight: FontWeight.w400,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            ],
+                                SizedBox(height: 6.0),
+                                GestureDetector(
+                                  onTap: () => Get.toNamed(Routes.STORE),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                            text: 'Store: ',
+                                            style: TextStyle(
+                                              color: colorTitle,
+                                              fontSize: width / 24.0,
+                                              fontFamily: 'Lato',
+                                              fontWeight: FontWeight.w400,
+                                            )),
+                                        TextSpan(
+                                          text: widget.owner,
+                                          style: TextStyle(
+                                            color: colorPrimary,
+                                            fontSize: width / 24.0,
+                                            fontFamily: 'Lato',
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
+                          IconButton(
+                            icon: Icon(
+                              Feather.heart,
+                              color: colorHigh,
+                              size: width / 16.0,
+                            ),
+                            onPressed: () {},
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 24.0),
+                      SizedBox(height: 20.0),
                       Text(
                         'Details',
                         style: TextStyle(
@@ -297,7 +317,7 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
-            '4',
+            '$_quantity',
             style: TextStyle(
               color: colorTitle,
               fontSize: width / 26.0,
@@ -313,7 +333,15 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
 
   Widget _buildQuantityActionButton(context, icon) {
     return NeumorphicButton(
-      onPressed: () => icon == Feather.arrow_left ? Get.back() : null,
+      onPressed: () {
+        setState(() {
+          if (icon == Feather.plus) {
+            _quantity++;
+          } else if (_quantity > 1) {
+            _quantity--;
+          }
+        });
+      },
       child: Icon(
         icon,
         size: width / 24.0,

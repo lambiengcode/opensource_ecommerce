@@ -11,6 +11,7 @@ class ApiGateway {
   static const UPDATE_PROFILE = '/User/Update';
   static const BUY_POINT = '/User/BuyPoint';
   static const ADD_ADDRESS = '/User/AddAddress';
+  static const UPDATE_ADDRESS = '/User/UpdateAddress';
   static const DELETE_ADDRESS = '/User/DeleteAddress?id=';
 
   // Device

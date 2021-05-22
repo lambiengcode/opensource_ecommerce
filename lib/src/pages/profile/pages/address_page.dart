@@ -307,9 +307,13 @@ class _AddressPageState extends State<AddressPage> {
                         onTap: () {
                           if (widget.mode == PICK_ON) {
                             pickAddressController.pickFromAddress(
-                              currentLocation.latitude,
-                              currentLocation.longitude,
-                              snapshot.data,
+                              double.parse(
+                                mProfile[index]['coordinates']['lat'],
+                              ),
+                              double.parse(
+                                mProfile[index]['coordinates']['lng'],
+                              ),
+                              mProfile[index]['fullAddress'],
                             );
                             Get.back();
                           } else {

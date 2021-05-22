@@ -37,6 +37,15 @@ class UserService {
     return response.statusCode;
   }
 
+  Future<int> updateAddress(body) async {
+    var response = await http.put(
+      baseUrl + ApiGateway.UPDATE_ADDRESS,
+      headers: requestHeaders,
+      body: body,
+    );
+    return response.statusCode;
+  }
+
   Future<int> deleteAddress(id) async {
     var response = await http.delete(
       baseUrl + ApiGateway.DELETE_ADDRESS + id,

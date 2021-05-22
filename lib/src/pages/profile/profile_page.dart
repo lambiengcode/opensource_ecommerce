@@ -329,7 +329,7 @@ class _ProfilePageState extends State<ProfilePage> {
         } else if (title == 'owner'.trArgs()) {
           Get.toNamed(
             role == 'MERCHANT'
-                ? Routes.MERCHANT + Routes.REGISTERMERCHANT
+                ? Routes.MERCHANT + Routes.MIDDLEWAREMERCHANT
                 : Routes.ADMIN,
           );
         } else if (title == 'transportOwner'.trArgs()) {
