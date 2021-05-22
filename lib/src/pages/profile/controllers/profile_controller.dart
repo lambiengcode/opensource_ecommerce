@@ -77,8 +77,9 @@ class ProfileController extends GetxController {
     }
   }
 
-  updateAddress(lat, lng, fullAddress, phone) async {
+  updateAddress(id, lat, lng, fullAddress, phone) async {
     var body = {
+      'id': id,
       'fullAddress': fullAddress,
       'lat': lat,
       'lng': lng,

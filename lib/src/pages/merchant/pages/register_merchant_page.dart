@@ -221,7 +221,7 @@ class _RegisterMerchantPageState extends State<RegisterMerchantPage> {
             _buildDivider(context),
             _buildLineInfo(context, 'description'.trArgs(), '', descController),
             _buildDivider(context),
-            _buildLineInfo(context, 'Type Merchant', '', titleController),
+            _buildLineInfo(context, 'phone'.trArgs(), '', titleController),
             _buildDivider(context),
             SizedBox(height: 24.0),
           ],
@@ -241,11 +241,6 @@ class _RegisterMerchantPageState extends State<RegisterMerchantPage> {
       child: Container(
         padding: EdgeInsets.fromLTRB(14.0, 18.0, 14.0, 4.0),
         child: TextFormField(
-          onTap: () {
-            if (title == 'address'.trArgs()) {
-              chooseLocation(context);
-            }
-          },
           enabled: !(title == 'address'.trArgs()),
           controller: controller,
           cursorColor: colorTitle,

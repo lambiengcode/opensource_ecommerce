@@ -25,7 +25,7 @@ class _MerchantMiddlewareState extends State<MerchantMiddleware> {
       stream: merchantController.getMerchantStream,
       builder: (context, AsyncSnapshot snapshot) {
         if (!snapshot.hasData) {
-          return Container();
+          return Loading();
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -33,8 +33,6 @@ class _MerchantMiddlewareState extends State<MerchantMiddleware> {
         }
 
         var mMerchant = snapshot.data;
-        print(mMerchant);
-
         return mMerchant['status'] == 200
             ? MerchantPage(merchantInfo: mMerchant)
             : RegisterMerchantPage();

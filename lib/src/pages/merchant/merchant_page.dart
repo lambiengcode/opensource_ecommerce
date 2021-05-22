@@ -1,5 +1,6 @@
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/empty/empty_order_page.dart';
+import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
 import 'package:van_transport/src/pages/merchant/pages/product_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/revenue_page.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
@@ -17,6 +18,7 @@ class MerchantPage extends StatefulWidget {
 class _TransportPage extends State<MerchantPage>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
+  final merchantController = Get.put(MerchantController());
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _showFloatingButton = false;
 
@@ -25,6 +27,7 @@ class _TransportPage extends State<MerchantPage>
   @override
   void initState() {
     super.initState();
+    merchantController.getMerchant();
     _tabController = new TabController(
       vsync: this,
       length: 5,
@@ -91,13 +94,25 @@ class _TransportPage extends State<MerchantPage>
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () => Get.toNamed(Routes.MERCHANT + Routes.EDITMERCHANT),
-            icon: Icon(
-              Feather.edit_3,
-              color: colorTitle,
-              size: width / 16.0,
-            ),
+          StreamBuilder(
+            stream: merchantController.getMerchantStream,
+            builder: (context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+                return Container();
+              }
+
+              return IconButton(
+                onPressed: () => Get.toNamed(
+                  Routes.MERCHANT + Routes.EDITMERCHANT,
+                  arguments: snapshot.data,
+                ),
+                icon: Icon(
+                  Feather.edit_3,
+                  color: colorTitle,
+                  size: width / 16.0,
+                ),
+              );
+            },
           ),
         ],
         bottom: TabBar(

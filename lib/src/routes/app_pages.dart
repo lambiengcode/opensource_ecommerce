@@ -292,7 +292,9 @@ class AppPages {
         ),
         GetPage(
           name: Routes.EDITMERCHANT,
-          page: () => EditMerchantPage(),
+          page: () => EditMerchantPage(
+            merchantInfo: Get.arguments,
+          ),
           transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 200),
           children: [],

@@ -25,21 +25,44 @@ class MerchantController extends GetxController {
 
   getProductByGroup(idGroup) async {
     var res = await merchantService.getProductByGroup(idGroup);
-    print(res);
     productController.add(res);
   }
 
   createMerchant() async {}
 
-  editMerchant(name, description, image, address, idCategory, phone) async {
+  editMerchant(
+    id,
+    name,
+    description,
+    image,
+    address,
+    idCategory,
+    phone,
+    lat,
+    lng,
+  ) async {
     var body = {
+      "id": id,
       "name": name,
       "description": description,
       "image": image,
-      "address": address,
       "FK_category": idCategory,
       "phone": phone,
+      "fullAddress": address,
+      "lat": lat,
+      "lng": lng,
     };
+    int status = await merchantService.updateMerchant(body);
+    if (status == 200) {
+      getMerchant();
+      Get.back();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Update failure!',
+        subTitle: 'Check again your information.',
+      );
+      getSnackBar.show();
+    }
   }
 
   createGroupProduct(name, description, idMerchant) async {

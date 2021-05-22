@@ -45,6 +45,15 @@ class MerchantService {
     return convert.jsonDecode(response.body)['data'];
   }
 
+  Future<int> createMerchant(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.CREATE_MERCHANT,
+      body: body,
+      headers: requestHeaders,
+    );
+    return response.statusCode;
+  }
+
   Future<int> createGroupProduct(body) async {
     var response = await http.post(
       baseUrl + ApiGateway.CREATE_GROUP_PRODUCT,
@@ -57,6 +66,15 @@ class MerchantService {
   Future<int> createProduct(body) async {
     var response = await http.post(
       baseUrl + ApiGateway.CREATE_PRODUCT,
+      body: body,
+      headers: requestHeaders,
+    );
+    return response.statusCode;
+  }
+
+  Future<int> updateMerchant(body) async {
+    var response = await http.put(
+      baseUrl + ApiGateway.UPDATE_MERCHANT,
       body: body,
       headers: requestHeaders,
     );

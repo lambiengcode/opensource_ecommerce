@@ -29,4 +29,8 @@ class StringService {
     }
     return need;
   }
+
+  formatPhoneString(String phone) {
+    return phone[0] == '0' ? phone : '0' + phone;
+  }
 }

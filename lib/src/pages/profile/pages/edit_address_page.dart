@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:van_transport/src/common/secret_key.dart';
 import 'package:van_transport/src/common/style.dart';
-import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
+import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
 
 class EditAddressPage extends StatefulWidget {
   final addressInfo;
@@ -17,8 +17,10 @@ class EditAddressPage extends StatefulWidget {
 }
 
 class _EditAddressPageState extends State<EditAddressPage> {
-  final merchantController = Get.put(MerchantController());
-  String _address;
+  final profileController = Get.put(ProfileController());
+  String _fullAddress;
+  String _lat;
+  String _lng;
   String _phone;
   TextEditingController addressController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -102,15 +104,17 @@ class _EditAddressPageState extends State<EditAddressPage> {
                                             addressController.text = selectedP
                                                 .formattedAddress
                                                 .toString();
-                                            _address = selectedP
+                                            _fullAddress = selectedP
                                                 .formattedAddress
+                                                .toString();
+                                            _lat = selectedP
+                                                .geometry.location.lat
+                                                .toString();
+                                            _lng = selectedP
+                                                .geometry.location.lat
                                                 .toString();
                                           });
                                           Get.back();
-                                          print(selectedPlace
-                                              .geometry.location.lat);
-                                          print(selectedPlace
-                                              .geometry.location.lng);
                                         },
                                       ),
                                     ),
@@ -148,10 +152,12 @@ class _EditAddressPageState extends State<EditAddressPage> {
   @override
   void initState() {
     super.initState();
-    _address = widget.addressInfo['fullAddress'];
     _phone = widget.addressInfo['phoneNumber'];
+    _fullAddress = widget.addressInfo['fullAddress'];
     addressController.text = widget.addressInfo['fullAddress'];
     phoneController.text = widget.addressInfo['phoneNumber'];
+    _lat = widget.addressInfo['coordinates']['lat'];
+    _lng = widget.addressInfo['coordinates']['lng'];
   }
 
   @override
@@ -181,7 +187,13 @@ class _EditAddressPageState extends State<EditAddressPage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => profileController.updateAddress(
+              widget.addressInfo['id'],
+              _lat,
+              _lng,
+              _fullAddress,
+              _phone,
+            ),
             icon: Icon(
               Feather.check,
               color: colorPrimary,
@@ -239,11 +251,7 @@ class _EditAddressPageState extends State<EditAddressPage> {
               val.trim().length == 0 ? 'Input value here' : null,
           onChanged: (val) {
             setState(() {
-              if (title == 'address'.trArgs()) {
-                _address = val.trim();
-              } else {
-                _phone = val.trim();
-              }
+              _phone = val.trim();
             });
           },
           inputFormatters: title == 'Price - VNĐ'

@@ -55,6 +55,7 @@ class WebViewPageState extends State<WebViewPage> {
       body: WebView(
         initialUrl: widget.urlToWeb,
         javascriptMode: JavascriptMode.unrestricted,
+        gestureNavigationEnabled: true,
         onWebViewCreated: (controller) {
           _controller = controller;
         },

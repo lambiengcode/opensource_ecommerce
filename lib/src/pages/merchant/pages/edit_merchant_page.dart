@@ -1,26 +1,38 @@
 import 'dart:io';
+import 'package:google_maps_place_picker/google_maps_place_picker.dart';
+import 'package:location/location.dart';
+import 'package:van_transport/src/common/secret_key.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
 import 'package:van_transport/src/pages/transport/widgets/vertical_transport_card.dart';
-import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
+import 'package:van_transport/src/services/storage.dart';
+import 'package:van_transport/src/widgets/loading_page.dart';
 
 class EditMerchantPage extends StatefulWidget {
+  final merchantInfo;
+  EditMerchantPage({this.merchantInfo});
   @override
   State<StatefulWidget> createState() => _EditMerchantPageState();
 }
 
 class _EditMerchantPageState extends State<EditMerchantPage> {
+  final merchantController = Get.put(MerchantController());
+  final _formKey = GlobalKey<FormState>();
   File _image;
-  String _title, _desc, _address;
+  String _title, _desc, _address, _phone, _lat, _lng;
+  bool loading = false;
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  PickResult selectedPlace;
+  LocationData currentLocation;
 
   void showImageBottomSheet() {
     showModalBottomSheet(
@@ -37,151 +49,309 @@ class _EditMerchantPageState extends State<EditMerchantPage> {
     );
   }
 
+  void chooseLocation(context) {
+    try {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return PlacePicker(
+              apiKey: apiMap,
+              initialPosition: kInitialPosition,
+              useCurrentLocation: true,
+              selectInitialPosition: true,
+              onGeocodingSearchFailed: (error) => print(error),
+              usePlaceDetailSearch: true,
+              forceSearchOnZoomChanged: true,
+              automaticallyImplyAppBarLeading: false,
+              usePinPointingSearch: true,
+              autocompleteLanguage:
+                  Get.locale == Locale('vi', 'VN') ? 'vi' : 'en',
+              region: Get.locale == Locale('vi', 'VN') ? 'vn' : 'us',
+              selectedPlaceWidgetBuilder:
+                  (_, selectedP, state, isSearchBarFocused) {
+                print("state: $state, isSearchBarFocused: $isSearchBarFocused");
+                return isSearchBarFocused
+                    ? Container()
+                    : FloatingCard(
+                        bottomPosition: 0.0,
+                        leftPosition: 0.0,
+                        rightPosition: 0.0,
+                        width: 600.0,
+                        height: 125.0,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(12.0),
+                        ),
+                        child: state == SearchingState.Searching
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(
+                                    colorTitle,
+                                  ),
+                                ),
+                              )
+                            : Column(
+                                children: [
+                                  SizedBox(
+                                    height: 20.0,
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 12.0),
+                                    child: Text(
+                                      selectedP.formattedAddress,
+                                      style: TextStyle(
+                                          color: colorTitle,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 18.0,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      width: 600.0,
+                                      child: RaisedButton(
+                                        color: colorTitle,
+                                        child: Text(
+                                          'pick'.trArgs(),
+                                          style: TextStyle(
+                                            color: colorPrimaryTextOpacity,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            selectedPlace = selectedP;
+                                            addressController.text =
+                                                selectedPlace.formattedAddress
+                                                    .toString();
+                                            _address = selectedPlace
+                                                .formattedAddress
+                                                .toString();
+                                            _lat = selectedP
+                                                .geometry.location.lat
+                                                .toString();
+                                            _lng = selectedP
+                                                .geometry.location.lng
+                                                .toString();
+                                          });
+                                          Get.back();
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      );
+              },
+              pinBuilder: (context, state) {
+                if (state == PinState.Idle) {
+                  return CircleAvatar(
+                    radius: 12.0,
+                    backgroundImage: NetworkImage(
+                      'https://avatars.githubusercontent.com/u/60530946?v=4',
+                    ),
+                  );
+                } else {
+                  return CircleAvatar(
+                    radius: 12.0,
+                    backgroundImage: NetworkImage(
+                      'https://avatars.githubusercontent.com/u/60530946?v=4',
+                    ),
+                  );
+                }
+              },
+            );
+          },
+        ),
+      );
+    } catch (error) {
+      print(error);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    _title = '';
-    _desc = '';
-    _address = '';
+    _title = widget.merchantInfo['name'];
+    _desc = widget.merchantInfo['description'];
+    _address = widget.merchantInfo['address']['fullAddress'];
+    _phone = widget.merchantInfo['address']['phoneNumber'];
+    _lat = widget.merchantInfo['address']['coordinates']['lat'];
+    _lng = widget.merchantInfo['address']['coordinates']['lng'];
+    titleController.text = widget.merchantInfo['name'];
+    descController.text = widget.merchantInfo['description'];
+    addressController.text = widget.merchantInfo['address']['fullAddress'];
+    phoneController.text = widget.merchantInfo['address']['phoneNumber'];
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: mC,
-        elevation: .0,
-        centerTitle: true,
-        brightness: Brightness.light,
-        leading: IconButton(
-          onPressed: () => Get.back(),
-          icon: Icon(
-            Feather.arrow_left,
-            color: colorTitle,
-            size: width / 15.0,
-          ),
-        ),
-        title: Text(
-          'Edit Merchant',
-          style: TextStyle(
-            color: colorTitle,
-            fontSize: width / 20.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Lato',
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => Get.toNamed(Routes.SETTINGS),
-            icon: Icon(
-              Feather.check,
-              color: colorPrimary,
-              size: width / 16.0,
+    return loading
+        ? Loading()
+        : Scaffold(
+            appBar: AppBar(
+              backgroundColor: mC,
+              elevation: .0,
+              centerTitle: true,
+              brightness: Brightness.light,
+              leading: IconButton(
+                onPressed: () => Get.back(),
+                icon: Icon(
+                  Feather.arrow_left,
+                  color: colorTitle,
+                  size: width / 15.0,
+                ),
+              ),
+              title: Text(
+                'Edit Merchant',
+                style: TextStyle(
+                  color: colorTitle,
+                  fontSize: width / 20.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Lato',
+                ),
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () async {
+                    if (_formKey.currentState.validate()) {
+                      if (_image != null) {
+                        setState(() {
+                          loading = true;
+                        });
+                        StorageService storageService = StorageService();
+                        String urlToImage =
+                            await storageService.uploadImageNotProfile(_image);
+                        merchantController.editMerchant(
+                          widget.merchantInfo['_id'],
+                          _title,
+                          _desc,
+                          urlToImage,
+                          _address,
+                          widget.merchantInfo['FK_category'],
+                          _phone,
+                          _lat,
+                          _lng,
+                        );
+                      } else {
+                        merchantController.editMerchant(
+                          widget.merchantInfo['_id'],
+                          _title,
+                          _desc,
+                          widget.merchantInfo['image'],
+                          _address,
+                          widget.merchantInfo['FK_category'],
+                          _phone,
+                          _lat,
+                          _lng,
+                        );
+                      }
+                      setState(() {
+                        loading = false;
+                      });
+                    }
+                  },
+                  icon: Icon(
+                    Feather.check,
+                    color: colorPrimary,
+                    size: width / 16.0,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-      body: Container(
-        color: mC,
-        child: Column(
-          children: [
-            SizedBox(height: 12.0),
-            GestureDetector(
-              onTap: () => showImageBottomSheet(),
-              child: VerticalTransportCard(
-                image: _image,
-                address: _address,
-                title: _title,
-                urlToImage: '',
-                desc: _desc,
+            body: Container(
+              color: mC,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    SizedBox(height: 12.0),
+                    GestureDetector(
+                      onTap: () => showImageBottomSheet(),
+                      child: VerticalTransportCard(
+                        image: _image,
+                        address: _address,
+                        title: _title,
+                        urlToImage: widget.merchantInfo['image'],
+                        desc: _desc,
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                    _buildLineInfo(
+                        context, 'title'.trArgs(), '', titleController),
+                    _buildDivider(context),
+                    _buildLineInfo(
+                        context, 'address'.trArgs(), '', addressController),
+                    _buildDivider(context),
+                    _buildLineInfo(
+                        context, 'description'.trArgs(), '', descController),
+                    _buildDivider(context),
+                    _buildLineInfo(
+                        context, 'phone'.trArgs(), '', titleController),
+                    _buildDivider(context),
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 16.0),
-            _buildLineInfo(context, 'Merchant Name', '', titleController),
-            _buildDivider(context),
-            _buildLineInfo(context, 'Address', '', addressController),
-            _buildDivider(context),
-            _buildLineInfo(context, 'Description', '', descController),
-            _buildDivider(context),
-            _buildLineInfo(context, 'Type Merchant', '', titleController),
-            _buildDivider(context),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   Widget _buildLineInfo(context, title, valid, controller) {
     final _size = MediaQuery.of(context).size;
-    return Container(
-      padding: EdgeInsets.fromLTRB(14.0, 18.0, 14.0, 4.0),
-      child: TextFormField(
-        controller: controller,
-        cursorColor: colorTitle,
-        cursorRadius: Radius.circular(30.0),
-        style: TextStyle(
-          color: colorTitle,
-          fontSize: _size.width / 26.0,
-          fontWeight: FontWeight.w500,
-        ),
-        validator: (val) => val.trim().length == 0 ? 'Input value here' : null,
-        onChanged: (val) {
-          setState(() {
-            switch (title) {
-              // en-US
-              case 'Title':
-                _title = val.trim();
-                break;
-              case 'Description':
-                _desc = val.trim();
-                break;
-              case 'Address':
-                _address = val.trim();
-                break;
-
-              default:
-                break;
-            }
-          });
-        },
-        inputFormatters: title == 'Price - VNĐ'
-            ? [
-                FilteringTextInputFormatter.digitsOnly,
-                TextInputFormatter.withFunction((oldValue, newValue) {
-                  if (newValue.text.isEmpty) {
-                    return newValue.copyWith(text: '');
-                  } else if (newValue.text.compareTo(oldValue.text) != 0) {
-                    final int selectionIndexFromTheRight =
-                        newValue.text.length - newValue.selection.end;
-                    final f = NumberFormat("#,###");
-                    final number = int.parse(
-                        newValue.text.replaceAll(f.symbols.GROUP_SEP, ''));
-                    final newString = f.format(number);
-                    return TextEditingValue(
-                      text: newString,
-                      selection: TextSelection.collapsed(
-                          offset:
-                              newString.length - selectionIndexFromTheRight),
-                    );
-                  } else {
-                    return newValue;
-                  }
-                })
-              ]
-            : [
-                FilteringTextInputFormatter.singleLineFormatter,
-              ],
-        decoration: InputDecoration(
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          contentPadding: EdgeInsets.only(
-            left: 12.0,
-          ),
-          border: InputBorder.none,
-          labelText: title,
-          labelStyle: TextStyle(
+    return GestureDetector(
+      onTap: () {
+        if (title == 'address'.trArgs()) {
+          chooseLocation(context);
+        }
+      },
+      child: Container(
+        padding: EdgeInsets.fromLTRB(14.0, 18.0, 14.0, 4.0),
+        child: TextFormField(
+          enabled: title != 'address'.trArgs(),
+          controller: controller,
+          cursorColor: colorTitle,
+          cursorRadius: Radius.circular(30.0),
+          style: TextStyle(
             color: colorTitle,
             fontSize: _size.width / 26.0,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
+          ),
+          validator: (val) =>
+              val.trim().length == 0 ? 'Input value here' : null,
+          onChanged: (val) {
+            setState(() {
+              if (title == 'title'.trArgs()) {
+                _title = val.trim();
+              } else if (title == 'description'.trArgs()) {
+                _desc = val.trim();
+              } else if (title == 'phone'.trArgs()) {
+                _phone = val.trim();
+              } else {
+                _address = val.trim();
+              }
+            });
+          },
+          inputFormatters: title == 'phone'.trArgs()
+              ? [
+                  FilteringTextInputFormatter.digitsOnly,
+                ]
+              : [
+                  FilteringTextInputFormatter.singleLineFormatter,
+                ],
+          decoration: InputDecoration(
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            contentPadding: EdgeInsets.only(
+              left: 12.0,
+            ),
+            border: InputBorder.none,
+            labelText: title,
+            labelStyle: TextStyle(
+              color: colorTitle,
+              fontSize: _size.width / 26.0,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ),
