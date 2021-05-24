@@ -23,6 +23,7 @@ import 'package:van_transport/src/pages/order/pages/cart_page.dart';
 import 'package:van_transport/src/pages/order/pages/check_out_order_page.dart';
 import 'package:van_transport/src/pages/order/pages/check_out_page.dart';
 import 'package:van_transport/src/pages/order/pages/create_order_page.dart';
+import 'package:van_transport/src/pages/order/pages/details_orders_page.dart';
 import 'package:van_transport/src/pages/order/pages/pick_address_page.dart';
 import 'package:van_transport/src/pages/payment/web_view_payment.dart';
 import 'package:van_transport/src/pages/profile/pages/add_friend_page.dart';
@@ -140,6 +141,13 @@ class AppPages {
     GetPage(
       name: Routes.ADDPRODUCT,
       page: () => AddProductPage(),
+      transition: Transition.rightToLeft,
+      transitionDuration: Duration(milliseconds: 200),
+      children: [],
+    ),
+    GetPage(
+      name: Routes.DETAILSORDERS,
+      page: () => DetailsOrdersPage(),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 200),
       children: [],

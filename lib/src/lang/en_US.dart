@@ -46,6 +46,17 @@ const Map<String, String> en_US = {
   'createOrder': 'Create Order',
   'pickAddress': 'Pick Address',
   'reject': 'Reject',
+  'weight': 'Weight',
+  'subTotal': 'Subtotal',
+  'typeProduct': 'Type Product',
+  'inputWeight': 'Input Weight',
+  'standard': 'Standard',
+  'frozen': 'Frozen',
+  'jewelry': 'Jewelry',
+  'addInfoProduct': 'Add Info Product',
+  'addToOrder': 'Add to Order',
+  'transport': 'Transport',
+  'taxs': 'Taxs',
 
   // My Point
   'customizePoint': 'Customize Point',

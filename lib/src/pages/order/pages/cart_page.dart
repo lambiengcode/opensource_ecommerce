@@ -79,9 +79,10 @@ class _CartPageState extends State<CartPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          _buildPriceText(context, 'Product', '2'),
-                          _buildPriceText(context, 'Subtotal', '\$250'),
-                          _buildPriceText(context, 'Taxes', '\$10'),
+                          _buildPriceText(context, 'product'.trArgs(), '2'),
+                          _buildPriceText(
+                              context, 'subTotal'.trArgs(), '\$250'),
+                          _buildPriceText(context, 'taxes'.trArgs(), '\$10'),
                         ],
                       ),
                     ),
@@ -104,18 +105,18 @@ class _CartPageState extends State<CartPage> {
             text: title,
             style: TextStyle(
               color: colorDarkGrey.withOpacity(.6),
-              fontSize: width / 24.0,
+              fontSize: width / 26.0,
               fontFamily: 'Lato',
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w400,
             ),
           ),
           TextSpan(
             text: ':\t',
             style: TextStyle(
-              color: colorDarkGrey,
-              fontSize: width / 24.0,
+              color: colorDarkGrey.withOpacity(.6),
+              fontSize: width / 26.0,
               fontFamily: 'Lato',
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w400,
             ),
           ),
           TextSpan(

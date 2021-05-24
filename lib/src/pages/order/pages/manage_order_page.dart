@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:van_transport/src/pages/order/widgets/order_card.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
 
 class ManageOrderPage extends StatefulWidget {
   final String pageName;
@@ -16,7 +18,10 @@ class _ManageOrderPageState extends State<ManageOrderPage> {
       child: ListView.builder(
         itemCount: 10,
         itemBuilder: (context, index) {
-          return OrderCard();
+          return GestureDetector(
+            onTap: () => Get.toNamed(Routes.DETAILSORDERS),
+            child: OrderCard(),
+          );
         },
       ),
     );

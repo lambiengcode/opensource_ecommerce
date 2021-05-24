@@ -92,7 +92,7 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 _buildPriceText(
-                                    context, 'Total Weight', '2 Kg'),
+                                    context, 'weight'.trArgs(), '2 Kg'),
                               ],
                             ),
                           ),
@@ -103,7 +103,7 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
                                 GetBuilder<PickAddressController>(
                                   builder: (_) => _buildPriceText(
                                       context,
-                                      'Distance',
+                                      'distance'.trArgs(),
                                       '${_.distance == null ? 'Calculating' : _.distance}'),
                                 ),
                               ],
@@ -133,16 +133,16 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
               color: colorDarkGrey.withOpacity(.6),
               fontSize: width / 28.5,
               fontFamily: 'Lato',
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w400,
             ),
           ),
           TextSpan(
             text: ':\t\t',
             style: TextStyle(
-              color: colorDarkGrey,
-              fontSize: width / 24.0,
+              color: colorDarkGrey.withOpacity(.6),
+              fontSize: width / 28.5,
               fontFamily: 'Lato',
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w400,
             ),
           ),
           TextSpan(
@@ -192,9 +192,9 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
         ),
         child: Column(
           children: [
-            _buildActionValue('Transport', 'Ahamove'),
+            _buildActionValue('transport'.trArgs(), 'Ahamove'),
             SizedBox(height: 16.0),
-            _buildActionValue('Taxs', '100 đ'),
+            _buildActionValue('taxs'.trArgs(), '100 đ'),
             SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -21,6 +21,7 @@ abstract class Routes {
   static const PICKADDRESS = '/pickAddress';
   static const CHECKOUTORDER = '/checkOutOrder';
   static const ADDPRODUCT = '/addProduct';
+  static const DETAILSORDERS = '/detailsOrders';
 
   // Profile
   static const EDITPROFILE = '/editProfile';

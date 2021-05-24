@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:van_transport/src/common/constant_code.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,7 @@ class BottomSheetPayment extends StatefulWidget {
 class _BottomSheetPaymentState extends State<BottomSheetPayment> {
   final profileController = Get.put(ProfileController());
   String paymentMethod;
-  List<String> methods = ['Point', 'Paypal', 'VNPay'];
+  List<String> methods = ['Point', 'Paypal', 'VNPAY'];
 
   @override
   void initState() {
@@ -98,7 +100,21 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
                         methods[2]),
               ],
             ),
-            SizedBox(height: 24.0),
+            paymentMethod != methods[2]
+                ? SizedBox(height: 24.0)
+                : Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 4.0),
+                    child: Text(
+                      '* Thanh toán bằng VNPAY sẽ không được hoàn trả đơn hàng',
+                      style: TextStyle(
+                        color: colorHigh,
+                        fontFamily: 'Lato',
+                        fontSize: width / 28.5,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
             NeumorphicButton(
               onPressed: () {
                 Get.back();

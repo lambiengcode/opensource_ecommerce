@@ -346,11 +346,9 @@ class _PickAddressPageState extends State<PickAddressPage> {
         ),
         GestureDetector(
           onTap: () {
-            if (value == 'pick'.trArgs()) {
-              title == 'toAddress'.trArgs()
-                  ? chooseLocation(context)
-                  : Get.toNamed(Routes.ADDRESS, arguments: PICK_ON);
-            }
+            title == 'toAddress'.trArgs()
+                ? chooseLocation(context)
+                : Get.toNamed(Routes.ADDRESS, arguments: PICK_ON);
           },
           child: Text(
             value,

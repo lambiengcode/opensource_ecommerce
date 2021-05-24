@@ -114,7 +114,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: 'Product:\t\t',
+                    text: '${'product'.trArgs()}:\t\t',
                     style: TextStyle(
                       color: colorDarkGrey,
                       fontSize: width / 24.0,

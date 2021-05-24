@@ -15,7 +15,11 @@ class AddProductPage extends StatefulWidget {
 }
 
 class _AddProductPageState extends State<AddProductPage> {
-  List<String> valueOfProductType = ['Basic', 'Frozen', 'Jewelry'];
+  List<String> valueOfProductType = [
+    'standard'.trArgs(),
+    'frozen'.trArgs(),
+    'jewelry'.trArgs()
+  ];
   File _image;
 
   @override
@@ -35,7 +39,7 @@ class _AddProductPageState extends State<AddProductPage> {
           ),
         ),
         title: Text(
-          'Add Info Product'.trArgs(),
+          'addInfoProduct'.trArgs(),
           style: TextStyle(
             color: colorTitle,
             fontSize: width / 20.0,
@@ -108,9 +112,9 @@ class _AddProductPageState extends State<AddProductPage> {
         ),
         child: Column(
           children: [
-            _buildAddressValue('Weight', 'Input Weight'),
+            _buildAddressValue('weight'.trArgs(), 'Input Weight'),
             SizedBox(height: 18.0),
-            _buildAddressValue('Type Product', valueOfProductType[0]),
+            _buildAddressValue('typeProduct'.trArgs(), valueOfProductType[0]),
             SizedBox(height: 24.0),
             NeumorphicButton(
               onPressed: () => Get.back(),
@@ -141,7 +145,7 @@ class _AddProductPageState extends State<AddProductPage> {
                   Padding(
                     padding: EdgeInsets.only(top: 2.5),
                     child: Text(
-                      'Add to Order',
+                      'addToOrder'.trArgs(),
                       style: TextStyle(
                         color: mC,
                         fontSize: width / 26.0,

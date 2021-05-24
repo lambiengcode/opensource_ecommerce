@@ -65,6 +65,17 @@ const Map<String, String> vi_VN = {
   'createOrder': 'Tạo đơn hàng',
   'pickAddress': 'Chọn địa chỉ',
   'reject': 'Từ chối',
+  'weight': 'Khối lượng',
+  'subTotal': 'Tổng phụ',
+  'typeProduct': 'Loại sản phẩm',
+  'inputWeight': 'Nhập khối lượng',
+  'standard': 'Cơ bản',
+  'frozen': 'Đông lạnh',
+  'jewelry': 'Trang sức',
+  'addInfoProduct': 'Thêm sản phẩm',
+  'addToOrder': 'Thêm vào giỏ',
+  'transport': 'Vận chuyển',
+  'taxs': 'Thuế',
 
   // My Point
   'customizePoint': 'Tuỳ chỉnh điểm',
