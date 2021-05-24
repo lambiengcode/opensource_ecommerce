@@ -58,12 +58,12 @@ class UserService {
     return response.statusCode;
   }
 
-  Future<int> getFavorites() async {
+  Future<List<Map<String, String>>> getFavorites() async {
     var response = await http.get(
       baseUrl + ApiGateway.GET_FAVORITE,
       headers: getHeaders(),
     );
-    return response.statusCode;
+    return convert.jsonDecode(response.body)['data'];
   }
 
   Future<String> buyPoint(body) async {

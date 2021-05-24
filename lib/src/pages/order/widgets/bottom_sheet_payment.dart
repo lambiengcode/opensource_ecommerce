@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:van_transport/src/common/constant_code.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:flutter/material.dart';
