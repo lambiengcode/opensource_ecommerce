@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:get/get.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:van_transport/src/routes/app_pages.dart';

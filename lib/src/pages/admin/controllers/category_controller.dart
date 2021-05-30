@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:get/get.dart';
 import 'package:van_transport/src/services/category_service.dart';
 import 'package:van_transport/src/widgets/snackbar.dart';
