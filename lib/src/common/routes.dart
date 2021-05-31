@@ -6,6 +6,12 @@ class ApiGateway {
   static const FORGOT_PASSWORD = '/Auth/ForgotPassword';
   static const CHANGE_PASSWORD = '/Auth/ChangePassword';
 
+  // Coupon
+  static const CREATE_COUPON = '/Coupon/Create';
+  static const UPDATE_COUPON = '/Coupon/Update';
+  static const GET_COUPONS = '/Coupon/GetAll';
+  static const DELETE_COUPON = '/Coupon/Delete?id=';
+
   // Category
   static const CREATE_CATEGORY = '/Category/Create';
   static const UPDATE_CATEGORY = '/Category/Update';
