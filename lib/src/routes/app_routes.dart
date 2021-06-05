@@ -5,6 +5,7 @@ abstract class Routes {
   static const ROOT = '/root';
 
   // Auth
+  static const AUTHENTICATION = '/auhentication';
   static const VERIFY = '/verify';
   static const FORGOTPASSWORD = '/forgotPassword';
 

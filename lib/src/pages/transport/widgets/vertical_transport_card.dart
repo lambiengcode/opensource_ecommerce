@@ -78,18 +78,17 @@ class _VerticalTransportCardState extends State<VerticalTransportCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 12.0),
+                SizedBox(height: 10.0),
                 Expanded(
                   child: Text(
-                    widget.title,
+                    stringService.formatString(30, widget.title),
                     style: TextStyle(
                       color: colorTitle,
-                      fontSize: _size.width / 28.5,
-                      fontWeight: FontWeight.bold,
+                      fontSize: _size.width / 30.0,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
-                SizedBox(height: 4.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -113,7 +112,7 @@ class _VerticalTransportCardState extends State<VerticalTransportCard> {
                 ),
                 SizedBox(height: 4.0),
                 Text(
-                  'address'.trArgs() +
+                  'price'.trArgs() +
                       ': ' +
                       stringService.formatString(25, widget.address),
                   style: TextStyle(

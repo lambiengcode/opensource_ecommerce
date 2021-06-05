@@ -107,6 +107,11 @@ class AuthService {
   }
 
   Future<void> signOut() async {
+    var infoDevice = await getDeviceDetails();
+    await http.delete(
+      baseUrl + ApiGateway.DELETE_DEVICE + infoDevice[2],
+      headers: getHeaders(),
+    );
     SharedPreferences preferences = await SharedPreferences.getInstance();
     final SharedPreferences prefs = preferences;
     await prefs.setString('jwt', '');
@@ -149,8 +154,11 @@ class AuthService {
         'deviceModel': infoDevice[0],
         'appVersion': infoDevice[3],
       };
-      var response =
-          await http.post(baseUrl + ApiGateway.CREATE_DEVICE, body: body);
+      var response = await http.post(
+        baseUrl + ApiGateway.CREATE_DEVICE,
+        body: body,
+        headers: getHeaders(),
+      );
       if (response.statusCode == 200) {
         print('save fcmToken successfully');
       }

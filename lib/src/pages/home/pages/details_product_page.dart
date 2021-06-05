@@ -1,3 +1,4 @@
+import 'package:van_transport/src/app.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -191,7 +192,9 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
                               color: colorHigh,
                               size: width / 16.0,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.toNamed(Routes.AUTHENTICATION);
+                            },
                           ),
                         ],
                       ),
@@ -236,7 +239,13 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
                       ),
                       SizedBox(height: 28.0),
                       NeumorphicButton(
-                        onPressed: () => Get.toNamed(Routes.CART),
+                        onPressed: () {
+                          if (App.token == '') {
+                            Get.toNamed(Routes.AUTHENTICATION);
+                          } else {
+                            Get.toNamed(Routes.CART);
+                          }
+                        },
                         style: NeumorphicStyle(
                           shape: NeumorphicShape.concave,
                           boxShape: NeumorphicBoxShape.roundRect(
@@ -288,8 +297,15 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
   Widget _buildTopbarButton(context, icon) {
     final _size = MediaQuery.of(context).size;
     return NeumorphicButton(
-      onPressed: () =>
-          icon == Feather.arrow_left ? Get.back() : Get.toNamed(Routes.CART),
+      onPressed: () {
+        if (icon == Feather.arrow_left) {
+          Get.back();
+        } else {
+          App.token == ''
+              ? Get.toNamed(Routes.AUTHENTICATION)
+              : Get.toNamed(Routes.CART);
+        }
+      },
       child: Icon(
         icon,
         size: _size.width / 18.0,

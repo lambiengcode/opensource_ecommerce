@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:van_transport/src/pages/authentication/authentication_page.dart';
 import 'package:van_transport/src/pages/navigation/navigation_page.dart';
 import 'package:van_transport/src/pages/splash/splash.dart';
 import 'package:van_transport/src/widgets/loading_page.dart';
@@ -94,11 +93,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
               }
             }
 
-            return App.time == 0
-                ? App.token == ''
-                    ? AuthenticatePage()
-                    : Navigation()
-                : SplashPage();
+            return App.time == 0 ? Navigation() : SplashPage();
         }
       },
     );

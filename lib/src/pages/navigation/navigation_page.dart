@@ -1,10 +1,10 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/middleware/profile_middleware.dart';
 import 'package:van_transport/src/pages/favourite/favourite_page.dart';
 import 'package:van_transport/src/pages/home/home_page.dart';
 import 'package:van_transport/src/pages/notifications/notifications_page.dart';
 import 'package:van_transport/src/pages/order/order_page.dart';
-import 'package:van_transport/src/pages/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
@@ -20,7 +20,7 @@ class _NavigationState extends State<Navigation> {
     FavouritePage(),
     HomePage(),
     NotificationsPage(),
-    ProfilePage(),
+    ProfileMiddleware(),
   ];
 
   @override

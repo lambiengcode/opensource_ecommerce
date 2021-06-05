@@ -1,3 +1,4 @@
+import 'package:van_transport/src/app.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/order/pages/manage_order_page.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
@@ -43,7 +44,11 @@ class _OrderPageState extends State<OrderPage>
         brightness: Brightness.light,
         leadingWidth: 62.0,
         leading: IconButton(
-          onPressed: () => Get.toNamed(Routes.CREATEORDER),
+          onPressed: () {
+            if (App.token != '') {
+              Get.toNamed(Routes.CREATEORDER);
+            }
+          },
           icon: Icon(
             Feather.plus_square,
             color: colorPrimary,
@@ -61,7 +66,11 @@ class _OrderPageState extends State<OrderPage>
         ),
         actions: [
           IconButton(
-            onPressed: () => Get.toNamed(Routes.CART),
+            onPressed: () {
+              if (App.token != '') {
+                Get.toNamed(Routes.CREATEORDER);
+              }
+            },
             icon: Icon(
               Feather.shopping_bag,
               color: colorTitle,

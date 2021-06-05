@@ -4,6 +4,7 @@ import 'package:van_transport/src/pages/admin/admin_page.dart';
 import 'package:van_transport/src/pages/admin/pages/manage_coupon_page.dart';
 import 'package:van_transport/src/pages/admin/pages/manage_merchant_page.dart';
 import 'package:van_transport/src/pages/admin/pages/manage_transport_page.dart';
+import 'package:van_transport/src/pages/authentication/authentication_page.dart';
 import 'package:van_transport/src/pages/authentication/pages/forgot_password_page.dart';
 import 'package:van_transport/src/pages/authentication/pages/signup_staff_page.dart';
 import 'package:van_transport/src/pages/authentication/pages/verify_page.dart';
@@ -56,6 +57,13 @@ class AppPages {
     ),
 
     // Auth
+    GetPage(
+      name: Routes.AUTHENTICATION,
+      page: () => AuthenticatePage(),
+      transition: Transition.rightToLeft,
+      transitionDuration: Duration(milliseconds: 200),
+      children: [],
+    ),
     GetPage(
       name: Routes.VERIFY,
       page: () => VerifyPage(email: Get.arguments),
