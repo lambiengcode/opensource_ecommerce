@@ -1,4 +1,10 @@
 class ApiGateway {
+  // Admin: 4
+  static const REJECT_MERCHANT = '/Admin/RejectMerchant';
+  static const CANCEL_MERCHANT = '/Admin/CancelMerchant';
+  static const APPROVE_MERCHANT = '/Admin/ApproveMerchant';
+  static const GET_MERCHANT_BY_STATUS = '/Admin/GetMerchantByStatus?status=';
+
   // Authentication: 5
   static const LOGIN_WITH_EMAIL = '/Auth/Login';
   static const REGISTER = '/Auth/Register';

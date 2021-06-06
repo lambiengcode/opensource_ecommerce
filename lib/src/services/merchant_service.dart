@@ -111,6 +111,42 @@ class MerchantService {
     return response.statusCode;
   }
 
+  // For Admin
+  Future<int> rejectMerchant(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.REJECT_MERCHANT,
+      headers: getHeaders(),
+      body: body,
+    );
+    return response.statusCode;
+  }
+
+  Future<int> cancelMerhcant(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.CANCEL_MERCHANT,
+      headers: getHeaders(),
+      body: body,
+    );
+    return response.statusCode;
+  }
+
+  Future<int> approveMerchant(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.APPROVE_MERCHANT,
+      headers: getHeaders(),
+      body: body,
+    );
+    return response.statusCode;
+  }
+
+  Future<int> getMerchantByState(status) async {
+    var response = await http.get(
+      baseUrl + ApiGateway.GET_MERCHANT_BY_STATUS + status,
+      headers: getHeaders(),
+    );
+    return response.statusCode;
+  }
+
   Map<String, String> getHeaders() {
     return {
       'authorization': 'Bearer ${App.token}',
