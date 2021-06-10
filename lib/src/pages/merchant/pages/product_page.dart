@@ -30,6 +30,7 @@ class _ProductPageState extends State<ProductPage> {
         return BottomSettingsAddress(
           values: values,
           idAddress: groupProductInfo['_id'],
+          idMerchant: widget.idMerchant,
         );
       },
     );

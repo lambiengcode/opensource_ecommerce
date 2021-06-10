@@ -2,18 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
 import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
+import 'package:van_transport/src/pages/transport/controllers/transport_controller.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
 
 class BottomSettingsAddress extends StatefulWidget {
   final List<String> values;
   final String idAddress;
-  BottomSettingsAddress({this.values, this.idAddress});
+  final String idMerchant;
+  BottomSettingsAddress({this.values, this.idAddress, this.idMerchant});
   @override
   State<StatefulWidget> createState() => _BottomSettingsAddressState();
 }
 
 class _BottomSettingsAddressState extends State<BottomSettingsAddress> {
   final profileController = Get.put(ProfileController());
+  final merchantController = Get.put(MerchantController());
+  final transportController = Get.put(TransportController());
   @override
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
@@ -56,10 +62,23 @@ class _BottomSettingsAddressState extends State<BottomSettingsAddress> {
             _buildAction(
               context,
               widget.values[0],
-              colorHigh,
-              Feather.trash,
+              widget.values.length == 1 ? colorHigh : colorTitle,
+              widget.values.length == 1 ? Feather.trash : Feather.edit,
             ),
-            SizedBox(height: 16.0),
+            widget.values.length == 2
+                ? Column(
+                    children: [
+                      SizedBox(height: 16.0),
+                      _buildAction(
+                        context,
+                        widget.values[1],
+                        colorHigh,
+                        Feather.trash,
+                      ),
+                      SizedBox(height: 16.0),
+                    ],
+                  )
+                : SizedBox(height: 16.0),
           ],
         ),
       ),
@@ -72,7 +91,20 @@ class _BottomSettingsAddressState extends State<BottomSettingsAddress> {
     return GestureDetector(
       onTap: () {
         Get.back();
-        profileController.deleteAddress(widget.idAddress);
+        if (widget.values.length == 1) {
+          if (widget.idAddress != null) {
+            profileController.deleteAddress(widget.idAddress);
+          } else {
+            transportController.deleteSubTransport(widget.idMerchant);
+          }
+        } else {
+          if (title == widget.values[0]) {
+            Get.toNamed(Routes.MERCHANT + Routes.EDITGROUP);
+          } else {
+            merchantController.deleteGroupProduct(
+                widget.idAddress, widget.idMerchant);
+          }
+        }
       },
       child: Container(
         width: _size.width,

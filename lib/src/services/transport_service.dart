@@ -60,6 +60,16 @@ class TransportService {
     return response.statusCode;
   }
 
+  Future<int> createTransportSub(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.REGISTER_TRANSPORTSUB,
+      body: body,
+      headers: getHeaders(),
+    );
+    print(convert.jsonDecode(response.body));
+    return response.statusCode;
+  }
+
   Future<Map<String, dynamic>> getTransport() async {
     var response = await http.get(
       baseUrl + ApiGateway.GET_TRANSPORT,
@@ -83,6 +93,12 @@ class TransportService {
   Future<int> registerStaff(body) async {
     var response =
         await http.post(baseUrl + ApiGateway.REGISTER_STAFF, body: body);
+    return response.statusCode;
+  }
+
+  Future<int> deleteTransportSub(body) async {
+    var response =
+        await http.post(baseUrl + ApiGateway.DELETE_TRANSPORTSUB, body: body);
     return response.statusCode;
   }
 

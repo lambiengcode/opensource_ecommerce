@@ -1,3 +1,7 @@
+import 'package:geocoder/geocoder.dart';
+import 'package:geocoder/model.dart';
+import 'package:google_maps_place_picker/google_maps_place_picker.dart';
+import 'package:van_transport/src/common/secret_key.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/merchant/pages/revenue_page.dart';
 import 'package:van_transport/src/pages/sub_city/pages/manage_staff_page.dart';
@@ -19,7 +23,134 @@ class _TransportPage extends State<TransportPage>
   TabController _tabController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _showFloatingButton = true;
-  bool _createSubTransport = true;
+  bool _createSubTransport = false;
+
+  void chooseLocation(context) {
+    try {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return PlacePicker(
+              apiKey: apiMap,
+              initialPosition: kInitialPosition,
+              useCurrentLocation: true,
+              selectInitialPosition: true,
+              onGeocodingSearchFailed: (error) => print(error),
+              usePlaceDetailSearch: true,
+              forceSearchOnZoomChanged: true,
+              automaticallyImplyAppBarLeading: false,
+              usePinPointingSearch: true,
+              autocompleteLanguage:
+                  Get.locale == Locale('vi', 'VN') ? 'vi' : 'en',
+              region: Get.locale == Locale('vi', 'VN') ? 'vn' : 'us',
+              selectedPlaceWidgetBuilder:
+                  (_, selectedP, state, isSearchBarFocused) {
+                print("state: $state, isSearchBarFocused: $isSearchBarFocused");
+                return isSearchBarFocused
+                    ? Container()
+                    : FloatingCard(
+                        bottomPosition: 0.0,
+                        leftPosition: 0.0,
+                        rightPosition: 0.0,
+                        width: 600.0,
+                        height: 125.0,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(12.0),
+                        ),
+                        child: state == SearchingState.Searching
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(
+                                    colorTitle,
+                                  ),
+                                ),
+                              )
+                            : Column(
+                                children: [
+                                  SizedBox(
+                                    height: 20.0,
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 12.0),
+                                    child: Text(
+                                      selectedP.formattedAddress,
+                                      style: TextStyle(
+                                          color: colorTitle,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 18.0,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      width: 600.0,
+                                      child: RaisedButton(
+                                        color: colorTitle,
+                                        child: Text(
+                                          'pick'.trArgs(),
+                                          style: TextStyle(
+                                            color: colorPrimaryTextOpacity,
+                                          ),
+                                        ),
+                                        onPressed: () async {
+                                          final coordinates = new Coordinates(
+                                            selectedP.geometry.location.lat,
+                                            selectedP.geometry.location.lng,
+                                          );
+                                          final addresses = await Geocoder.local
+                                              .findAddressesFromCoordinates(
+                                                  coordinates);
+                                          final first = addresses.first;
+                                          transportController
+                                              .createSubTransport(
+                                            first.locality,
+                                            selectedP.geometry.location.lat
+                                                .toString(),
+                                            selectedP.geometry.location.lng
+                                                .toString(),
+                                            first.countryName,
+                                            first.subLocality,
+                                            selectedP.formattedAddress
+                                                .toString()
+                                                .split(',')[0],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      );
+              },
+              pinBuilder: (context, state) {
+                if (state == PinState.Idle) {
+                  return CircleAvatar(
+                    radius: 12.0,
+                    backgroundImage: NetworkImage(
+                      'https://avatars.githubusercontent.com/u/60530946?v=4',
+                    ),
+                  );
+                } else {
+                  return CircleAvatar(
+                    radius: 12.0,
+                    backgroundImage: NetworkImage(
+                      'https://avatars.githubusercontent.com/u/60530946?v=4',
+                    ),
+                  );
+                }
+              },
+            );
+          },
+        ),
+      );
+    } catch (error) {
+      print(error);
+    }
+  }
 
   var _pages = [
     TransportManageOrderPage(pageName: 'Ongoing'),
@@ -72,7 +203,7 @@ class _TransportPage extends State<TransportPage>
                   if (_createSubTransport) {
                     Get.toNamed(Routes.SUBCITY + Routes.REGISTERSTAFF);
                   } else {
-                    // Go to create Subcity
+                    chooseLocation(context);
                   }
                 },
               ),

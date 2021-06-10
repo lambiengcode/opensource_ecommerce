@@ -93,6 +93,49 @@ class TransportController extends GetxController {
     }
   }
 
+  createSubTransport(locationCity, lat, lng, locationCountry, locationWard,
+      locationAddress) async {
+    var body = {
+      "locationCity": locationCity,
+      "locationCoordinateLat": lat,
+      "locationCoordinateLng": lng,
+      "locationCounty": locationCountry,
+      "locationWard": locationWard,
+      "locationAddress": locationAddress,
+    };
+
+    int status = await transportService.createTransportSub(body);
+    if (status == 200) {
+      getTransport();
+      Get.back();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Update failure!',
+        subTitle: 'Check again your information.',
+      );
+      getSnackBar.show();
+    }
+  }
+
+  deleteSubTransport(id) async {
+    var body = {
+      "idSub": id,
+      "status": false,
+    };
+
+    int status = await transportService.deleteTransportSub(body);
+    if (status == 200) {
+      getTransport();
+      Get.back();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Update failure!',
+        subTitle: 'Check again your information.',
+      );
+      getSnackBar.show();
+    }
+  }
+
   Stream<dynamic> get getTransportStream => transportController.stream;
   Stream<dynamic> get getAssignStaffStream => assignStaffController.stream;
 }

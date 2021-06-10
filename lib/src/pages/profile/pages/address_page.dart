@@ -86,8 +86,6 @@ class _AddressPageState extends State<AddressPage> {
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
     String result = '${first.addressLine}';
-    print(
-        ' ${first.locality},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare}');
     return result;
   }
 
