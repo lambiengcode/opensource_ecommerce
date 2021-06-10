@@ -75,7 +75,10 @@ const Map<String, String> vi_VN = {
   'addInfoProduct': 'Thêm sản phẩm',
   'addToOrder': 'Thêm vào giỏ',
   'transport': 'Vận chuyển',
-  'taxs': 'Thuế',
+  'taxes': 'Thuế',
+  'distance': 'Khoảng cách',
+  'chooseTransport': 'Chọn ĐVVC',
+  'chooseCoupon': 'Chọn giảm giá',
 
   // My Point
   'customizePoint': 'Tuỳ chỉnh điểm',

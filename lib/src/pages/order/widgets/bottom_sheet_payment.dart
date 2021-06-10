@@ -85,10 +85,10 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
                         methods[0]),
                 paymentMethod == methods[1]
                     ? _buildActiveMethodButton(
-                        'https://pbs.twimg.com/profile_images/1278352097688182784/Bn7-mEJ9_400x400.jpg',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDvwa33bkoHIQ-jOlXl_lZwVaxsVl2n_aSKg&usqp=CAU',
                         methods[1])
                     : _buildInactiveMethodButton(
-                        'https://pbs.twimg.com/profile_images/1278352097688182784/Bn7-mEJ9_400x400.jpg',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDvwa33bkoHIQ-jOlXl_lZwVaxsVl2n_aSKg&usqp=CAU',
                         methods[1]),
                 paymentMethod == methods[2]
                     ? _buildActiveMethodButton(

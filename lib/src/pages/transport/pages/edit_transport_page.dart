@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/transport/controllers/transport_controller.dart';
 import 'package:van_transport/src/pages/transport/widgets/bottom_sheet_set_price.dart';
 import 'package:van_transport/src/pages/transport/widgets/vertical_transport_card.dart';
-import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -10,13 +10,19 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:van_transport/src/services/storage_service.dart';
+import 'package:van_transport/src/widgets/loading_page.dart';
 
 class EditTransportPage extends StatefulWidget {
+  final transportInfo;
+  EditTransportPage({@required this.transportInfo});
   @override
   State<StatefulWidget> createState() => _EditTransportPageState();
 }
 
 class _EditTransportPageState extends State<EditTransportPage> {
+  final transportController = Get.put(TransportController());
+  final formKey = GlobalKey<FormState>();
   List<String> categories = [
     'Standard',
     'Frozen',
@@ -28,6 +34,7 @@ class _EditTransportPageState extends State<EditTransportPage> {
   TextEditingController descController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  bool loading = false;
 
   void showImageBottomSheet() {
     showModalBottomSheet(
@@ -44,7 +51,7 @@ class _EditTransportPageState extends State<EditTransportPage> {
     );
   }
 
-  showSetPriceBottomSheet(title) {
+  showSetPriceBottomSheet(title, data) {
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
@@ -56,6 +63,7 @@ class _EditTransportPageState extends State<EditTransportPage> {
       builder: (context) {
         return BottomSetPrice(
           title: title,
+          data: data,
         );
       },
     );
@@ -64,80 +72,139 @@ class _EditTransportPageState extends State<EditTransportPage> {
   @override
   void initState() {
     super.initState();
-    _title = '';
-    _desc = '';
-    _address = '';
+    transportController.getTransport();
+    _title = widget.transportInfo['name'];
+    _desc = widget.transportInfo['description'];
+    _address = widget.transportInfo['headquarters'];
+    _phone = widget.transportInfo['phone'];
+    titleController.text = widget.transportInfo['name'];
+    descController.text = widget.transportInfo['description'];
+    addressController.text = widget.transportInfo['headquarters'];
+    phoneController.text = widget.transportInfo['phone'];
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: mC,
-        elevation: .0,
-        centerTitle: true,
-        brightness: Brightness.light,
-        leading: IconButton(
-          onPressed: () => Get.back(),
-          icon: Icon(
-            Feather.arrow_left,
-            color: colorTitle,
-            size: width / 15.0,
-          ),
-        ),
-        title: Text(
-          'Edit Company',
-          style: TextStyle(
-            color: colorTitle,
-            fontSize: width / 20.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Lato',
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => Get.toNamed(Routes.SETTINGS),
-            icon: Icon(
-              Feather.check,
-              color: colorPrimary,
-              size: width / 16.0,
+    return loading
+        ? Loading()
+        : Scaffold(
+            appBar: AppBar(
+              backgroundColor: mC,
+              elevation: .0,
+              centerTitle: true,
+              brightness: Brightness.light,
+              leading: IconButton(
+                onPressed: () => Get.back(),
+                icon: Icon(
+                  Feather.arrow_left,
+                  color: colorTitle,
+                  size: width / 15.0,
+                ),
+              ),
+              title: Text(
+                'Edit Company',
+                style: TextStyle(
+                  color: colorTitle,
+                  fontSize: width / 20.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Lato',
+                ),
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () async {
+                    if (formKey.currentState.validate()) {
+                      if (_image == null) {
+                        transportController.editTransport(
+                          widget.transportInfo['_id'],
+                          _title,
+                          _desc,
+                          widget.transportInfo['avatar'],
+                          widget.transportInfo['imageVerify'],
+                          _phone,
+                          _address,
+                        );
+                      } else {
+                        setState(() {
+                          loading = true;
+                        });
+
+                        StorageService storageService = StorageService();
+                        String urlToImage =
+                            await storageService.uploadImageNotProfile(_image);
+                        transportController.editTransport(
+                          widget.transportInfo['_id'],
+                          _title,
+                          _desc,
+                          urlToImage,
+                          widget.transportInfo['imageVerify'],
+                          _phone,
+                          _address,
+                        );
+                        setState(() {
+                          loading = false;
+                        });
+                      }
+                    }
+                  },
+                  icon: Icon(
+                    Feather.check,
+                    color: colorPrimary,
+                    size: width / 16.0,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-      body: Container(
-        color: mC,
-        child: Column(
-          children: [
-            SizedBox(height: 12.0),
-            GestureDetector(
-              onTap: () => showImageBottomSheet(),
-              child: VerticalTransportCard(
-                image: _image,
-                address: _address,
-                title: _title,
-                urlToImage: '',
-                desc: _desc,
+            body: Container(
+              color: mC,
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    SizedBox(height: 12.0),
+                    GestureDetector(
+                      onTap: () => showImageBottomSheet(),
+                      child: VerticalTransportCard(
+                        image: _image,
+                        address: _address,
+                        title: _title,
+                        urlToImage: widget.transportInfo['avatar'],
+                        desc: _desc,
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                    _buildLineInfo(
+                        context, 'Company Name', '', titleController),
+                    _buildDivider(context),
+                    _buildLineInfo(
+                        context, 'phone'.trArgs(), '', phoneController),
+                    _buildDivider(context),
+                    _buildLineInfo(
+                        context, 'address'.trArgs(), '', addressController),
+                    _buildDivider(context),
+                    _buildLineInfo(
+                        context, 'description'.trArgs(), '', descController),
+                    _buildDivider(context),
+                    SizedBox(height: 24.0),
+                    StreamBuilder(
+                      stream: transportController.getTransportStream,
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (!snapshot.hasData) {
+                          return Container();
+                        }
+
+                        return _buildListCategories(
+                            snapshot.data['typeSupport']);
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 16.0),
-            _buildLineInfo(context, 'Company Name', '', titleController),
-            _buildDivider(context),
-            _buildLineInfo(context, 'phone'.trArgs(), '', titleController),
-            _buildDivider(context),
-            _buildLineInfo(context, 'address'.trArgs(), '', addressController),
-            _buildDivider(context),
-            _buildLineInfo(context, 'Description', '', descController),
-            _buildDivider(context),
-            SizedBox(height: 24.0),
-            _buildListCategories()
-          ],
-        ),
-      ),
-    );
+          );
   }
 
-  Widget _buildListCategories() {
+  Widget _buildListCategories(listPrices) {
     return Container(
       height: width * .135,
       width: width,
@@ -147,7 +214,10 @@ class _EditTransportPageState extends State<EditTransportPage> {
         itemCount: categories.length,
         itemBuilder: (context, index) {
           return NeumorphicButton(
-            onPressed: () => showSetPriceBottomSheet(categories[index]),
+            onPressed: () => showSetPriceBottomSheet(
+              categories[index],
+              listPrices[index],
+            ),
             style: NeumorphicStyle(
               shape: NeumorphicShape.concave,
               boxShape: NeumorphicBoxShape.roundRect(

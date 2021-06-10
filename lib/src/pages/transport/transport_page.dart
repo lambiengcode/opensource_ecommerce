@@ -1,6 +1,7 @@
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/merchant/pages/revenue_page.dart';
 import 'package:van_transport/src/pages/sub_city/pages/manage_staff_page.dart';
+import 'package:van_transport/src/pages/transport/controllers/transport_controller.dart';
 import 'package:van_transport/src/pages/transport/pages/manage_order_page.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class TransportPage extends StatefulWidget {
 
 class _TransportPage extends State<TransportPage>
     with SingleTickerProviderStateMixin {
+  final transportController = Get.put(TransportController());
   TabController _tabController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _showFloatingButton = true;
@@ -30,6 +32,7 @@ class _TransportPage extends State<TransportPage>
   @override
   void initState() {
     super.initState();
+    transportController.getTransport();
     _tabController = new TabController(
       vsync: this,
       length: 5,
@@ -102,13 +105,32 @@ class _TransportPage extends State<TransportPage>
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () => Get.toNamed(Routes.DELIVERY + Routes.EDITDELIVERY),
-            icon: Icon(
-              Feather.edit_3,
-              color: colorTitle,
-              size: width / 16.0,
-            ),
+          StreamBuilder(
+            stream: transportController.getTransportStream,
+            builder: (context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+                return IconButton(
+                  onPressed: () => null,
+                  icon: Icon(
+                    Feather.edit_3,
+                    color: colorTitle,
+                    size: width / 16.0,
+                  ),
+                );
+              }
+
+              return IconButton(
+                onPressed: () => Get.toNamed(
+                  Routes.DELIVERY + Routes.EDITDELIVERY,
+                  arguments: snapshot.data,
+                ),
+                icon: Icon(
+                  Feather.edit_3,
+                  color: colorTitle,
+                  size: width / 16.0,
+                ),
+              );
+            },
           ),
         ],
         bottom: TabBar(

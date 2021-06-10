@@ -68,7 +68,7 @@ class _OrderPageState extends State<OrderPage>
           IconButton(
             onPressed: () {
               if (App.token != '') {
-                Get.toNamed(Routes.CREATEORDER);
+                Get.toNamed(Routes.CART);
               }
             },
             icon: Icon(

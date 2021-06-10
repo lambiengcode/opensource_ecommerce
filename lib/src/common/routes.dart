@@ -8,6 +8,7 @@ class ApiGateway {
   // Authentication: 5
   static const LOGIN_WITH_EMAIL = '/Auth/Login';
   static const REGISTER = '/Auth/Register';
+  static const REGISTER_STAFF = '/Auth/RegisterStaff';
   static const VERIFY = '/Auth/Verify';
   static const FORGOT_PASSWORD = '/Auth/ForgotPassword';
   static const CHANGE_PASSWORD = '/Auth/ChangePassword';
@@ -38,8 +39,21 @@ class ApiGateway {
   static const CREATE_DEVICE = '/Device/Create';
   static const DELETE_DEVICE = '/Device/Delete?deviceUUid=';
 
-  // Transport: 1
+  // Transport: 4
   static const REGISTER_TRANSPORT = '/Transport/Create';
+  static const ASSIGN_TRANSPORT = '/Transport/AssignStaff';
+  static const UPDATE_TRANSPORT = '/Transport/Update';
+  static const GET_TRANSPORT = '/Transport/GetInfo';
+  static const GET_ASSIGN_STAFF = '/Transport/GetAssignStaff';
+  static const UPDATE_PRICE_TYPE = '/Transport/UpdatePriceType';
+
+  // Subtransport: 4
+  static const REGISTER_TRANSPORTSUB = '/TransportSub/Create';
+  static const ASSIGN_TRANSPORTSUB = '/TransportSub/ChangeStatus';
+  static const UPDATE_TRANSPORTSUB = '/TransportSub/Update';
+  static const GET_TRANSPORTSUB = '/TransportSub/GetInfo';
+
+  static const CREATE_PACKAGE = '/Package/Create';
 
   // Merchant: 3
   static const GET_MERCHANT = '/Merchant/GetInfo';

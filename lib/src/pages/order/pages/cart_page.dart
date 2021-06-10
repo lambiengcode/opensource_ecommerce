@@ -164,7 +164,7 @@ class _CartPageState extends State<CartPage> {
               ),
             ),
             NeumorphicButton(
-              onPressed: () => Get.toNamed(Routes.CHECKOUT),
+              onPressed: () => Get.toNamed(Routes.PICKADDRESSCART),
               duration: Duration(milliseconds: 200),
               style: NeumorphicStyle(
                 shape: NeumorphicShape.convex,

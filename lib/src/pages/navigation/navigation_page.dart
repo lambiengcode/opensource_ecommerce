@@ -1,4 +1,5 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:van_transport/src/app.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/middleware/profile_middleware.dart';
 import 'package:van_transport/src/pages/favourite/favourite_page.dart';
@@ -22,6 +23,12 @@ class _NavigationState extends State<Navigation> {
     NotificationsPage(),
     ProfileMiddleware(),
   ];
+
+  @override
+  void initState() {
+    print(App.token);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

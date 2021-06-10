@@ -1,4 +1,5 @@
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/order/controllers/pick_address_controller.dart';
 import 'package:van_transport/src/pages/order/widgets/bottom_sheet_payment.dart';
 import 'package:van_transport/src/pages/order/widgets/cart_card.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class CheckOutPage extends StatefulWidget {
 }
 
 class _CheckOutPageState extends State<CheckOutPage> {
+  final pickAddressPage = Get.put(PickAddressController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,60 +169,104 @@ class _CheckOutPageState extends State<CheckOutPage> {
           intensity: .6,
           color: mCH.withOpacity(.12),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
           children: [
-            Text(
-              '\$260',
-              style: TextStyle(
-                color: colorBlack,
-                fontSize: width / 16.0,
-                fontFamily: 'Lato',
-                fontWeight: FontWeight.bold,
-                wordSpacing: 1.2,
-                letterSpacing: 1.2,
+            GetBuilder<PickAddressController>(
+              builder: (_) => _buildActionValue(
+                'distance'.trArgs(),
+                _.distance ?? 'Unknown',
               ),
             ),
-            NeumorphicButton(
-              onPressed: () => showPaymentBottomSheet(),
-              duration: Duration(milliseconds: 200),
-              style: NeumorphicStyle(
-                shape: NeumorphicShape.convex,
-                boxShape: NeumorphicBoxShape.roundRect(
-                  BorderRadius.circular(20.0),
+            SizedBox(height: 16.0),
+            _buildActionValue('myvoucher'.trArgs(), 'chooseCoupon'.trArgs()),
+            SizedBox(height: 16.0),
+            _buildActionValue('transport'.trArgs(), 'chooseTransport'.trArgs()),
+            SizedBox(height: 16.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '\$260',
+                  style: TextStyle(
+                    color: colorBlack,
+                    fontSize: width / 16.0,
+                    fontFamily: 'Lato',
+                    fontWeight: FontWeight.bold,
+                    wordSpacing: 1.2,
+                    letterSpacing: 1.2,
+                  ),
                 ),
-                depth: 15.0,
-                intensity: 1,
-                color: colorPrimary.withOpacity(.85),
-              ),
-              padding: EdgeInsets.symmetric(
-                vertical: 16.0,
-                horizontal: 28.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.credit_card,
-                    color: mC,
-                    size: width / 18.0,
-                  ),
-                  SizedBox(width: 8.0),
-                  Text(
-                    'payment'.trArgs(),
-                    style: TextStyle(
-                      color: mC,
-                      fontSize: width / 26.0,
-                      fontFamily: 'Lato',
-                      fontWeight: FontWeight.w600,
+                NeumorphicButton(
+                  onPressed: () => showPaymentBottomSheet(),
+                  duration: Duration(milliseconds: 200),
+                  style: NeumorphicStyle(
+                    shape: NeumorphicShape.convex,
+                    boxShape: NeumorphicBoxShape.roundRect(
+                      BorderRadius.circular(20.0),
                     ),
+                    depth: 15.0,
+                    intensity: 1,
+                    color: colorPrimary.withOpacity(.85),
                   ),
-                ],
-              ),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 16.0,
+                    horizontal: 28.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.credit_card,
+                        color: mC,
+                        size: width / 18.0,
+                      ),
+                      SizedBox(width: 8.0),
+                      Text(
+                        'payment'.trArgs(),
+                        style: TextStyle(
+                          color: mC,
+                          fontSize: width / 26.0,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildActionValue(title, value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            color: colorTitle,
+            fontSize: width / 24.0,
+            fontFamily: 'Lato',
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            color: value == 'chooseCoupon'.trArgs() ||
+                    value == 'chooseTransport'.trArgs()
+                ? colorPrimary
+                : colorTitle,
+            fontSize: width / 24.0,
+            fontFamily: 'Lato',
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ],
     );
   }
 }

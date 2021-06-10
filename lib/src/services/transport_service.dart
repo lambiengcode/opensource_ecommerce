@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'package:van_transport/src/app.dart';
 import 'package:van_transport/src/common/routes.dart';
 import 'package:van_transport/src/common/secret_key.dart';
+import 'dart:convert' as convert;
 
 class TransportService {
   Future<Map<String, dynamic>> registerTransport(
@@ -29,6 +30,60 @@ class TransportService {
       "phone": phone,
       "headquarters": headquarters,
     };
+  }
+
+  Future<int> assignTransport(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.ASSIGN_TRANSPORT,
+      body: body,
+      headers: getHeaders(),
+    );
+    return response.statusCode;
+  }
+
+  Future<int> updateTransport(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.UPDATE_TRANSPORT,
+      body: body,
+      headers: getHeaders(),
+    );
+    return response.statusCode;
+  }
+
+  Future<int> updatePriceType(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.UPDATE_PRICE_TYPE,
+      body: body,
+      headers: getHeaders(),
+    );
+    print(convert.jsonDecode(response.body));
+    return response.statusCode;
+  }
+
+  Future<Map<String, dynamic>> getTransport() async {
+    var response = await http.get(
+      baseUrl + ApiGateway.GET_TRANSPORT,
+      headers: getHeaders(),
+    );
+    var json = response.statusCode == 200
+        ? convert.jsonDecode(response.body)['data']
+        : convert.jsonDecode(response.body);
+    json['status'] = response.statusCode;
+    return json;
+  }
+
+  Future<List<dynamic>> getAssignStaff() async {
+    var response = await http.get(
+      baseUrl + ApiGateway.GET_ASSIGN_STAFF,
+      headers: getHeaders(),
+    );
+    return convert.jsonDecode(response.body)['data'];
+  }
+
+  Future<int> registerStaff(body) async {
+    var response =
+        await http.post(baseUrl + ApiGateway.REGISTER_STAFF, body: body);
+    return response.statusCode;
   }
 
   Map<String, String> getHeaders() {

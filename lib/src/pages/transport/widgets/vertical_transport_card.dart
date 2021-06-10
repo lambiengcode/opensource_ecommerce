@@ -112,7 +112,9 @@ class _VerticalTransportCardState extends State<VerticalTransportCard> {
                 ),
                 SizedBox(height: 4.0),
                 Text(
-                  'price'.trArgs() +
+                  (widget.address.contains(',')
+                          ? 'address'.trArgs()
+                          : 'price'.trArgs()) +
                       ': ' +
                       stringService.formatString(25, widget.address),
                   style: TextStyle(
@@ -127,8 +129,8 @@ class _VerticalTransportCardState extends State<VerticalTransportCard> {
                   widget.desc == ''
                       ? 'Giới thiệu: Không có'
                       : widget.desc.length < 50
-                          ? 'Giới thiệu: ${widget.desc}'
-                          : 'Giới thiệu: ${widget.desc.substring(0, 50)}...',
+                          ? 'Giới thiệu: ${widget.desc.replaceAll('\n', '. ')}'
+                          : 'Giới thiệu: ${widget.desc.replaceAll('\n', '. ').substring(0, 50)}...',
                   style: TextStyle(
                     color: fCD,
                     fontSize: _size.width / 32.5,
@@ -155,15 +157,37 @@ class _VerticalTransportCardState extends State<VerticalTransportCard> {
                       ),
                     ),
                   )
-                : ClipRRect(
-                    borderRadius: BorderRadius.circular(16.0),
-                    child: CachedNetworkImage(
-                      width: _size.width * .35,
-                      height: _size.width * .3,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => PlaceHolderImage(),
-                      errorWidget: (context, url, error) => ErrorLoadingImage(),
-                      imageUrl: widget.urlToImage ?? '',
+                : Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.0),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: mCD,
+                          offset: Offset(2, 2),
+                          blurRadius: 2,
+                        ),
+                        BoxShadow(
+                          color: mCL,
+                          offset: Offset(-2, -2),
+                          blurRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16.0),
+                      child: CachedNetworkImage(
+                        width: _size.width * .35,
+                        height: _size.width * .3,
+                        fit:
+                            widget.address.contains(',') || widget.address == ''
+                                ? BoxFit.cover
+                                : BoxFit.contain,
+                        placeholder: (context, url) => PlaceHolderImage(),
+                        errorWidget: (context, url, error) =>
+                            ErrorLoadingImage(),
+                        imageUrl: widget.urlToImage ?? '',
+                      ),
                     ),
                   ),
           ),

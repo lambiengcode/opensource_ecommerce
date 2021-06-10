@@ -29,7 +29,7 @@ class _ProductPageState extends State<ProductPage> {
       builder: (context) {
         return BottomSettingsAddress(
           values: values,
-          idAddress: groupProductInfo,
+          idAddress: groupProductInfo['_id'],
         );
       },
     );

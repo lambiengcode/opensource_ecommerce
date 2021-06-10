@@ -1,5 +1,6 @@
 import 'package:van_transport/src/app.dart';
 import 'package:van_transport/src/middleware/merchant_middleware.dart';
+import 'package:van_transport/src/middleware/transport_middleware.dart';
 import 'package:van_transport/src/pages/admin/admin_page.dart';
 import 'package:van_transport/src/pages/admin/pages/manage_coupon_page.dart';
 import 'package:van_transport/src/pages/admin/pages/manage_merchant_page.dart';
@@ -25,6 +26,7 @@ import 'package:van_transport/src/pages/order/pages/check_out_order_page.dart';
 import 'package:van_transport/src/pages/order/pages/check_out_page.dart';
 import 'package:van_transport/src/pages/order/pages/create_order_page.dart';
 import 'package:van_transport/src/pages/order/pages/details_orders_page.dart';
+import 'package:van_transport/src/pages/order/pages/pick_address_cart_page.dart';
 import 'package:van_transport/src/pages/order/pages/pick_address_page.dart';
 import 'package:van_transport/src/pages/payment/web_view_payment.dart';
 import 'package:van_transport/src/pages/profile/pages/add_friend_page.dart';
@@ -135,6 +137,13 @@ class AppPages {
     GetPage(
       name: Routes.PICKADDRESS,
       page: () => PickAddressPage(),
+      transition: Transition.rightToLeft,
+      transitionDuration: Duration(milliseconds: 200),
+      children: [],
+    ),
+    GetPage(
+      name: Routes.PICKADDRESSCART,
+      page: () => PickAddressCartPage(),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 200),
       children: [],
@@ -374,6 +383,13 @@ class AppPages {
       transitionDuration: Duration(milliseconds: 200),
       children: [
         GetPage(
+          name: Routes.MIDDLETRANSPORT,
+          page: () => TransportMiddleware(),
+          transition: Transition.rightToLeft,
+          transitionDuration: Duration(milliseconds: 200),
+          children: [],
+        ),
+        GetPage(
           name: Routes.REGISTERDELIVERY,
           page: () => RegisterTransportPage(),
           transition: Transition.rightToLeft,
@@ -382,7 +398,9 @@ class AppPages {
         ),
         GetPage(
           name: Routes.EDITDELIVERY,
-          page: () => EditTransportPage(),
+          page: () => EditTransportPage(
+            transportInfo: Get.arguments,
+          ),
           transition: Transition.rightToLeft,
           transitionDuration: Duration(milliseconds: 200),
           children: [],

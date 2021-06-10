@@ -23,6 +23,7 @@ abstract class Routes {
   static const CHECKOUTORDER = '/checkOutOrder';
   static const ADDPRODUCT = '/addProduct';
   static const DETAILSORDERS = '/detailsOrders';
+  static const PICKADDRESSCART = '/pickAddressCart';
 
   // Profile
   static const EDITPROFILE = '/editProfile';
@@ -55,6 +56,7 @@ abstract class Routes {
   static const EDITPRODUCT = '/editProduct';
 
   // Delivery
+  static const MIDDLETRANSPORT = '/middlewareTransport';
   static const DELIVERY = '/delivery';
   static const REGISTERDELIVERY = '/registerDelivery';
   static const EDITDELIVERY = '/editDelivery';

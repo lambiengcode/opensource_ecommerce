@@ -333,7 +333,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 : Routes.MERCHANT + Routes.MIDDLEWAREMERCHANT,
           );
         } else if (title == 'transportOwner'.trArgs()) {
-          Get.toNamed(Routes.DELIVERY);
+          Get.toNamed(
+            role == 'ADMIN'
+                ? Routes.ADMIN
+                : Routes.DELIVERY + Routes.MIDDLETRANSPORT,
+          );
         } else {
           getSnackBar.show();
         }
