@@ -112,9 +112,9 @@ class _VerticalTransportCardState extends State<VerticalTransportCard> {
                 ),
                 SizedBox(height: 4.0),
                 Text(
-                  (widget.address.contains(',')
-                          ? 'address'.trArgs()
-                          : 'price'.trArgs()) +
+                  (widget.address.contains('000')
+                          ? 'price'.trArgs()
+                          : 'address'.trArgs()) +
                       ': ' +
                       stringService.formatString(25, widget.address),
                   style: TextStyle(

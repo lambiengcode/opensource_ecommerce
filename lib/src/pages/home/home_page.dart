@@ -2,10 +2,12 @@ import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/models/action.dart';
 import 'package:van_transport/src/pages/home/controllers/action_controller.dart';
 import 'package:van_transport/src/pages/home/controllers/carousel_controller.dart';
+import 'package:van_transport/src/pages/home/controllers/product_global_controller.dart';
 import 'package:van_transport/src/pages/home/widget/action_button.dart';
 import 'package:van_transport/src/pages/home/widget/carousel_banner.dart';
 import 'package:van_transport/src/pages/home/widget/horizontal_store_card.dart';
 import 'package:van_transport/src/pages/home/widget/vertical_store_card.dart';
+import 'package:van_transport/src/pages/transport/widgets/vertical_transport_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +15,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
+import 'package:van_transport/src/services/string_service.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -20,6 +23,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final productController = Get.put(ProductGlobalController());
+  final scrollController = ScrollController();
+  int page = 1;
   LocationData currentLocation;
   Future<dynamic> _myLocation;
 
@@ -59,6 +65,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    productController.getProduct(page);
     _myLocation = getUserLocation();
     Get.put(ActionController(), permanent: true);
     Get.put(CarouselBannerController(index: 0), permanent: true);
@@ -75,49 +82,67 @@ class _HomePageState extends State<HomePage> {
             _buildTopBar(context),
             SizedBox(height: 12.0),
             Expanded(
-                child: NotificationListener<OverscrollIndicatorNotification>(
-              onNotification: (overscroll) {
-                overscroll.disallowGlow();
-                return true;
+                child: NotificationListener<ScrollNotification>(
+              onNotification: (scrollNotification) {
+                if (scrollNotification is ScrollStartNotification) {
+                } else if (scrollNotification is ScrollUpdateNotification) {
+                } else if (scrollNotification is ScrollEndNotification) {
+                  setState(() {
+                    page++;
+                  });
+                  productController.getProduct(page);
+                }
+                return;
               },
               child: SingleChildScrollView(
                 physics: ClampingScrollPhysics(),
-                child: Column(
-                  children: [
-                    SizedBox(height: 8.0),
-                    _buildCarouselBanner(context),
-                    SizedBox(height: 12.0),
-                    _buildTitle(context, 'category'.trArgs()),
-                    SizedBox(height: 12.0),
-                    _buildHorizontalAction(context),
-                    SizedBox(height: 12.0),
-                    _buildTitle(context, 'mostPopular'.trArgs()),
-                    SizedBox(height: 12.0),
-                    _buildPopularStore(context),
-                    SizedBox(height: 12.0),
-                    _buildTitle(context, 'onSale'.trArgs()),
-                    SizedBox(height: 12.0),
-                    _buildPopularStore(context),
-                    SizedBox(height: 12.0),
-                    _buildTitle(context, 'nearBy'.trArgs()),
-                    SizedBox(height: 12.0),
-                    _buildPopularStore(context),
-                    SizedBox(height: 12.0),
-                    _buildTitle(context, 'All Product'.trArgs()),
-                    SizedBox(height: 12.0),
-                    ListView.builder(
-                      padding: EdgeInsets.only(top: .0),
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () => Get.toNamed('/store'),
-                          child: VerticalStoreCard(),
-                        );
-                      },
-                    ),
-                  ],
+                child: GetBuilder<ProductGlobalController>(
+                  builder: (_) => Column(
+                    children: [
+                      SizedBox(height: 8.0),
+                      _buildCarouselBanner(context),
+                      SizedBox(height: 12.0),
+                      _buildTitle(context, 'category'.trArgs()),
+                      SizedBox(height: 12.0),
+                      _buildHorizontalAction(context),
+                      SizedBox(height: 12.0),
+                      _buildTitle(context, 'mostPopular'.trArgs()),
+                      SizedBox(height: 12.0),
+                      _buildPopularStore(context, _.listProduct1),
+                      SizedBox(height: 12.0),
+                      _buildTitle(context, 'onSale'.trArgs()),
+                      SizedBox(height: 12.0),
+                      _buildPopularStore(context, _.listProduct2),
+                      SizedBox(height: 12.0),
+                      _buildTitle(context, 'nearBy'.trArgs()),
+                      SizedBox(height: 12.0),
+                      _buildPopularStore(context, _.listProduct3),
+                      SizedBox(height: 12.0),
+                      _buildTitle(context, 'All Product'.trArgs()),
+                      SizedBox(height: 12.0),
+                      ListView.builder(
+                        controller: scrollController,
+                        padding: EdgeInsets.only(top: .0),
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: _.listProduct4.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () => Get.toNamed(Routes.DETAILSPRODUCT,
+                                arguments: _.listProduct4[index]),
+                            child: VerticalTransportCard(
+                              image: null,
+                              address: StringService()
+                                  .formatPrice(_.listProduct4[index]['price']),
+                              title: _.listProduct4[index]['name'],
+                              urlToImage: _.listProduct4[index]['image'],
+                              desc: _.listProduct4[index]['description'],
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  ),
                 ),
               ),
             )),
@@ -347,26 +372,25 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildPopularStore(context) {
+  Widget _buildPopularStore(context, data) {
     final _size = MediaQuery.of(context).size;
     return Container(
       height: _size.width * .42,
       child: ListView.builder(
+        controller: scrollController,
         padding: EdgeInsets.only(left: 6.0, right: 12.0),
         scrollDirection: Axis.horizontal,
-        itemCount: 10,
+        itemCount: data.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () => Get.toNamed(Routes.DETAILSPRODUCT, arguments: {
-              'name': 'CARAMEL PHIN FREEZE',
-              'image':
-                  'https://images.unsplash.com/photo-1494314671902-399b18174975?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxzZWFyY2h8NDR8fGNvZmZlZXxlbnwwfHwwfA%3D%3D&auto=format&fit=crop&w=500&q=60',
-              'owner': 'lambiengcode\'store',
-              'description':
-                  'Nếu bạn là người yêu thích những gì mới mẻ và sành điệu để khơi nguồn cảm hứng. Hãy thưởng thức ngay các món nước đá xay độc đáo mang hương vị tự nhiên tại Highlands Coffee để đánh thức mọi giác quan của bạn, giúp bạn luôn căng tràn sức sống.',
-              'price': '49000',
-            }),
-            child: HorizontalStoreCard(),
+            onTap: () =>
+                Get.toNamed(Routes.DETAILSPRODUCT, arguments: data[index]),
+            child: HorizontalStoreCard(
+              address: StringService().formatPrice(data[index]['price']),
+              title: data[index]['name'],
+              urlToImage: data[index]['image'],
+              desc: data[index]['description'],
+            ),
           );
         },
       ),

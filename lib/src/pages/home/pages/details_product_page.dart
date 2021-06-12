@@ -1,11 +1,13 @@
 import 'package:van_transport/src/app.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/order/controllers/cart_merchant_controller.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/services/string_service.dart';
 
 class DetailsProductPage extends StatefulWidget {
   final String image;
@@ -13,6 +15,7 @@ class DetailsProductPage extends StatefulWidget {
   final String name;
   final String description;
   final String owner;
+  final data;
 
   DetailsProductPage({
     this.description,
@@ -20,6 +23,7 @@ class DetailsProductPage extends StatefulWidget {
     this.name,
     this.owner,
     this.price,
+    @required this.data,
   });
 
   @override
@@ -27,6 +31,7 @@ class DetailsProductPage extends StatefulWidget {
 }
 
 class _DetailsProductPageState extends State<DetailsProductPage> {
+  final cartController = Get.put(CartMerchantController());
   int _quantity = 1;
   @override
   void initState() {
@@ -148,7 +153,11 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.name,
+                                  StringService().formatString(
+                                    60,
+                                    widget.description.replaceAll('\n', '. '),
+                                  ),
+                                  maxLines: 2,
                                   style: TextStyle(
                                     color: colorBlack,
                                     fontSize: width / 20.0,
@@ -158,7 +167,8 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
                                 ),
                                 SizedBox(height: 6.0),
                                 GestureDetector(
-                                  onTap: () => Get.toNamed(Routes.STORE),
+                                  onTap: () => Get.toNamed(Routes.STORE,
+                                      arguments: widget.data['FK_merchant']),
                                   child: RichText(
                                     text: TextSpan(
                                       children: [
@@ -210,7 +220,8 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
                       ),
                       SizedBox(height: 10.0),
                       Text(
-                        widget.description,
+                        StringService().formatString(
+                            240, widget.description.replaceAll('\n', '. ')),
                         style: TextStyle(
                           color: colorTitle,
                           fontSize: width / 24.0,
@@ -243,7 +254,10 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
                           if (App.token == '') {
                             Get.toNamed(Routes.AUTHENTICATION);
                           } else {
-                            Get.toNamed(Routes.CART);
+                            cartController.addToCart(
+                              widget.data['FK_groupProduct'],
+                              _quantity.toString(),
+                            );
                           }
                         },
                         style: NeumorphicStyle(

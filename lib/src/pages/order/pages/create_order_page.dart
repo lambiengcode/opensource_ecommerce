@@ -1,4 +1,5 @@
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/order/controllers/cart_client_controller.dart';
 import 'package:van_transport/src/pages/order/widgets/add_product_card.dart';
 import 'package:van_transport/src/pages/order/widgets/product_order_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
@@ -13,6 +14,14 @@ class CreateOrderPage extends StatefulWidget {
 }
 
 class _CreateOrderPageState extends State<CreateOrderPage> {
+  final cartController = Get.put(CartClientController());
+
+  @override
+  void initState() {
+    super.initState();
+    cartController.getListCart();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,21 +70,36 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                           overscroll.disallowGlow();
                           return true;
                         },
-                        child: ListView.builder(
-                          padding: EdgeInsets.only(
-                            left: 12.5,
-                            right: 12.5,
-                            top: 16.0,
-                          ),
-                          physics: ClampingScrollPhysics(),
-                          itemCount: 3,
-                          itemBuilder: (context, index) {
-                            return index == 2
-                                ? GestureDetector(
-                                    onTap: () => Get.toNamed(Routes.ADDPRODUCT),
-                                    child: AddProductCard(),
-                                  )
-                                : ProductOrderCard();
+                        child: StreamBuilder(
+                          stream: cartController.getListCartController,
+                          builder: (context, AsyncSnapshot snapshot) {
+                            if (!snapshot.hasData) {
+                              return Container();
+                            }
+
+                            return ListView.builder(
+                              padding: EdgeInsets.only(
+                                left: 12.5,
+                                right: 12.5,
+                                top: 16.0,
+                              ),
+                              physics: ClampingScrollPhysics(),
+                              itemCount: snapshot.data.length + 1,
+                              itemBuilder: (context, index) {
+                                return index == snapshot.data.length
+                                    ? GestureDetector(
+                                        onTap: () =>
+                                            Get.toNamed(Routes.ADDPRODUCT),
+                                        child: AddProductCard(),
+                                      )
+                                    : ProductOrderCard(
+                                      name: snapshot.data[index]['name'],
+                                      weight: snapshot.data[index]['weight'],
+                                      typeProduct:snapshot.data[index]['type'],
+                                      urlToImage: snapshot.data[index]['image'][0],
+                                    );
+                              },
+                            );
                           },
                         ),
                       ),

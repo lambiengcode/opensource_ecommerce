@@ -6,6 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class ProductOrderCard extends StatefulWidget {
+  final String name;
+  final String weight;
+  final String typeProduct;
+  final String urlToImage;
+  ProductOrderCard(
+      {@required this.name,
+      @required this.weight,
+      @required this.urlToImage,
+      @required this.typeProduct});
   @override
   State<StatefulWidget> createState() => _ProductOrderCardState();
 }
@@ -65,8 +74,7 @@ class _ProductOrderCardState extends State<ProductOrderCard> {
                             placeholder: (context, url) => PlaceHolderImage(),
                             errorWidget: (context, url, error) =>
                                 ErrorLoadingImage(),
-                            imageUrl:
-                                "https://images.unsplash.com/photo-1591882351016-6f26999cea0a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTR8fHNob2V8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                            imageUrl: widget.urlToImage,
                           ),
                         ),
                       ),
@@ -76,7 +84,7 @@ class _ProductOrderCardState extends State<ProductOrderCard> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Nike Air Max 200',
+                            widget.name,
                             style: TextStyle(
                               color: colorTitle,
                               fontSize: width / 24.0,
@@ -97,7 +105,7 @@ class _ProductOrderCardState extends State<ProductOrderCard> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: '15 ',
+                                  text: '${widget.weight} ',
                                   style: TextStyle(
                                     color: colorPrimary,
                                     fontSize: width / 26.0,
@@ -131,7 +139,7 @@ class _ProductOrderCardState extends State<ProductOrderCard> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: 'Basic',
+                                  text: widget.typeProduct,
                                   style: TextStyle(
                                     color: colorPrimary,
                                     fontSize: width / 26.0,

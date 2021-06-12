@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/order/controllers/cart_client_controller.dart';
 
 class BottomProductType extends StatefulWidget {
   final List<String> values;
@@ -48,7 +50,7 @@ class _BottomProductTypeState extends State<BottomProductType> {
               ),
             ),
             SizedBox(height: 8.0),
-            _buildAction(context, widget.values[0]),
+            _buildAction(context, widget.values[0], 0),
             Divider(
               color: mCH,
               thickness: .2,
@@ -56,7 +58,7 @@ class _BottomProductTypeState extends State<BottomProductType> {
               indent: 12.0,
               endIndent: 12.0,
             ),
-            _buildAction(context, widget.values[1]),
+            _buildAction(context, widget.values[1], 1),
             Divider(
               color: mCH,
               thickness: .2,
@@ -64,7 +66,7 @@ class _BottomProductTypeState extends State<BottomProductType> {
               indent: 12.0,
               endIndent: 12.0,
             ),
-            _buildAction(context, widget.values[2]),
+            _buildAction(context, widget.values[2], 2),
             SizedBox(height: 16.0),
           ],
         ),
@@ -72,11 +74,12 @@ class _BottomProductTypeState extends State<BottomProductType> {
     );
   }
 
-  Widget _buildAction(context, title) {
+  Widget _buildAction(context, title, index) {
     final _size = MediaQuery.of(context).size;
+    final cartController = Get.put(CartClientController());
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () => cartController.setTypeProduct(index),
       child: Container(
         width: _size.width,
         color: mC,

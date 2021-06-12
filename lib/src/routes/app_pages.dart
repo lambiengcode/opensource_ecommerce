@@ -98,6 +98,7 @@ class AppPages {
         description: Get.arguments['description'],
         price: Get.arguments['price'],
         owner: Get.arguments['owner'],
+        data: Get.arguments,
       ),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 200),
@@ -106,7 +107,9 @@ class AppPages {
 
     GetPage(
       name: Routes.STORE,
-      page: () => StorePage(),
+      page: () => StorePage(
+        idMerchant: Get.arguments,
+      ),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 200),
       children: [],

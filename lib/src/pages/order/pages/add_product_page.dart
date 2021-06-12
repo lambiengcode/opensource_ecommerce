@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/pages/order/controllers/cart_client_controller.dart';
 import 'package:van_transport/src/pages/order/widgets/bottom_sheet_input_weight.dart';
 import 'package:van_transport/src/pages/order/widgets/bottom_sheet_product_type.dart';
+import 'package:van_transport/src/services/storage_service.dart';
 
 class AddProductPage extends StatefulWidget {
   @override
@@ -15,12 +17,13 @@ class AddProductPage extends StatefulWidget {
 }
 
 class _AddProductPageState extends State<AddProductPage> {
+  final cartController = Get.put(CartClientController());
   List<String> valueOfProductType = [
     'standard'.trArgs(),
     'frozen'.trArgs(),
     'jewelry'.trArgs()
   ];
-  File _image;
+  List<File> images = [];
 
   @override
   Widget build(BuildContext context) {
@@ -74,9 +77,15 @@ class _AddProductPageState extends State<AddProductPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _buildProductCardImage(),
-                          _buildProductCardImage(),
-                          _buildProductCardNoImage(),
+                          images.length >= 1
+                              ? _buildProductCardImage(0)
+                              : _buildProductCardNoImage(0),
+                          images.length >= 2
+                              ? _buildProductCardImage(1)
+                              : _buildProductCardNoImage(1),
+                          images.length >= 3
+                              ? _buildProductCardImage(2)
+                              : _buildProductCardNoImage(2),
                         ],
                       ),
                     ),
@@ -112,12 +121,29 @@ class _AddProductPageState extends State<AddProductPage> {
         ),
         child: Column(
           children: [
-            _buildAddressValue('weight'.trArgs(), 'Input Weight'),
+            GetBuilder<CartClientController>(
+              builder: (_) => _buildAddressValue('weight'.trArgs(),
+                  _.weight == null ? 'Input Weight' : _.weight),
+            ),
             SizedBox(height: 18.0),
-            _buildAddressValue('typeProduct'.trArgs(), valueOfProductType[0]),
+            GetBuilder<CartClientController>(
+              builder: (_) => _buildAddressValue(
+                  'typeProduct'.trArgs(), valueOfProductType[_.typeProduct]),
+            ),
             SizedBox(height: 24.0),
             NeumorphicButton(
-              onPressed: () => Get.back(),
+              onPressed: () async {
+                if (images.length > 0) {
+                  List<String> urls = [];
+                  StorageService storageService = StorageService();
+                  for (int index = 0; index < images.length; index++) {
+                    var url = await storageService
+                        .uploadImageNotProfile(images[index]);
+                    urls.add(url);
+                  }
+                  cartController.addProductToCart('', urls);
+                }
+              },
               duration: Duration(milliseconds: 200),
               margin: EdgeInsets.symmetric(horizontal: 12.0),
               style: NeumorphicStyle(
@@ -174,7 +200,7 @@ class _AddProductPageState extends State<AddProductPage> {
         isScrollControlled: true,
         context: context,
         builder: (context) {
-          return title == 'Type Product'
+          return title == 'typeProduct'.trArgs()
               ? BottomProductType(
                   values: valueOfProductType,
                 )
@@ -197,8 +223,8 @@ class _AddProductPageState extends State<AddProductPage> {
         ),
         GestureDetector(
           onTap: () {
-            if (title == 'Type Product') showProductTypeBottomSheet();
-            if (value == 'Input Weight') showProductTypeBottomSheet();
+            if (title == 'typeProduct'.trArgs()) showProductTypeBottomSheet();
+            if (title == 'weight'.trArgs()) showProductTypeBottomSheet();
           },
           child: Text(
             value,
@@ -216,31 +242,7 @@ class _AddProductPageState extends State<AddProductPage> {
     );
   }
 
-  Widget _buildProductCardImage() {
-    return Container(
-      height: width * .26,
-      width: width * .26,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12.0),
-        border: Border.all(color: colorPrimary, width: 3.0),
-      ),
-      alignment: Alignment.center,
-      child: Container(
-        height: width * .235,
-        width: width * .235,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
-          image: DecorationImage(
-            image: NetworkImage(
-                'https://images.unsplash.com/photo-1618623583196-e4e9e11f8511?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjN8fHNob2V8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'),
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProductCardNoImage() {
+  Widget _buildProductCardImage(index) {
     void showImageBottomSheet() {
       showModalBottomSheet(
         shape: RoundedRectangleBorder(
@@ -251,7 +253,48 @@ class _AddProductPageState extends State<AddProductPage> {
         isScrollControlled: true,
         context: context,
         builder: (context) {
-          return _chooseImage(context);
+          return _chooseImage(context, index);
+        },
+      );
+    }
+
+    return GestureDetector(
+      onTap: () => showImageBottomSheet(),
+      child: Container(
+        height: width * .26,
+        width: width * .26,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.0),
+          border: Border.all(color: colorPrimary, width: 3.0),
+        ),
+        alignment: Alignment.center,
+        child: Container(
+          height: width * .235,
+          width: width * .235,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            image: DecorationImage(
+              image: FileImage(images[index]),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProductCardNoImage(index) {
+    void showImageBottomSheet() {
+      showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(30.0),
+          ),
+        ),
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return _chooseImage(context, index);
         },
       );
     }
@@ -289,7 +332,7 @@ class _AddProductPageState extends State<AddProductPage> {
     );
   }
 
-  Widget _chooseImage(context) {
+  Widget _chooseImage(context, index) {
     final _size = MediaQuery.of(context).size;
 
     return Container(
@@ -328,7 +371,7 @@ class _AddProductPageState extends State<AddProductPage> {
               ),
             ),
             SizedBox(height: 8.0),
-            _buildAction(context, 'capture'.trArgs(), Feather.camera),
+            _buildAction(context, 'capture'.trArgs(), Feather.camera, index),
             Divider(
               color: Colors.grey,
               thickness: .25,
@@ -336,7 +379,7 @@ class _AddProductPageState extends State<AddProductPage> {
               indent: 8.0,
               endIndent: 8.0,
             ),
-            _buildAction(context, 'pickPhoto'.trArgs(), Feather.image),
+            _buildAction(context, 'pickPhoto'.trArgs(), Feather.image, index),
             SizedBox(height: 18.0),
           ],
         ),
@@ -344,7 +387,7 @@ class _AddProductPageState extends State<AddProductPage> {
     );
   }
 
-  Widget _buildAction(context, title, icon) {
+  Widget _buildAction(context, title, icon, index) {
     final _size = MediaQuery.of(context).size;
 
     Future<void> _pickImage(ImageSource source) async {
@@ -355,7 +398,11 @@ class _AddProductPageState extends State<AddProductPage> {
       );
       if (selected != null) {
         setState(() {
-          _image = selected;
+          if (images.length < 3) {
+            images.add(selected);
+          } else {
+            images[index] = selected;
+          }
         });
         Get.back();
       }

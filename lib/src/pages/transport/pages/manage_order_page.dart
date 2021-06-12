@@ -38,7 +38,7 @@ class _TransportManageOrderPageState extends State<TransportManageOrderPage> {
         itemCount: 2,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () => showGroupProductSettings(index),
+            onLongPress: () => showGroupProductSettings(index.toString()),
             child: SubCityCard(
               fullName: 'Hồ Chí Minh',
               manager: 'Đào Hồng Vinh',

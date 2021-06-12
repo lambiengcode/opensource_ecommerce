@@ -25,7 +25,7 @@ class _DetailsProductGroupPageState extends State<DetailsProductGroupPage> {
 
   @override
   void initState() {
-    merchantController.getProductByGroup(widget.idGroup);
+    merchantController.getProductByGroup(widget.idGroup, 1);
     slidableController = SlidableController();
     super.initState();
   }

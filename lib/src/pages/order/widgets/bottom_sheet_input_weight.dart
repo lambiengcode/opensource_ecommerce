@@ -4,6 +4,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/order/controllers/cart_client_controller.dart';
 
 class BottomInputWeight extends StatefulWidget {
   @override
@@ -11,8 +12,18 @@ class BottomInputWeight extends StatefulWidget {
 }
 
 class _BottomInputWeightState extends State<BottomInputWeight> {
+  final cartController = Get.put(CartClientController());
   TextEditingController _msgController = new TextEditingController();
   FocusNode _focusNode = new FocusNode();
+  String weight = '';
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (int.parse(weight.replaceAll(',', '')) > 0) {
+      cartController.setWeight(weight);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +104,11 @@ class _BottomInputWeightState extends State<BottomInputWeight> {
                           fontSize: width / 26.0,
                           fontWeight: FontWeight.w400,
                         ),
-                        onChanged: (val) {},
+                        onChanged: (val) {
+                          setState(() {
+                            weight = val.trim();
+                          });
+                        },
                         textAlign: TextAlign.start,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(

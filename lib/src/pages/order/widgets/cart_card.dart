@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/services/string_service.dart';
 import 'package:van_transport/src/widgets/error_loading_image.dart';
 import 'package:van_transport/src/widgets/place_holder_image.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,16 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 
 class CartCard extends StatefulWidget {
+  final String name;
+  final String price;
+  final String quantity;
+  final String urlToString;
+  CartCard({
+    @required this.name,
+    @required this.price,
+    @required this.quantity,
+    @required this.urlToString,
+  });
   @override
   State<StatefulWidget> createState() => _CartCardState();
 }
@@ -67,8 +78,7 @@ class _CartCardState extends State<CartCard> {
                             placeholder: (context, url) => PlaceHolderImage(),
                             errorWidget: (context, url, error) =>
                                 ErrorLoadingImage(),
-                            imageUrl:
-                                "https://images.unsplash.com/photo-1591882351016-6f26999cea0a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTR8fHNob2V8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                            imageUrl: widget.urlToString,
                           ),
                         ),
                       ),
@@ -78,7 +88,7 @@ class _CartCardState extends State<CartCard> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Nike Air Max 200',
+                            widget.name,
                             style: TextStyle(
                               color: colorTitle,
                               fontSize: width / 24.0,
@@ -99,7 +109,8 @@ class _CartCardState extends State<CartCard> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: '150',
+                                  text:
+                                      StringService().formatPrice(widget.price),
                                   style: TextStyle(
                                     color: colorPrimary,
                                     fontSize: width / 20.0,
@@ -133,7 +144,7 @@ class _CartCardState extends State<CartCard> {
         Padding(
           padding: EdgeInsets.symmetric(vertical: 6.0),
           child: Text(
-            '1',
+            widget.quantity,
             style: TextStyle(
               color: colorBlack,
               fontSize: width / 28.0,

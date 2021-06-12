@@ -60,6 +60,7 @@ const Map<String, String> en_US = {
   'distance': 'Distance',
   'chooseTransport': 'Choose Transport',
   'chooseCoupon': 'Choose Coupon',
+  'detailsOrders': 'Details Orders',
 
   // My Point
   'customizePoint': 'Customize Point',

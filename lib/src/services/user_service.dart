@@ -77,6 +77,46 @@ class UserService {
         : null;
   }
 
+  Future<int> addProductToCartClient(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.ADD_PRODUCT_TO_CART_CLIENT,
+      headers: getHeaders(),
+      body: body,
+    );
+    return response.statusCode;
+  }
+
+  Future<int> addProductToCartMerchant(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.ADD_PRODUCT_TO_CART_MERCHANT,
+      headers: getHeaders(),
+      body: body,
+    );
+    return response.statusCode;
+  }
+
+  Future<List<dynamic>> getCartMerchant() async {
+    var response = await http.get(
+      baseUrl + ApiGateway.GET_CART_MERCHANT,
+      headers: getHeaders(),
+    );
+    return response.statusCode == 200
+        ? convert.jsonDecode(response.body)['data']['products']
+        : null;
+  }
+
+  Future<List<dynamic>> getCartClient() async {
+    var response = await http.get(
+      baseUrl + ApiGateway.GET_CART_CLIENT,
+      headers: getHeaders(),
+    );
+
+    print(convert.jsonDecode(response.body)['data']);
+    return response.statusCode == 200
+        ? convert.jsonDecode(response.body)['data']['products']
+        : null;
+  }
+
   Map<String, String> getHeaders() {
     return {
       'authorization': 'Bearer ${App.token}',

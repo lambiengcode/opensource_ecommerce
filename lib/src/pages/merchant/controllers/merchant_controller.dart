@@ -13,6 +13,11 @@ class MerchantController extends GetxController {
   StreamController<List<dynamic>> productController =
       StreamController<List<dynamic>>.broadcast();
 
+  List<dynamic> products1 = [];
+  List<dynamic> products2 = [];
+  List<dynamic> products3 = [];
+  List<dynamic> products4 = [];
+
   getMerchant() async {
     var res = await merchantService.getMerchant();
     merchantController.add(res);
@@ -23,9 +28,45 @@ class MerchantController extends GetxController {
     groupProductController.add(res);
   }
 
-  getProductByGroup(idGroup) async {
-    var res = await merchantService.getProductByGroup(idGroup);
+  getProductByGroup(idGroup, page) async {
+    var res = await merchantService.getProductByGroup(idGroup, page);
     productController.add(res);
+    if (page == 1) {
+      products1.clear();
+      products2.clear();
+      products3.clear();
+      products4.clear();
+    }
+    if (res.length > 0) {
+      products1.addAll(res);
+      res.shuffle();
+      products2.addAll(res);
+      res.shuffle();
+      products3.addAll(res);
+      res.shuffle();
+      products4.addAll(res);
+      update();
+    }
+  }
+
+  getProductByMerchant(idGroup, page) async {
+    var res = await merchantService.getProductByMerchant(idGroup, page);
+    if (page == 1) {
+      products1.clear();
+      products2.clear();
+      products3.clear();
+      products4.clear();
+    }
+    if (res.length > 0) {
+      products1.addAll(res);
+      res.shuffle();
+      products2.addAll(res);
+      res.shuffle();
+      products3.addAll(res);
+      res.shuffle();
+      products4.addAll(res);
+      update();
+    }
   }
 
   createMerchant(
@@ -135,7 +176,7 @@ class MerchantController extends GetxController {
     };
     int status = await merchantService.createProduct(body);
     if (status == 200) {
-      getProductByGroup(idGroup);
+      getProductByGroup(idGroup, 1);
       Get.back();
     } else {
       GetSnackBar getSnackBar = GetSnackBar(
@@ -168,7 +209,7 @@ class MerchantController extends GetxController {
     };
     int status = await merchantService.updateProduct(body);
     if (status == 200) {
-      getProductByGroup(idGroup);
+      getProductByGroup(idGroup, 1);
       Get.back();
     } else {
       GetSnackBar getSnackBar = GetSnackBar(
@@ -206,7 +247,7 @@ class MerchantController extends GetxController {
   deleteProduct(idProduct, idGroup) async {
     int status = await merchantService.deleteProduct(idProduct);
     if (status == 200) {
-      getProductByGroup(idGroup);
+      getProductByGroup(idGroup, 1);
       GetSnackBar getSnackBar = GetSnackBar(
         title: 'Delete product success!',
         subTitle: 'Your list product already update.',

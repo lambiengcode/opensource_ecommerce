@@ -1,10 +1,12 @@
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/order/controllers/cart_merchant_controller.dart';
 import 'package:van_transport/src/pages/order/widgets/cart_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/services/string_service.dart';
 
 class CartPage extends StatefulWidget {
   @override
@@ -12,6 +14,14 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  final cartController = Get.put(CartMerchantController());
+
+  @override
+  void initState() {
+    super.initState();
+    cartController.getCartMerchant();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,16 +70,37 @@ class _CartPageState extends State<CartPage> {
                           overscroll.disallowGlow();
                           return true;
                         },
-                        child: ListView.builder(
-                          padding: EdgeInsets.only(
-                            left: 12.5,
-                            right: 12.5,
-                            top: 16.0,
-                          ),
-                          physics: ClampingScrollPhysics(),
-                          itemCount: 2,
-                          itemBuilder: (context, index) {
-                            return CartCard();
+                        child: StreamBuilder(
+                          stream: cartController.getCartController,
+                          builder: (context, AsyncSnapshot snapshot) {
+                            if (!snapshot.hasData) {
+                              return Container();
+                            }
+
+                            return ListView.builder(
+                              padding: EdgeInsets.only(
+                                left: 12.5,
+                                right: 12.5,
+                                top: 16.0,
+                              ),
+                              physics: ClampingScrollPhysics(),
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (context, index) {
+                                return CartCard(
+                                  name: StringService().formatString(
+                                    20,
+                                    snapshot.data[index]['product']['name'],
+                                  ),
+                                  quantity: snapshot.data[index]['quantity']
+                                      .toString(),
+                                  price: snapshot.data[index]['product']
+                                          ['price']
+                                      .toString(),
+                                  urlToString: snapshot.data[index]['product']
+                                      ['image'],
+                                );
+                              },
+                            );
                           },
                         ),
                       ),

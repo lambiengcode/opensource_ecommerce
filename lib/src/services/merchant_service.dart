@@ -25,17 +25,17 @@ class MerchantService {
     return convert.jsonDecode(response.body)['data'];
   }
 
-  Future<List<dynamic>> getProductByGroup(idGroup) async {
+  Future<List<dynamic>> getProductByGroup(idGroup, page) async {
     var response = await http.get(
-      baseUrl + ApiGateway.GET_PRODUCT_BY_GROUP + idGroup,
+      baseUrl + ApiGateway.GET_PRODUCT_BY_GROUP + idGroup + '&page=$page',
       headers: getHeaders(),
     );
     return convert.jsonDecode(response.body)['data'];
   }
 
-  Future<List<dynamic>> getProductByMerchant(idMerchant) async {
+  Future<List<dynamic>> getProductByMerchant(idMerchant, page) async {
     var response = await http.get(
-      baseUrl + ApiGateway.GET_PRODUCT_BY_MERCHANT + idMerchant,
+      baseUrl + ApiGateway.GET_PRODUCT_BY_MERCHANT + idMerchant + '&page=$page',
       headers: getHeaders(),
     );
     return convert.jsonDecode(response.body)['data'];
@@ -145,6 +145,14 @@ class MerchantService {
       headers: getHeaders(),
     );
     return response.statusCode;
+  }
+
+  Future<List<dynamic>> getProduct(page) async {
+    var response = await http.get(
+      baseUrl + ApiGateway.GET_ALL_PRODUCT + page,
+      headers: getHeaders(),
+    );
+    return convert.jsonDecode(response.body)['data'];
   }
 
   Map<String, String> getHeaders() {

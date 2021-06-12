@@ -32,8 +32,12 @@ class ApiGateway {
   static const ADD_ADDRESS = '/User/AddAddress';
   static const UPDATE_ADDRESS = '/User/UpdateAddress';
   static const DELETE_ADDRESS = '/User/DeleteAddress?id=';
-  static const FAVORITE = '/Favorite';
-  static const GET_FAVORITE = '/GetFavorites';
+  static const FAVORITE = '/User/Favorite';
+  static const GET_FAVORITE = '/User/GetFavorites';
+  static const ADD_PRODUCT_TO_CART_CLIENT = '/User/Client/AddProductToCart';
+  static const ADD_PRODUCT_TO_CART_MERCHANT = '/User/Merchant/AddProductToCart';
+  static const GET_CART_CLIENT = '/User/Client/GetMyCart';
+  static const GET_CART_MERCHANT = '/User/Merchant/GetMyCart';
 
   // Device: 2
   static const CREATE_DEVICE = '/Device/Create';
@@ -73,4 +77,5 @@ class ApiGateway {
   static const DELETE_PRODUCT = '/Product/Delete?id=';
   static const GET_PRODUCT_BY_MERCHANT = '/Product/GetProductByMerchant?id=';
   static const GET_PRODUCT_BY_GROUP = '/Product/GetProductByGroup?id=';
+  static const GET_ALL_PRODUCT = '/Product/GetAll?page=';
 }

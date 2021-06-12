@@ -1,18 +1,25 @@
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/home/widget/horizontal_store_card.dart';
+import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/services/string_service.dart';
 
 class StorePage extends StatefulWidget {
+  final String idMerchant;
+  StorePage({@required this.idMerchant});
   @override
   State<StatefulWidget> createState() => _StorePageState();
 }
 
 class _StorePageState extends State<StorePage> {
+  final merchantController = Get.put(MerchantController());
+  final scrollController = ScrollController();
+  int page = 1;
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -21,6 +28,8 @@ class _StorePageState extends State<StorePage> {
       statusBarIconBrightness: Brightness.light,
     ));
     super.initState();
+    merchantController.getProductByMerchant(widget.idMerchant, page);
+    merchantController.getGroupProduct(widget.idMerchant);
   }
 
   @override
@@ -41,40 +50,56 @@ class _StorePageState extends State<StorePage> {
         width: width,
         color: mC,
         padding: EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            SizedBox(height: height / 20.0),
-            _buildTopbar(),
-            SizedBox(height: 24.0),
-            _buildListCategories(),
-            SizedBox(height: 6.0),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: ClampingScrollPhysics(),
-                child: Column(
-                  children: [
-                    SizedBox(height: 12.0),
-                    _buildTitle('Popular Sale'),
-                    SizedBox(height: 12.0),
-                    _buildPopularStore(context),
-                    SizedBox(height: 12.0),
-                    _buildTitle('Recommanded for you'),
-                    SizedBox(height: 12.0),
-                    _buildPopularStore(context),
-                    SizedBox(height: 12.0),
-                    _buildTitle('Top Collection'),
-                    SizedBox(height: 12.0),
-                    _buildPopularStore(context),
-                    SizedBox(height: 12.0),
-                    _buildTitle('Upcomming'),
-                    SizedBox(height: 12.0),
-                    _buildPopularStore(context),
-                    SizedBox(height: 24.0),
-                  ],
+        child: GetBuilder<MerchantController>(
+          builder: (_) => Column(
+            children: [
+              SizedBox(height: height / 20.0),
+              _buildTopbar(),
+              SizedBox(height: 24.0),
+              _buildListCategories(),
+              SizedBox(height: 6.0),
+              Expanded(
+                child: NotificationListener<ScrollNotification>(
+                  onNotification: (scrollNotification) {
+                    if (scrollNotification is ScrollStartNotification) {
+                    } else if (scrollNotification is ScrollUpdateNotification) {
+                    } else if (scrollNotification is ScrollEndNotification) {
+                      setState(() {
+                        page++;
+                      });
+                      merchantController.getProductByMerchant(
+                          widget.idMerchant, page);
+                    }
+                    return;
+                  },
+                  child: SingleChildScrollView(
+                    physics: ClampingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 12.0),
+                        _buildTitle('Popular Sale'),
+                        SizedBox(height: 12.0),
+                        _buildPopularStore(context, _.products1),
+                        SizedBox(height: 12.0),
+                        _buildTitle('Recommanded for you'),
+                        SizedBox(height: 12.0),
+                        _buildPopularStore(context, _.products2),
+                        SizedBox(height: 12.0),
+                        _buildTitle('Top Collection'),
+                        SizedBox(height: 12.0),
+                        _buildPopularStore(context, _.products3),
+                        SizedBox(height: 12.0),
+                        _buildTitle('Upcomming'),
+                        SizedBox(height: 12.0),
+                        _buildPopularStore(context, _.products4),
+                        SizedBox(height: 24.0),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -122,44 +147,68 @@ class _StorePageState extends State<StorePage> {
   }
 
   Widget _buildListCategories() {
-    return Container(
-      height: width * .135,
-      width: width,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 6,
-        itemBuilder: (context, index) {
-          return NeumorphicButton(
-            onPressed: () => null,
-            style: NeumorphicStyle(
-              shape: NeumorphicShape.concave,
-              boxShape: NeumorphicBoxShape.roundRect(
-                BorderRadius.circular(8.0),
-              ),
-              depth: 4.0,
-              intensity: .65,
-              color: mC,
-            ),
-            margin: EdgeInsets.only(right: 12.0, bottom: 16.0),
-            padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Popular',
-                  style: TextStyle(
-                    color: colorDarkGrey,
-                    fontFamily: 'Lato',
-                    fontSize: width / 30.0,
+    return StreamBuilder(
+      stream: merchantController.getGroupProductStream,
+      builder: (context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return Container();
+        }
+
+        return Container(
+          height: width * .135,
+          width: width,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: snapshot.data.length + 1,
+            itemBuilder: (context, index) {
+              return NeumorphicButton(
+                onPressed: () {
+                  setState(() {
+                    page = 1;
+                  });
+                  if (index == 0) {
+                    merchantController.getProductByMerchant(
+                      widget.idMerchant,
+                      page,
+                    );
+                  } else {
+                    merchantController.getProductByGroup(
+                      snapshot.data[index - 1]['_id'],
+                      page,
+                    );
+                  }
+                },
+                style: NeumorphicStyle(
+                  shape: NeumorphicShape.concave,
+                  boxShape: NeumorphicBoxShape.roundRect(
+                    BorderRadius.circular(8.0),
                   ),
+                  depth: 4.0,
+                  intensity: .65,
+                  color: mC,
                 ),
-              ],
-            ),
-            duration: Duration(milliseconds: 200),
-          );
-        },
-      ),
+                margin: EdgeInsets.only(right: 12.0, bottom: 16.0),
+                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      index == 0 ? 'All' : snapshot.data[index - 1]['name'],
+                      style: TextStyle(
+                        color: colorDarkGrey,
+                        fontFamily: 'Lato',
+                        fontSize: width / 30.0,
+                      ),
+                    ),
+                  ],
+                ),
+                duration: Duration(milliseconds: 200),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -189,26 +238,25 @@ class _StorePageState extends State<StorePage> {
     );
   }
 
-  Widget _buildPopularStore(context) {
+  Widget _buildPopularStore(context, data) {
     final _size = MediaQuery.of(context).size;
     return Container(
       height: _size.width * .42,
       child: ListView.builder(
-        padding: EdgeInsets.only(right: 12.0),
+        controller: scrollController,
+        padding: EdgeInsets.only(left: 6.0, right: 12.0),
         scrollDirection: Axis.horizontal,
-        itemCount: 10,
+        itemCount: data.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () => Get.toNamed(Routes.DETAILSPRODUCT, arguments: {
-              'name': 'CARAMEL PHIN FREEZE',
-              'image':
-                  'https://images.unsplash.com/photo-1494314671902-399b18174975?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxzZWFyY2h8NDR8fGNvZmZlZXxlbnwwfHwwfA%3D%3D&auto=format&fit=crop&w=500&q=60',
-              'owner': 'lambiengcode\'store',
-              'description':
-                  'Nếu bạn là người yêu thích những gì mới mẻ và sành điệu để khơi nguồn cảm hứng. Hãy thưởng thức ngay các món nước đá xay độc đáo mang hương vị tự nhiên tại Highlands Coffee để đánh thức mọi giác quan của bạn, giúp bạn luôn căng tràn sức sống.',
-              'price': '49000',
-            }),
-            child: HorizontalStoreCard(),
+            onTap: () =>
+                Get.toNamed(Routes.DETAILSPRODUCT, arguments: data[index]),
+            child: HorizontalStoreCard(
+              address: StringService().formatPrice(data[index]['price']),
+              title: data[index]['name'],
+              urlToImage: data[index]['image'],
+              desc: data[index]['description'],
+            ),
           );
         },
       ),
