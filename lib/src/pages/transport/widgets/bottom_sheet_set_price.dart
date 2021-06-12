@@ -96,6 +96,7 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
                   onTap: () {
                     if (_formKey.currentState.validate()) {
                       transportController.updatePriceType(
+                          widget.title,
                           price.replaceAll(',', ''),
                           (available == 'On').toString(),
                           priceType == 'VNĐ / Km' ? 'km' : 'kg');

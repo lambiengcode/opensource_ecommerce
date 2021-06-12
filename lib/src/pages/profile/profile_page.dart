@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/factory/route_factory.dart';
+import 'package:van_transport/src/factory/route_type.dart';
 import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:van_transport/src/services/authentication_service.dart';
@@ -156,17 +158,37 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       child: Column(
                         children: [
-                          _buildAction(context, 'myvoucher'.trArgs(),
-                              Feather.tag, mProfile['role']),
+                          _buildAction(
+                            context,
+                            'myvoucher'.trArgs(),
+                            Feather.tag,
+                            mProfile['role'],
+                            null,
+                          ),
                           _padding(context),
-                          _buildAction(context, 'mypoints'.trArgs(),
-                              Feather.database, mProfile['role']),
+                          _buildAction(
+                            context,
+                            'mypoints'.trArgs(),
+                            Feather.database,
+                            mProfile['role'],
+                            RouteType.myPoints,
+                          ),
                           _padding(context),
-                          _buildAction(context, 'myFriends'.trArgs(),
-                              Feather.users, mProfile['role']),
+                          _buildAction(
+                            context,
+                            'myFriends'.trArgs(),
+                            Feather.users,
+                            mProfile['role'],
+                            RouteType.myFriends,
+                          ),
                           _padding(context),
-                          _buildAction(context, 'address'.trArgs(),
-                              Feather.map_pin, mProfile['role']),
+                          _buildAction(
+                            context,
+                            'address'.trArgs(),
+                            Feather.map_pin,
+                            mProfile['role'],
+                            RouteType.address,
+                          ),
                         ],
                       ),
                     ),
@@ -193,14 +215,29 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       child: Column(
                         children: [
-                          _buildAction(context, 'term'.trArgs(),
-                              Feather.help_circle, mProfile['role']),
+                          _buildAction(
+                            context,
+                            'term'.trArgs(),
+                            Feather.help_circle,
+                            mProfile['role'],
+                            null,
+                          ),
                           _padding(context),
-                          _buildAction(context, 'settings'.trArgs(),
-                              Feather.settings, mProfile['role']),
+                          _buildAction(
+                            context,
+                            'settings'.trArgs(),
+                            Feather.settings,
+                            mProfile['role'],
+                            RouteType.settings,
+                          ),
                           _padding(context),
-                          _buildAction(context, 'about'.trArgs(),
-                              Feather.alert_circle, mProfile['role']),
+                          _buildAction(
+                            context,
+                            'about'.trArgs(),
+                            Feather.alert_circle,
+                            mProfile['role'],
+                            null,
+                          ),
                         ],
                       ),
                     ),
@@ -226,11 +263,21 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       child: Column(
                         children: [
-                          _buildAction(context, 'owner'.trArgs(),
-                              Feather.shopping_bag, mProfile['role']),
+                          _buildAction(
+                            context,
+                            'owner'.trArgs(),
+                            Feather.shopping_bag,
+                            mProfile['role'],
+                            null,
+                          ),
                           _padding(context),
-                          _buildAction(context, 'transportOwner'.trArgs(),
-                              Feather.truck, mProfile['role']),
+                          _buildAction(
+                            context,
+                            'transportOwner'.trArgs(),
+                            Feather.truck,
+                            mProfile['role'],
+                            null,
+                          ),
                         ],
                       ),
                     ),
@@ -311,21 +358,21 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildAction(context, title, icon, role) {
+  Widget _buildAction(context, title, icon, role, RouteType routeType) {
     GetSnackBar getSnackBar = GetSnackBar(
       title: 'Comming Soon!',
       subTitle: 'This feature will available in next update',
     );
     return GestureDetector(
       onTap: () {
-        if (title == 'mypoints'.trArgs()) {
-          Get.toNamed(Routes.POINT);
-        } else if (title == 'myFriends'.trArgs()) {
-          Get.toNamed(Routes.MYFRIENDS);
-        } else if (title == 'address'.trArgs()) {
-          Get.toNamed(Routes.ADDRESS);
-        } else if (title == 'settings'.trArgs()) {
-          Get.toNamed(Routes.SETTINGS);
+        if (title == 'mypoints'.trArgs() ||
+            title == 'myFriends'.trArgs() ||
+            title == 'address'.trArgs() ||
+            title == 'settings'.trArgs()) {
+          final route = MenuFactory.getRoute(
+            routeType,
+          );
+          Get.toNamed(route.getRoute());
         } else if (title == 'owner'.trArgs()) {
           Get.toNamed(
             role == 'ADMIN'

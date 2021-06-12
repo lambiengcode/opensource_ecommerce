@@ -1,4 +1,5 @@
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/order/controllers/cart_merchant_controller.dart';
 import 'package:van_transport/src/pages/order/controllers/pick_address_controller.dart';
 import 'package:van_transport/src/pages/order/widgets/bottom_sheet_payment.dart';
 import 'package:van_transport/src/pages/order/widgets/cart_card.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/services/string_service.dart';
 
 class CheckOutPage extends StatefulWidget {
   @override
@@ -14,6 +16,14 @@ class CheckOutPage extends StatefulWidget {
 
 class _CheckOutPageState extends State<CheckOutPage> {
   final pickAddressPage = Get.put(PickAddressController());
+  final cartController = Get.put(CartMerchantController());
+
+  @override
+  void initState() {
+    super.initState();
+    cartController.getCartMerchant();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,16 +72,37 @@ class _CheckOutPageState extends State<CheckOutPage> {
                           overscroll.disallowGlow();
                           return true;
                         },
-                        child: ListView.builder(
-                          padding: EdgeInsets.only(
-                            left: 12.5,
-                            right: 12.5,
-                            top: 16.0,
-                          ),
-                          physics: ClampingScrollPhysics(),
-                          itemCount: 2,
-                          itemBuilder: (context, index) {
-                            return CartCard();
+                        child: StreamBuilder(
+                          stream: cartController.getCartController,
+                          builder: (context, AsyncSnapshot snapshot) {
+                            if (!snapshot.hasData) {
+                              return Container();
+                            }
+
+                            return ListView.builder(
+                              padding: EdgeInsets.only(
+                                left: 12.5,
+                                right: 12.5,
+                                top: 16.0,
+                              ),
+                              physics: ClampingScrollPhysics(),
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (context, index) {
+                                return CartCard(
+                                  name: StringService().formatString(
+                                    20,
+                                    snapshot.data[index]['product']['name'],
+                                  ),
+                                  quantity: snapshot.data[index]['quantity']
+                                      .toString(),
+                                  price: snapshot.data[index]['product']
+                                          ['price']
+                                      .toString(),
+                                  urlToString: snapshot.data[index]['product']
+                                      ['image'],
+                                );
+                              },
+                            );
                           },
                         ),
                       ),

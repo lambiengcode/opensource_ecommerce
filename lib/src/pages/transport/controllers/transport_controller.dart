@@ -17,7 +17,6 @@ class TransportController extends GetxController {
 
   getAssignTransport() async {
     var res = await transportService.getAssignStaff();
-    print(res);
     assignStaffController.add(res);
   }
 
@@ -26,16 +25,13 @@ class TransportController extends GetxController {
     name,
     description,
     avatar,
-    imageVerify,
     phone,
     headquarters,
   ) async {
     var body = {
-      "id": id,
       "name": name,
       "description": description,
       "avatar": avatar,
-      "imageVerify": imageVerify,
       "phone": phone,
       "headquarters": headquarters,
     };
@@ -73,16 +69,19 @@ class TransportController extends GetxController {
     }
   }
 
-  updatePriceType(price, avalable, type) async {
+  updatePriceType(title, price, avalable, type) async {
     var body = {
+      'title': title,
       'price': price,
       'avalable': avalable,
       'type': type,
     };
 
-    int status = await transportService.updatePriceType(body);
-    if (status == 200) {
-      getTransport();
+    print(body);
+
+    var res = await transportService.updatePriceType(body);
+    if (res != null) {
+      transportController.add(res);
       Get.back();
     } else {
       GetSnackBar getSnackBar = GetSnackBar(

@@ -2,8 +2,9 @@ import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:van_transport/src/common/constant_code.dart';
 import 'package:van_transport/src/common/secret_key.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/order/controllers/cart_merchant_controller.dart';
 import 'package:van_transport/src/pages/order/controllers/pick_address_controller.dart';
-import 'package:van_transport/src/pages/order/widgets/product_order_card.dart';
+import 'package:van_transport/src/pages/order/widgets/cart_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -20,6 +21,15 @@ class PickAddressCartPage extends StatefulWidget {
 class _PickAddressCartPageState extends State<PickAddressCartPage> {
   final pickAddressController = Get.put(PickAddressController());
   final stringService = StringService();
+
+  final cartController = Get.put(CartMerchantController());
+
+  @override
+  void initState() {
+    super.initState();
+    cartController.getCartMerchant();
+    pickAddressController.initData();
+  }
 
   void chooseLocation(context) {
     try {
@@ -131,12 +141,6 @@ class _PickAddressCartPageState extends State<PickAddressCartPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    pickAddressController.initData();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -184,16 +188,37 @@ class _PickAddressCartPageState extends State<PickAddressCartPage> {
                           overscroll.disallowGlow();
                           return true;
                         },
-                        child: ListView.builder(
-                          padding: EdgeInsets.only(
-                            left: 12.5,
-                            right: 12.5,
-                            top: 16.0,
-                          ),
-                          physics: ClampingScrollPhysics(),
-                          itemCount: 2,
-                          itemBuilder: (context, index) {
-                            return ProductOrderCard();
+                        child: StreamBuilder(
+                          stream: cartController.getCartController,
+                          builder: (context, AsyncSnapshot snapshot) {
+                            if (!snapshot.hasData) {
+                              return Container();
+                            }
+
+                            return ListView.builder(
+                              padding: EdgeInsets.only(
+                                left: 12.5,
+                                right: 12.5,
+                                top: 16.0,
+                              ),
+                              physics: ClampingScrollPhysics(),
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (context, index) {
+                                return CartCard(
+                                  name: StringService().formatString(
+                                    20,
+                                    snapshot.data[index]['product']['name'],
+                                  ),
+                                  quantity: snapshot.data[index]['quantity']
+                                      .toString(),
+                                  price: snapshot.data[index]['product']
+                                          ['price']
+                                      .toString(),
+                                  urlToString: snapshot.data[index]['product']
+                                      ['image'],
+                                );
+                              },
+                            );
                           },
                         ),
                       ),

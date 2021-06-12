@@ -120,7 +120,6 @@ class _EditTransportPageState extends State<EditTransportPage> {
                           _title,
                           _desc,
                           widget.transportInfo['avatar'],
-                          widget.transportInfo['imageVerify'],
                           _phone,
                           _address,
                         );
@@ -137,7 +136,6 @@ class _EditTransportPageState extends State<EditTransportPage> {
                           _title,
                           _desc,
                           urlToImage,
-                          widget.transportInfo['imageVerify'],
                           _phone,
                           _address,
                         );
@@ -211,7 +209,7 @@ class _EditTransportPageState extends State<EditTransportPage> {
       child: ListView.builder(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
         scrollDirection: Axis.horizontal,
-        itemCount: categories.length,
+        itemCount: listPrices.length,
         itemBuilder: (context, index) {
           return NeumorphicButton(
             onPressed: () => showSetPriceBottomSheet(

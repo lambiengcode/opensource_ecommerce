@@ -43,21 +43,22 @@ class TransportService {
 
   Future<int> updateTransport(body) async {
     var response = await http.post(
-      baseUrl + ApiGateway.UPDATE_TRANSPORT,
-      body: body,
-      headers: getHeaders(),
-    );
-    return response.statusCode;
-  }
-
-  Future<int> updatePriceType(body) async {
-    var response = await http.post(
       baseUrl + ApiGateway.UPDATE_PRICE_TYPE,
       body: body,
       headers: getHeaders(),
     );
     print(convert.jsonDecode(response.body));
     return response.statusCode;
+  }
+
+  Future<Map<String, dynamic>> updatePriceType(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.UPDATE_PRICE_TYPE,
+      body: body,
+      headers: getHeaders(),
+    );
+    print(convert.jsonDecode(response.body));
+    return response.statusCode == 200 ? convert.jsonDecode(response.body)['data'] : null;
   }
 
   Future<int> createTransportSub(body) async {

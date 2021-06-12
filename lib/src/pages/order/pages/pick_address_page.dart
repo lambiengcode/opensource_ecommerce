@@ -2,6 +2,7 @@ import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:van_transport/src/common/constant_code.dart';
 import 'package:van_transport/src/common/secret_key.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/order/controllers/cart_client_controller.dart';
 import 'package:van_transport/src/pages/order/controllers/pick_address_controller.dart';
 import 'package:van_transport/src/pages/order/widgets/product_order_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
@@ -20,6 +21,7 @@ class PickAddressPage extends StatefulWidget {
 class _PickAddressPageState extends State<PickAddressPage> {
   final pickAddressController = Get.put(PickAddressController());
   final stringService = StringService();
+  final cartController = Get.put(CartClientController());
 
   void chooseLocation(context) {
     try {
@@ -134,6 +136,7 @@ class _PickAddressPageState extends State<PickAddressPage> {
   void initState() {
     super.initState();
     pickAddressController.initData();
+    cartController.getListCart();
   }
 
   @override
@@ -177,26 +180,40 @@ class _PickAddressPageState extends State<PickAddressPage> {
                 ),
                 child: Column(
                   children: [
-                    Expanded(
-                      child:
-                          NotificationListener<OverscrollIndicatorNotification>(
-                        onNotification: (overscroll) {
-                          overscroll.disallowGlow();
-                          return true;
-                        },
-                        child: ListView.builder(
-                          padding: EdgeInsets.only(
-                            left: 12.5,
-                            right: 12.5,
-                            top: 16.0,
+                    StreamBuilder(
+                      stream: cartController.getListCartController,
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (!snapshot.hasData) {
+                          return Container();
+                        }
+
+                        return Expanded(
+                          child: NotificationListener<
+                              OverscrollIndicatorNotification>(
+                            onNotification: (overscroll) {
+                              overscroll.disallowGlow();
+                              return true;
+                            },
+                            child: ListView.builder(
+                              padding: EdgeInsets.only(
+                                left: 12.5,
+                                right: 12.5,
+                                top: 16.0,
+                              ),
+                              physics: ClampingScrollPhysics(),
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (context, index) {
+                                return ProductOrderCard(
+                                  name: snapshot.data[index]['name'],
+                                  weight: snapshot.data[index]['weight'],
+                                  typeProduct: snapshot.data[index]['type'],
+                                  urlToImage: snapshot.data[index]['image'][0],
+                                );
+                              },
+                            ),
                           ),
-                          physics: ClampingScrollPhysics(),
-                          itemCount: 2,
-                          itemBuilder: (context, index) {
-                            return ProductOrderCard();
-                          },
-                        ),
-                      ),
+                        );
+                      },
                     ),
                   ],
                 ),

@@ -1,4 +1,5 @@
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/order/controllers/cart_client_controller.dart';
 import 'package:van_transport/src/pages/order/controllers/pick_address_controller.dart';
 import 'package:van_transport/src/pages/order/widgets/bottom_sheet_payment.dart';
 import 'package:van_transport/src/pages/order/widgets/product_order_card.dart';
@@ -14,10 +15,12 @@ class CheckOutOrderPage extends StatefulWidget {
 
 class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
   final pickAddressController = Get.put(PickAddressController());
+  final cartController = Get.put(CartClientController());
 
   @override
   void initState() {
     super.initState();
+    cartController.getListCart();
   }
 
   @override
@@ -61,26 +64,40 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
                 ),
                 child: Column(
                   children: [
-                    Expanded(
-                      child:
-                          NotificationListener<OverscrollIndicatorNotification>(
-                        onNotification: (overscroll) {
-                          overscroll.disallowGlow();
-                          return true;
-                        },
-                        child: ListView.builder(
-                          padding: EdgeInsets.only(
-                            left: 12.5,
-                            right: 12.5,
-                            top: 16.0,
+                    StreamBuilder(
+                      stream: cartController.getListCartController,
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (!snapshot.hasData) {
+                          return Container();
+                        }
+
+                        return Expanded(
+                          child: NotificationListener<
+                              OverscrollIndicatorNotification>(
+                            onNotification: (overscroll) {
+                              overscroll.disallowGlow();
+                              return true;
+                            },
+                            child: ListView.builder(
+                              padding: EdgeInsets.only(
+                                left: 12.5,
+                                right: 12.5,
+                                top: 16.0,
+                              ),
+                              physics: ClampingScrollPhysics(),
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (context, index) {
+                                return ProductOrderCard(
+                                  name: snapshot.data[index]['name'],
+                                  weight: snapshot.data[index]['weight'],
+                                  typeProduct: snapshot.data[index]['type'],
+                                  urlToImage: snapshot.data[index]['image'][0],
+                                );
+                              },
+                            ),
                           ),
-                          physics: ClampingScrollPhysics(),
-                          itemCount: 2,
-                          itemBuilder: (context, index) {
-                            return ProductOrderCard();
-                          },
-                        ),
-                      ),
+                        );
+                      },
                     ),
                     Container(
                       padding: EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
