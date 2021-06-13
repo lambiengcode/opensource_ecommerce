@@ -13,6 +13,16 @@ class CartMerchantController extends GetxController {
     cartController.add(res);
   }
 
+  deleteCartMerchant(idProduct) async {
+    var body = {
+      "idProduct": idProduct,
+    };
+    var status = await userService.deleteItemCartMerchant(body);
+    if (status == 200) {
+      getCartMerchant();
+    }
+  }
+
   addToCart(idProduct, quantity) async {
     var body = {
       'idProduct': idProduct,

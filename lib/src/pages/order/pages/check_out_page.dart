@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:van_transport/src/services/string_service.dart';
 
 class CheckOutPage extends StatefulWidget {
@@ -15,7 +16,7 @@ class CheckOutPage extends StatefulWidget {
 }
 
 class _CheckOutPageState extends State<CheckOutPage> {
-  final pickAddressPage = Get.put(PickAddressController());
+  final pickAddressController = Get.put(PickAddressController());
   final cartController = Get.put(CartMerchantController());
 
   @override
@@ -52,34 +53,41 @@ class _CheckOutPageState extends State<CheckOutPage> {
       ),
       body: Container(
         color: mCL,
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.only(top: 16.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(50.0),
-                  ),
-                  color: mCM.withOpacity(.85),
-                ),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child:
-                          NotificationListener<OverscrollIndicatorNotification>(
-                        onNotification: (overscroll) {
-                          overscroll.disallowGlow();
-                          return true;
-                        },
-                        child: StreamBuilder(
-                          stream: cartController.getCartController,
-                          builder: (context, AsyncSnapshot snapshot) {
-                            if (!snapshot.hasData) {
-                              return Container();
-                            }
+        child: StreamBuilder(
+          stream: cartController.getCartController,
+          builder: (context, AsyncSnapshot snapshot) {
+            if (!snapshot.hasData) {
+              return Container();
+            }
 
-                            return ListView.builder(
+            int quantity = 0;
+            int price = 0;
+            for (int i = 0; i < snapshot.data.length; i++) {
+              quantity += snapshot.data[i]['quantity'];
+              price += int.parse(snapshot.data[i]['product']['price']);
+            }
+
+            return Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 16.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(50.0),
+                      ),
+                      color: mCM.withOpacity(.85),
+                    ),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: NotificationListener<
+                              OverscrollIndicatorNotification>(
+                            onNotification: (overscroll) {
+                              overscroll.disallowGlow();
+                              return true;
+                            },
+                            child: ListView.builder(
                               padding: EdgeInsets.only(
                                 left: 12.5,
                                 right: 12.5,
@@ -102,32 +110,38 @@ class _CheckOutPageState extends State<CheckOutPage> {
                                       ['image'],
                                 );
                               },
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          _buildPriceText(context, 'product'.trArgs(), '2'),
-                          _buildPriceText(
-                            context,
-                            'subTotal'.trArgs(),
-                            '\$250',
+                            ),
                           ),
-                          _buildPriceText(context, 'taxes'.trArgs(), '\$10'),
-                        ],
-                      ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              _buildPriceText(
+                                  context, 'product'.trArgs(), '$quantity'),
+                              _buildPriceText(
+                                context,
+                                'subTotal'.trArgs(),
+                                '${StringService().formatPrice(price.toString())} đ',
+                              ),
+                              _buildPriceText(
+                                  context, 'taxes'.trArgs(), '100 đ'),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            _buildBottomCheckout(context),
-          ],
+                _buildBottomCheckout(
+                  context,
+                  snapshot.data[0]['FK_merchant'],
+                  StringService().formatPrice(price.toString()),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -141,7 +155,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
             text: title,
             style: TextStyle(
               color: colorDarkGrey.withOpacity(.6),
-              fontSize: width / 26.0,
+              fontSize: width / 32.0,
               fontFamily: 'Lato',
               fontWeight: FontWeight.w400,
             ),
@@ -159,9 +173,9 @@ class _CheckOutPageState extends State<CheckOutPage> {
             text: value,
             style: TextStyle(
               color: colorBlack,
-              fontSize: width / 22.5,
+              fontSize: width / 26.5,
               fontFamily: 'Lato',
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],
@@ -169,7 +183,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
     );
   }
 
-  Widget _buildBottomCheckout(context) {
+  Widget _buildBottomCheckout(context, idMerchant, price) {
     void showPaymentBottomSheet() {
       showModalBottomSheet(
         shape: RoundedRectangleBorder(
@@ -202,25 +216,25 @@ class _CheckOutPageState extends State<CheckOutPage> {
         ),
         child: Column(
           children: [
+            SizedBox(height: 16.0),
+            // _buildActionValue('myvoucher'.trArgs(), 'chooseCoupon'.trArgs()),
+            // SizedBox(height: 16.0),
             GetBuilder<PickAddressController>(
-              builder: (_) => _buildActionValue(
-                'distance'.trArgs(),
-                _.distance ?? 'Unknown',
-              ),
-            ),
-            SizedBox(height: 16.0),
-            _buildActionValue('myvoucher'.trArgs(), 'chooseCoupon'.trArgs()),
-            SizedBox(height: 16.0),
-            _buildActionValue('transport'.trArgs(), 'chooseTransport'.trArgs()),
+                builder: (_) => _buildActionValue(
+                    'transport'.trArgs(),
+                    _.transportInfo == null
+                        ? 'chooseTransport'.trArgs()
+                        : _.transportInfo['FK_Transport']['name'],
+                    idMerchant)),
             SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '\$260',
+                  '$price đ',
                   style: TextStyle(
                     color: colorBlack,
-                    fontSize: width / 16.0,
+                    fontSize: width / 18.0,
                     fontFamily: 'Lato',
                     fontWeight: FontWeight.bold,
                     wordSpacing: 1.2,
@@ -228,7 +242,10 @@ class _CheckOutPageState extends State<CheckOutPage> {
                   ),
                 ),
                 NeumorphicButton(
-                  onPressed: () => showPaymentBottomSheet(),
+                  onPressed: () {
+                    // showPaymentBottomSheet();
+                    pickAddressController.paymentCartMerchant();
+                  },
                   duration: Duration(milliseconds: 200),
                   style: NeumorphicStyle(
                     shape: NeumorphicShape.convex,
@@ -272,7 +289,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
     );
   }
 
-  Widget _buildActionValue(title, value) {
+  Widget _buildActionValue(title, value, idMerchant) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -285,16 +302,19 @@ class _CheckOutPageState extends State<CheckOutPage> {
             fontWeight: FontWeight.w400,
           ),
         ),
-        Text(
-          value,
-          style: TextStyle(
-            color: value == 'chooseCoupon'.trArgs() ||
-                    value == 'chooseTransport'.trArgs()
-                ? colorPrimary
-                : colorTitle,
-            fontSize: width / 24.0,
-            fontFamily: 'Lato',
-            fontWeight: FontWeight.w400,
+        GestureDetector(
+          onTap: () => Get.toNamed(Routes.PICKDELIVERY, arguments: idMerchant),
+          child: Text(
+            value,
+            style: TextStyle(
+              color: value == 'chooseCoupon'.trArgs() ||
+                      value == 'chooseTransport'.trArgs()
+                  ? colorPrimary
+                  : colorTitle,
+              fontSize: width / 24.0,
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ),
       ],

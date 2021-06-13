@@ -34,7 +34,6 @@ class _EditTransportPageState extends State<EditTransportPage> {
   TextEditingController descController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  bool loading = false;
 
   void showImageBottomSheet() {
     showModalBottomSheet(
@@ -85,121 +84,123 @@ class _EditTransportPageState extends State<EditTransportPage> {
 
   @override
   Widget build(BuildContext context) {
-    return loading
-        ? Loading()
-        : Scaffold(
-            appBar: AppBar(
-              backgroundColor: mC,
-              elevation: .0,
-              centerTitle: true,
-              brightness: Brightness.light,
-              leading: IconButton(
-                onPressed: () => Get.back(),
-                icon: Icon(
-                  Feather.arrow_left,
-                  color: colorTitle,
-                  size: width / 15.0,
-                ),
-              ),
-              title: Text(
-                'Edit Company',
-                style: TextStyle(
-                  color: colorTitle,
-                  fontSize: width / 20.0,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Lato',
-                ),
-              ),
-              actions: [
-                IconButton(
-                  onPressed: () async {
-                    if (formKey.currentState.validate()) {
-                      if (_image == null) {
-                        transportController.editTransport(
-                          widget.transportInfo['_id'],
-                          _title,
-                          _desc,
-                          widget.transportInfo['avatar'],
-                          _phone,
-                          _address,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: mC,
+        elevation: .0,
+        centerTitle: true,
+        brightness: Brightness.light,
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: Icon(
+            Feather.arrow_left,
+            color: colorTitle,
+            size: width / 15.0,
+          ),
+        ),
+        title: Text(
+          'Edit Company',
+          style: TextStyle(
+            color: colorTitle,
+            fontSize: width / 20.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Lato',
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              if (formKey.currentState.validate()) {
+                if (_image == null) {
+                  transportController.editTransport(
+                    widget.transportInfo['_id'],
+                    _title,
+                    _desc,
+                    widget.transportInfo['avatar'],
+                    _phone,
+                    _address,
+                  );
+                } else {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
                         );
-                      } else {
-                        setState(() {
-                          loading = true;
-                        });
-
-                        StorageService storageService = StorageService();
-                        String urlToImage =
-                            await storageService.uploadImageNotProfile(_image);
-                        transportController.editTransport(
-                          widget.transportInfo['_id'],
-                          _title,
-                          _desc,
-                          urlToImage,
-                          _phone,
-                          _address,
-                        );
-                        setState(() {
-                          loading = false;
-                        });
-                      }
-                    }
-                  },
-                  icon: Icon(
-                    Feather.check,
-                    color: colorPrimary,
-                    size: width / 16.0,
-                  ),
-                ),
-              ],
-            ),
-            body: Container(
-              color: mC,
-              child: Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    SizedBox(height: 12.0),
-                    GestureDetector(
-                      onTap: () => showImageBottomSheet(),
-                      child: VerticalTransportCard(
-                        image: _image,
-                        address: _address,
-                        title: _title,
-                        urlToImage: widget.transportInfo['avatar'],
-                        desc: _desc,
-                      ),
-                    ),
-                    SizedBox(height: 16.0),
-                    _buildLineInfo(
-                        context, 'Company Name', '', titleController),
-                    _buildDivider(context),
-                    _buildLineInfo(
-                        context, 'phone'.trArgs(), '', phoneController),
-                    _buildDivider(context),
-                    _buildLineInfo(
-                        context, 'address'.trArgs(), '', addressController),
-                    _buildDivider(context),
-                    _buildLineInfo(
-                        context, 'description'.trArgs(), '', descController),
-                    _buildDivider(context),
-                    SizedBox(height: 24.0),
-                    StreamBuilder(
-                      stream: transportController.getTransportStream,
-                      builder: (context, AsyncSnapshot snapshot) {
-                        if (!snapshot.hasData) {
-                          return Container();
-                        }
-
-                        return _buildListCategories(
-                            snapshot.data['typeSupport']);
                       },
-                    ),
-                  ],
+                      barrierColor: Color(0x80000000),
+                      barrierDismissible: false);
+
+                  StorageService storageService = StorageService();
+                  String urlToImage =
+                      await storageService.uploadImageNotProfile(_image);
+                  transportController.editTransport(
+                    widget.transportInfo['_id'],
+                    _title,
+                    _desc,
+                    urlToImage,
+                    _phone,
+                    _address,
+                  );
+                  Get.back();
+                }
+              }
+            },
+            icon: Icon(
+              Feather.check,
+              color: colorPrimary,
+              size: width / 16.0,
+            ),
+          ),
+        ],
+      ),
+      body: Container(
+        color: mC,
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              SizedBox(height: 12.0),
+              GestureDetector(
+                onTap: () => showImageBottomSheet(),
+                child: VerticalTransportCard(
+                  image: _image,
+                  address: _address,
+                  title: _title,
+                  urlToImage: widget.transportInfo['avatar'],
+                  desc: _desc,
                 ),
               ),
-            ),
-          );
+              SizedBox(height: 16.0),
+              _buildLineInfo(context, 'Company Name', '', titleController),
+              _buildDivider(context),
+              _buildLineInfo(context, 'phone'.trArgs(), '', phoneController),
+              _buildDivider(context),
+              _buildLineInfo(
+                  context, 'address'.trArgs(), '', addressController),
+              _buildDivider(context),
+              _buildLineInfo(
+                  context, 'description'.trArgs(), '', descController),
+              _buildDivider(context),
+              SizedBox(height: 24.0),
+              StreamBuilder(
+                stream: transportController.getTransportStream,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
+                    return Container();
+                  }
+
+                  return _buildListCategories(snapshot.data['typeSupport']);
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildListCategories(listPrices) {

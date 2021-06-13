@@ -1,3 +1,4 @@
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/order/controllers/cart_merchant_controller.dart';
 import 'package:van_transport/src/pages/order/widgets/cart_card.dart';
@@ -15,10 +16,12 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   final cartController = Get.put(CartMerchantController());
+  SlidableController slidableController = new SlidableController();
 
   @override
   void initState() {
     super.initState();
+    slidableController = SlidableController();
     cartController.getCartMerchant();
   }
 
@@ -50,34 +53,41 @@ class _CartPageState extends State<CartPage> {
       ),
       body: Container(
         color: mCL,
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.only(top: 16.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(50.0),
-                  ),
-                  color: mCM.withOpacity(.85),
-                ),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child:
-                          NotificationListener<OverscrollIndicatorNotification>(
-                        onNotification: (overscroll) {
-                          overscroll.disallowGlow();
-                          return true;
-                        },
-                        child: StreamBuilder(
-                          stream: cartController.getCartController,
-                          builder: (context, AsyncSnapshot snapshot) {
-                            if (!snapshot.hasData) {
-                              return Container();
-                            }
+        child: StreamBuilder(
+          stream: cartController.getCartController,
+          builder: (context, AsyncSnapshot snapshot) {
+            if (!snapshot.hasData) {
+              return Container();
+            }
 
-                            return ListView.builder(
+            int quantity = 0;
+            int price = 0;
+            for (int i = 0; i < snapshot.data.length; i++) {
+              quantity += snapshot.data[i]['quantity'];
+              price += int.parse(snapshot.data[i]['product']['price']);
+            }
+
+            return Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 16.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(50.0),
+                      ),
+                      color: mCM.withOpacity(.85),
+                    ),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: NotificationListener<
+                              OverscrollIndicatorNotification>(
+                            onNotification: (overscroll) {
+                              overscroll.disallowGlow();
+                              return true;
+                            },
+                            child: ListView.builder(
                               padding: EdgeInsets.only(
                                 left: 12.5,
                                 right: 12.5,
@@ -86,43 +96,89 @@ class _CartPageState extends State<CartPage> {
                               physics: ClampingScrollPhysics(),
                               itemCount: snapshot.data.length,
                               itemBuilder: (context, index) {
-                                return CartCard(
-                                  name: StringService().formatString(
-                                    20,
-                                    snapshot.data[index]['product']['name'],
+                                return Container(
+                                  child: Slidable(
+                                    actionPane: SlidableDrawerActionPane(),
+                                    actionExtentRatio: 0.25,
+                                    controller: slidableController,
+                                    child: CartCard(
+                                      name: StringService().formatString(
+                                        20,
+                                        snapshot.data[index]['product']['name'],
+                                      ),
+                                      quantity: snapshot.data[index]['quantity']
+                                          .toString(),
+                                      price: snapshot.data[index]['product']
+                                              ['price']
+                                          .toString(),
+                                      urlToString: snapshot.data[index]
+                                          ['product']['image'],
+                                    ),
+                                    secondaryActions: <Widget>[
+                                      GestureDetector(
+                                        onTap: () {
+                                          cartController.deleteCartMerchant(
+                                              snapshot.data[index]['product']
+                                                  ['_id']);
+                                          slidableController.activeState
+                                              .close();
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.fromLTRB(
+                                              12.0, 24.0, 6.0, 24.0),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(4.0),
+                                            color: mCD,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: mCL,
+                                                  offset: Offset(3, 3),
+                                                  blurRadius: 3,
+                                                  spreadRadius: -3),
+                                            ],
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: Icon(
+                                            Feather.trash_2,
+                                            color: colorTitle,
+                                            size: width / 15.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  quantity: snapshot.data[index]['quantity']
-                                      .toString(),
-                                  price: snapshot.data[index]['product']
-                                          ['price']
-                                      .toString(),
-                                  urlToString: snapshot.data[index]['product']
-                                      ['image'],
                                 );
                               },
-                            );
-                          },
+                            ),
+                          ),
                         ),
-                      ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              _buildPriceText(
+                                  context, 'product'.trArgs(), '$quantity'),
+                              _buildPriceText(
+                                context,
+                                'subTotal'.trArgs(),
+                                '${StringService().formatPrice(price.toString())} đ',
+                              ),
+                              _buildPriceText(
+                                  context, 'taxes'.trArgs(), '100 đ'),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          _buildPriceText(context, 'product'.trArgs(), '2'),
-                          _buildPriceText(
-                              context, 'subTotal'.trArgs(), '\$250'),
-                          _buildPriceText(context, 'taxes'.trArgs(), '\$10'),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            _buildBottomCheckout(context),
-          ],
+                _buildBottomCheckout(
+                    context, StringService().formatPrice(price.toString())),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -136,7 +192,7 @@ class _CartPageState extends State<CartPage> {
             text: title,
             style: TextStyle(
               color: colorDarkGrey.withOpacity(.6),
-              fontSize: width / 26.0,
+              fontSize: width / 32.5,
               fontFamily: 'Lato',
               fontWeight: FontWeight.w400,
             ),
@@ -154,7 +210,7 @@ class _CartPageState extends State<CartPage> {
             text: value,
             style: TextStyle(
               color: colorBlack,
-              fontSize: width / 22.5,
+              fontSize: width / 26.0,
               fontFamily: 'Lato',
               fontWeight: FontWeight.bold,
             ),
@@ -164,7 +220,7 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  Widget _buildBottomCheckout(context) {
+  Widget _buildBottomCheckout(context, price) {
     return Container(
       color: mCM,
       child: Neumorphic(
@@ -184,10 +240,10 @@ class _CartPageState extends State<CartPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '\$260',
+              '$price đ',
               style: TextStyle(
                 color: colorBlack,
-                fontSize: width / 16.0,
+                fontSize: width / 20.0,
                 fontFamily: 'Lato',
                 fontWeight: FontWeight.bold,
                 wordSpacing: 1.2,

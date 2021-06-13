@@ -26,7 +26,6 @@ class _EditMerchantPageState extends State<EditMerchantPage> {
   final _formKey = GlobalKey<FormState>();
   File _image;
   String _title, _desc, _address, _phone, _lat, _lng;
-  bool loading = false;
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController addressController = TextEditingController();
@@ -188,114 +187,118 @@ class _EditMerchantPageState extends State<EditMerchantPage> {
 
   @override
   Widget build(BuildContext context) {
-    return loading
-        ? Loading()
-        : Scaffold(
-            appBar: AppBar(
-              backgroundColor: mC,
-              elevation: .0,
-              centerTitle: true,
-              brightness: Brightness.light,
-              leading: IconButton(
-                onPressed: () => Get.back(),
-                icon: Icon(
-                  Feather.arrow_left,
-                  color: colorTitle,
-                  size: width / 15.0,
-                ),
-              ),
-              title: Text(
-                'Edit Merchant',
-                style: TextStyle(
-                  color: colorTitle,
-                  fontSize: width / 20.0,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Lato',
-                ),
-              ),
-              actions: [
-                IconButton(
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      if (_image != null) {
-                        setState(() {
-                          loading = true;
-                        });
-                        StorageService storageService = StorageService();
-                        String urlToImage =
-                            await storageService.uploadImageNotProfile(_image);
-                        merchantController.editMerchant(
-                          widget.merchantInfo['_id'],
-                          _title,
-                          _desc,
-                          urlToImage,
-                          _address,
-                          widget.merchantInfo['FK_category'],
-                          _phone,
-                          _lat,
-                          _lng,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: mC,
+        elevation: .0,
+        centerTitle: true,
+        brightness: Brightness.light,
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: Icon(
+            Feather.arrow_left,
+            color: colorTitle,
+            size: width / 15.0,
+          ),
+        ),
+        title: Text(
+          'Edit Merchant',
+          style: TextStyle(
+            color: colorTitle,
+            fontSize: width / 20.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Lato',
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              if (_formKey.currentState.validate()) {
+                if (_image != null) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
                         );
-                      } else {
-                        merchantController.editMerchant(
-                          widget.merchantInfo['_id'],
-                          _title,
-                          _desc,
-                          widget.merchantInfo['image'],
-                          _address,
-                          widget.merchantInfo['FK_category'],
-                          _phone,
-                          _lat,
-                          _lng,
-                        );
-                      }
-                      setState(() {
-                        loading = false;
-                      });
-                    }
-                  },
-                  icon: Icon(
-                    Feather.check,
-                    color: colorPrimary,
-                    size: width / 16.0,
-                  ),
-                ),
-              ],
+                      },
+                      barrierColor: Color(0x80000000),
+                      barrierDismissible: false);
+                  StorageService storageService = StorageService();
+                  String urlToImage =
+                      await storageService.uploadImageNotProfile(_image);
+                  merchantController.editMerchant(
+                    widget.merchantInfo['_id'],
+                    _title,
+                    _desc,
+                    urlToImage,
+                    _address,
+                    widget.merchantInfo['FK_category'],
+                    _phone,
+                    _lat,
+                    _lng,
+                  );
+                  Get.back();
+                } else {
+                  Get.back();
+                  merchantController.editMerchant(
+                    widget.merchantInfo['_id'],
+                    _title,
+                    _desc,
+                    widget.merchantInfo['image'],
+                    _address,
+                    widget.merchantInfo['FK_category'],
+                    _phone,
+                    _lat,
+                    _lng,
+                  );
+                }
+              }
+            },
+            icon: Icon(
+              Feather.check,
+              color: colorPrimary,
+              size: width / 16.0,
             ),
-            body: Container(
-              color: mC,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    SizedBox(height: 12.0),
-                    GestureDetector(
-                      onTap: () => showImageBottomSheet(),
-                      child: VerticalTransportCard(
-                        image: _image,
-                        address: _address,
-                        title: _title,
-                        urlToImage: widget.merchantInfo['image'],
-                        desc: _desc,
-                      ),
-                    ),
-                    SizedBox(height: 16.0),
-                    _buildLineInfo(
-                        context, 'title'.trArgs(), '', titleController),
-                    _buildDivider(context),
-                    _buildLineInfo(
-                        context, 'address'.trArgs(), '', addressController),
-                    _buildDivider(context),
-                    _buildLineInfo(
-                        context, 'description'.trArgs(), '', descController),
-                    _buildDivider(context),
-                    _buildLineInfo(
-                        context, 'phone'.trArgs(), '', titleController),
-                    _buildDivider(context),
-                  ],
+          ),
+        ],
+      ),
+      body: Container(
+        color: mC,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              SizedBox(height: 12.0),
+              GestureDetector(
+                onTap: () => showImageBottomSheet(),
+                child: VerticalTransportCard(
+                  image: _image,
+                  address: _address,
+                  title: _title,
+                  urlToImage: widget.merchantInfo['image'],
+                  desc: _desc,
                 ),
               ),
-            ),
-          );
+              SizedBox(height: 16.0),
+              _buildLineInfo(context, 'title'.trArgs(), '', titleController),
+              _buildDivider(context),
+              _buildLineInfo(
+                  context, 'address'.trArgs(), '', addressController),
+              _buildDivider(context),
+              _buildLineInfo(
+                  context, 'description'.trArgs(), '', descController),
+              _buildDivider(context),
+              _buildLineInfo(context, 'phone'.trArgs(), '', titleController),
+              _buildDivider(context),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildLineInfo(context, title, valid, controller) {

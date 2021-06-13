@@ -16,7 +16,7 @@ class _ManageOrderPageState extends State<ManageOrderPage> {
     return Container(
       padding: EdgeInsets.only(top: 8.0),
       child: ListView.builder(
-        itemCount: 10,
+        itemCount: 0,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () => Get.toNamed(Routes.DETAILSORDERS),

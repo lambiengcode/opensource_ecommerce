@@ -7,6 +7,8 @@ class TransportController extends GetxController {
   TransportService transportService = TransportService();
   StreamController<dynamic> transportController =
       StreamController<dynamic>.broadcast();
+  StreamController<List<dynamic>> subTransportController =
+      StreamController<List<dynamic>>.broadcast();
   StreamController<List<dynamic>> assignStaffController =
       StreamController<List<dynamic>>.broadcast();
 
@@ -18,6 +20,12 @@ class TransportController extends GetxController {
   getAssignTransport() async {
     var res = await transportService.getAssignStaff();
     assignStaffController.add(res);
+  }
+
+  getAllSubTransportByStatus(status) async {
+    var res = await transportService.getSubTransportByStatus(status);
+    print(res);
+    subTransportController.add(res);
   }
 
   editTransport(
@@ -92,14 +100,11 @@ class TransportController extends GetxController {
     }
   }
 
-  createSubTransport(locationCity, lat, lng, locationCountry, locationWard,
-      locationAddress) async {
+  createSubTransport(locationCity, lat, lng, locationAddress) async {
     var body = {
       "locationCity": locationCity,
       "locationCoordinateLat": lat,
       "locationCoordinateLng": lng,
-      "locationCounty": locationCountry,
-      "locationWard": locationWard,
       "locationAddress": locationAddress,
     };
 
@@ -135,6 +140,26 @@ class TransportController extends GetxController {
     }
   }
 
+  assignStaff(idSub, idUser) async {
+    var body = {
+      "idUser": idUser,
+      "idSub": idSub,
+    };
+
+    int status = await transportService.assignTransport(body);
+    if (status == 200) {
+      getAllSubTransportByStatus('ACTIVE');
+      Get.back();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Update failure!',
+        subTitle: 'Check again your information.',
+      );
+      getSnackBar.show();
+    }
+  }
+
   Stream<dynamic> get getTransportStream => transportController.stream;
+  Stream<dynamic> get getSubTransportStream => subTransportController.stream;
   Stream<dynamic> get getAssignStaffStream => assignStaffController.stream;
 }

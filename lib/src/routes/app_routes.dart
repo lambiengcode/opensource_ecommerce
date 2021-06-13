@@ -24,6 +24,8 @@ abstract class Routes {
   static const ADDPRODUCT = '/addProduct';
   static const DETAILSORDERS = '/detailsOrders';
   static const PICKADDRESSCART = '/pickAddressCart';
+  static const PICKDELIVERY = '/pickDelivery';
+  static const EDITPRODUCT = '/editProduct';
 
   // Profile
   static const EDITPROFILE = '/editProfile';
@@ -53,13 +55,14 @@ abstract class Routes {
   static const EDITGROUP = '/editGroup';
   static const DETAILSGROUP = 'detailsGroup';
   static const CREATEPRODUCT = '/createProduct';
-  static const EDITPRODUCT = '/editProduct';
+  static const EDITPRODUCTORDER = '/editProduct';
 
   // Delivery
   static const MIDDLETRANSPORT = '/middlewareTransport';
   static const DELIVERY = '/delivery';
   static const REGISTERDELIVERY = '/registerDelivery';
   static const EDITDELIVERY = '/editDelivery';
+  static const ASSIGN_STAFF = '/assignStaff';
 
   // Staff Delivery
   static const STAFFDELIVERY = '/subDelivery';

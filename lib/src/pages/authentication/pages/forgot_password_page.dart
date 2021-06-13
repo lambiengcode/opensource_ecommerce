@@ -22,7 +22,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   String _email = '';
 
   bool hidePassword = true;
-  bool loading = false;
 
   hideKeyboard() => textFieldFocus.unfocus();
 
@@ -35,139 +34,145 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
 
-    return loading
-        ? Loading()
-        : Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              elevation: .0,
-              backgroundColor: mC,
-              brightness: Brightness.light,
-              leading: IconButton(
-                onPressed: () => Get.back(),
-                icon: Icon(
-                  Feather.arrow_left,
-                  color: colorTitle,
-                  size: _size.width / 15.0,
-                ),
-              ),
-              title: Text(
-                'forgot'.trArgs().replaceAll('?', ''),
-                style: TextStyle(
-                  color: colorTitle,
-                  fontSize: _size.width / 20.5,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            body: Container(
-              height: _size.height,
-              width: _size.width,
-              color: mC,
-              child: Form(
-                key: _formKey,
-                child: NotificationListener<OverscrollIndicatorNotification>(
-                  onNotification: (overscroll) {
-                    overscroll.disallowGlow();
-                    return true;
-                  },
-                  child: SingleChildScrollView(
-                    physics: ClampingScrollPhysics(),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: .0,
+        backgroundColor: mC,
+        brightness: Brightness.light,
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: Icon(
+            Feather.arrow_left,
+            color: colorTitle,
+            size: _size.width / 15.0,
+          ),
+        ),
+        title: Text(
+          'forgot'.trArgs().replaceAll('?', ''),
+          style: TextStyle(
+            color: colorTitle,
+            fontSize: _size.width / 20.5,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      body: Container(
+        height: _size.height,
+        width: _size.width,
+        color: mC,
+        child: Form(
+          key: _formKey,
+          child: NotificationListener<OverscrollIndicatorNotification>(
+            onNotification: (overscroll) {
+              overscroll.disallowGlow();
+              return true;
+            },
+            child: SingleChildScrollView(
+              physics: ClampingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(height: .0),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: _size.width * 0.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(height: .0),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: _size.width * 0.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: mC,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: mCL,
-                                      offset: Offset(-10, -10),
-                                      blurRadius: 10,
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  children: <Widget>[
-                                    SizedBox(height: 12.0),
-                                    _buildLineInfo(
-                                      context,
-                                      'email'.trArgs(),
-                                      'validEmail'.trArgs(),
-                                      _emailController,
-                                    ),
-                                    _buildDivider(context),
-                                    SizedBox(height: 8.0),
-                                  ],
-                                ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: mC,
+                            boxShadow: [
+                              BoxShadow(
+                                color: mCL,
+                                offset: Offset(-10, -10),
+                                blurRadius: 10,
                               ),
-                              SizedBox(height: 24.0),
-                              GestureDetector(
-                                onTap: () async {
-                                  if (_formKey.currentState.validate()) {
-                                    setState(() {
-                                      loading = true;
-                                    });
-
-                                    var res = await _authService
-                                        .forgotPassword(_email);
-
-                                    if (res['status'] == 200) {
-                                      Get.toNamed(Routes.VERIFY);
-                                    } else {
-                                      setState(() {
-                                        loading = false;
-                                        _email = res['email'];
-                                        _emailController.text = res['email'];
-                                      });
-                                      GetSnackBar snackBar = GetSnackBar(
-                                        title: 'Email not exists!',
-                                        subTitle: 'Check again your email.',
-                                      );
-                                      snackBar.show();
-                                    }
-                                  }
-                                },
-                                child: Container(
-                                  height: 46.8,
-                                  margin: EdgeInsets.symmetric(
-                                    horizontal: _size.width * .16,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(40.0),
-                                    color: colorTitle,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'confirm'.trArgs(),
-                                      style: TextStyle(
-                                        color: colorPrimaryTextOpacity,
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 36.0),
                             ],
                           ),
-                        )
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(height: 12.0),
+                              _buildLineInfo(
+                                context,
+                                'email'.trArgs(),
+                                'validEmail'.trArgs(),
+                                _emailController,
+                              ),
+                              _buildDivider(context),
+                              SizedBox(height: 8.0),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 24.0),
+                        GestureDetector(
+                          onTap: () async {
+                            if (_formKey.currentState.validate()) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.white),
+                                      ),
+                                    );
+                                  },
+                                  barrierColor: Color(0x80000000),
+                                  barrierDismissible: false);
+                              var res =
+                                  await _authService.forgotPassword(_email);
+                              Get.back();
+                              if (res['status'] == 200) {
+                                Get.toNamed(Routes.VERIFY);
+                              } else {
+                                setState(() {
+                                  _email = res['email'];
+                                  _emailController.text = res['email'];
+                                });
+                                GetSnackBar snackBar = GetSnackBar(
+                                  title: 'Email not exists!',
+                                  subTitle: 'Check again your email.',
+                                );
+                                snackBar.show();
+                              }
+                            }
+                          },
+                          child: Container(
+                            height: 46.8,
+                            margin: EdgeInsets.symmetric(
+                              horizontal: _size.width * .16,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40.0),
+                              color: colorTitle,
+                            ),
+                            child: Center(
+                              child: Text(
+                                'confirm'.trArgs(),
+                                style: TextStyle(
+                                  color: colorPrimaryTextOpacity,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 36.0),
                       ],
                     ),
-                  ),
-                ),
+                  )
+                ],
               ),
             ),
-          );
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildLineInfo(context, title, valid, controller) {

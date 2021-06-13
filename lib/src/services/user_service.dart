@@ -86,9 +86,47 @@ class UserService {
     return response.statusCode;
   }
 
+  Future<int> updateProductToCartClient(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.UPDATE_CART_CLIENT,
+      headers: getHeaders(),
+      body: body,
+    );
+    print(convert.jsonDecode(response.body));
+    return response.statusCode;
+  }
+
   Future<int> addProductToCartMerchant(body) async {
     var response = await http.post(
       baseUrl + ApiGateway.ADD_PRODUCT_TO_CART_MERCHANT,
+      headers: getHeaders(),
+      body: body,
+    );
+    return response.statusCode;
+  }
+
+  Future<int> paymentCartMerchant(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.PAYMENT_CART_MERCHANT,
+      headers: getHeaders(),
+      body: body,
+    );
+    return response.statusCode;
+  }
+
+  Future<int> deleteItemCartMerchant(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.DELETE_CART_MERCHANT,
+      headers: getHeaders(),
+      body: body,
+    );
+    print(convert.jsonDecode(response.body));
+    return response.statusCode;
+  }
+
+  Future<int> deleteItemCartClient(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.DELETE_CART_CLIENT,
       headers: getHeaders(),
       body: body,
     );
@@ -102,6 +140,20 @@ class UserService {
     );
     return response.statusCode == 200
         ? convert.jsonDecode(response.body)['data']['products']
+        : null;
+  }
+
+  Future<dynamic> getTransportDelivery(idAddress, idMerchant) async {
+    var response = await http.get(
+      baseUrl +
+          ApiGateway.GET_TRANSPORT_DELIVERY +
+          idAddress +
+          '&senderIdMerchant=$idMerchant',
+      headers: getHeaders(),
+    );
+
+    return response.statusCode == 200
+        ? convert.jsonDecode(response.body)['data']
         : null;
   }
 

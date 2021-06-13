@@ -125,7 +125,9 @@ class _HomePageState extends State<HomePage> {
                         padding: EdgeInsets.only(top: .0),
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: _.listProduct4.length,
+                        itemCount: _.listProduct4.length < 15
+                            ? _.listProduct4.length
+                            : 15,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () => Get.toNamed(Routes.DETAILSPRODUCT,

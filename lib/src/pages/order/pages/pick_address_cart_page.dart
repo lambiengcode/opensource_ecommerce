@@ -1,6 +1,4 @@
-import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:van_transport/src/common/constant_code.dart';
-import 'package:van_transport/src/common/secret_key.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/order/controllers/cart_merchant_controller.dart';
 import 'package:van_transport/src/pages/order/controllers/pick_address_controller.dart';
@@ -31,115 +29,6 @@ class _PickAddressCartPageState extends State<PickAddressCartPage> {
     pickAddressController.initData();
   }
 
-  void chooseLocation(context) {
-    try {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return PlacePicker(
-              apiKey: apiMap,
-              initialPosition: kInitialPosition,
-              useCurrentLocation: true,
-              selectInitialPosition: true,
-              onGeocodingSearchFailed: (error) => print(error),
-              usePlaceDetailSearch: true,
-              forceSearchOnZoomChanged: true,
-              automaticallyImplyAppBarLeading: false,
-              usePinPointingSearch: true,
-              autocompleteLanguage:
-                  Get.locale == Locale('vi', 'VN') ? 'vi' : 'en',
-              region: Get.locale == Locale('vi', 'VN') ? 'vn' : 'us',
-              selectedPlaceWidgetBuilder:
-                  (_, selectedP, state, isSearchBarFocused) {
-                print("state: $state, isSearchBarFocused: $isSearchBarFocused");
-                return isSearchBarFocused
-                    ? Container()
-                    : FloatingCard(
-                        bottomPosition: 0.0,
-                        leftPosition: 0.0,
-                        rightPosition: 0.0,
-                        width: 600.0,
-                        height: 125.0,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(12.0),
-                        ),
-                        child: state == SearchingState.Searching
-                            ? Center(
-                                child: CircularProgressIndicator(
-                                  valueColor: new AlwaysStoppedAnimation<Color>(
-                                    colorTitle,
-                                  ),
-                                ),
-                              )
-                            : Column(
-                                children: [
-                                  SizedBox(
-                                    height: 20.0,
-                                  ),
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 12.0),
-                                    child: Text(
-                                      selectedP.formattedAddress,
-                                      style: TextStyle(
-                                          color: colorTitle,
-                                          fontSize: 15.0,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 18.0,
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      width: 600.0,
-                                      child: RaisedButton(
-                                        color: colorTitle,
-                                        child: Text(
-                                          'pick'.trArgs(),
-                                          style: TextStyle(
-                                            color: colorPrimaryTextOpacity,
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          pickAddressController
-                                              .pickAddress(selectedP);
-                                          Get.back();
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                      );
-              },
-              pinBuilder: (context, state) {
-                if (state == PinState.Idle) {
-                  return CircleAvatar(
-                    radius: 12.0,
-                    backgroundImage: NetworkImage(
-                      'https://avatars.githubusercontent.com/u/60530946?v=4',
-                    ),
-                  );
-                } else {
-                  return CircleAvatar(
-                    radius: 12.0,
-                    backgroundImage: NetworkImage(
-                      'https://avatars.githubusercontent.com/u/60530946?v=4',
-                    ),
-                  );
-                }
-              },
-            );
-          },
-        ),
-      );
-    } catch (error) {
-      print(error);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -168,34 +57,39 @@ class _PickAddressCartPageState extends State<PickAddressCartPage> {
       ),
       body: Container(
         color: mCL,
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.only(top: 16.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(50.0),
-                  ),
-                  color: mCM.withOpacity(.85),
-                ),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child:
-                          NotificationListener<OverscrollIndicatorNotification>(
-                        onNotification: (overscroll) {
-                          overscroll.disallowGlow();
-                          return true;
-                        },
-                        child: StreamBuilder(
-                          stream: cartController.getCartController,
-                          builder: (context, AsyncSnapshot snapshot) {
-                            if (!snapshot.hasData) {
-                              return Container();
-                            }
+        child: StreamBuilder(
+          stream: cartController.getCartController,
+          builder: (context, AsyncSnapshot snapshot) {
+            if (!snapshot.hasData) {
+              return Container();
+            }
 
-                            return ListView.builder(
+            int quantity = 0;
+            for (int i = 0; i < snapshot.data.length; i++) {
+              quantity += snapshot.data[i]['quantity'];
+            }
+
+            return Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 16.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(50.0),
+                      ),
+                      color: mCM.withOpacity(.85),
+                    ),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: NotificationListener<
+                              OverscrollIndicatorNotification>(
+                            onNotification: (overscroll) {
+                              overscroll.disallowGlow();
+                              return true;
+                            },
+                            child: ListView.builder(
                               padding: EdgeInsets.only(
                                 left: 12.5,
                                 right: 12.5,
@@ -218,29 +112,30 @@ class _PickAddressCartPageState extends State<PickAddressCartPage> {
                                       ['image'],
                                 );
                               },
-                            );
-                          },
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            GetBuilder<PickAddressController>(
-              builder: (_) => _buildBottomCheckout(
-                context,
-                _.placeFrom,
-                _.placeTo,
-              ),
-            )
-          ],
+                GetBuilder<PickAddressController>(
+                  builder: (_) => _buildBottomCheckout(
+                    context,
+                    _.placeFrom,
+                    _.placeTo,
+                    quantity,
+                  ),
+                )
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget _buildBottomCheckout(context, fromAddress, toAddress) {
+  Widget _buildBottomCheckout(context, fromAddress, toAddress, quantity) {
     return Container(
       color: mCM,
       child: Neumorphic(
@@ -259,17 +154,10 @@ class _PickAddressCartPageState extends State<PickAddressCartPage> {
         child: Column(
           children: [
             _buildAddressValue(
-              'fromAddress'.trArgs(),
-              fromAddress == ''
-                  ? 'pick'.trArgs()
-                  : stringService.formatString(18, fromAddress),
-            ),
-            SizedBox(height: 18.0),
-            _buildAddressValue(
                 'toAddress'.trArgs(),
-                toAddress == ''
+                fromAddress == ''
                     ? 'pick'.trArgs()
-                    : stringService.formatString(18, toAddress)),
+                    : stringService.formatString(18, fromAddress)),
             SizedBox(height: 24.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -278,7 +166,7 @@ class _PickAddressCartPageState extends State<PickAddressCartPage> {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: 'Product:\t\t',
+                        text: '${'product'.trArgs()}:\t\t',
                         style: TextStyle(
                           color: colorDarkGrey,
                           fontSize: width / 24.0,
@@ -287,7 +175,7 @@ class _PickAddressCartPageState extends State<PickAddressCartPage> {
                         ),
                       ),
                       TextSpan(
-                        text: '2',
+                        text: '$quantity',
                         style: TextStyle(
                           color: colorPrimary,
                           fontSize: width / 20.0,
@@ -301,8 +189,7 @@ class _PickAddressCartPageState extends State<PickAddressCartPage> {
                 GetBuilder<PickAddressController>(
                   builder: (_) => NeumorphicButton(
                     onPressed: () {
-                      if (_.placeFrom != '' && _.placeTo != '') {
-                        pickAddressController.calDistance();
+                      if (_.placeFrom != '') {
                         Get.toNamed(Routes.CHECKOUT);
                       } else {
                         GetSnackBar getSnackBar = GetSnackBar(
@@ -371,9 +258,7 @@ class _PickAddressCartPageState extends State<PickAddressCartPage> {
         ),
         GestureDetector(
           onTap: () {
-            title == 'toAddress'.trArgs()
-                ? chooseLocation(context)
-                : Get.toNamed(Routes.ADDRESS, arguments: PICK_ON);
+            Get.toNamed(Routes.ADDRESS, arguments: PICK_ON);
           },
           child: Text(
             value,

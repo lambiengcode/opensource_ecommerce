@@ -11,20 +11,41 @@ import 'package:van_transport/src/pages/order/widgets/bottom_sheet_input_weight.
 import 'package:van_transport/src/pages/order/widgets/bottom_sheet_product_type.dart';
 import 'package:van_transport/src/services/storage_service.dart';
 
-class AddProductPage extends StatefulWidget {
+class EditProductPage extends StatefulWidget {
+  final String name;
+  final String weight;
+  final String idProduct;
+  final String typeProduct;
+  EditProductPage({
+    @required this.name,
+    @required this.weight,
+    @required this.typeProduct,
+    @required this.idProduct,
+  });
   @override
-  State<StatefulWidget> createState() => _AddProductPageState();
+  State<StatefulWidget> createState() => _EditProductPageState();
 }
 
-class _AddProductPageState extends State<AddProductPage> {
+class _EditProductPageState extends State<EditProductPage> {
   final cartController = Get.put(CartClientController());
+  TextEditingController _nameController = TextEditingController();
   List<String> valueOfProductType = [
     'standard'.trArgs(),
     'frozen'.trArgs(),
     'jewelry'.trArgs()
   ];
   List<File> images = [];
-  String name = '';
+  List<String> urlImages = [];
+  String name;
+
+  @override
+  void initState() {
+    super.initState();
+    name = widget.name;
+    _nameController.text = widget.name;
+    cartController.setWeight(widget.weight);
+    cartController.setTypeProductByString(widget.typeProduct);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +118,7 @@ class _AddProductPageState extends State<AddProductPage> {
                       alignment: Alignment.center,
                       child: TextFormField(
                         autofocus: true,
+                        controller: _nameController,
                         onFieldSubmitted: (val) => null,
                         cursorColor: fCL,
                         cursorRadius: Radius.circular(4.0),
@@ -209,7 +231,8 @@ class _AddProductPageState extends State<AddProductPage> {
                     urls.add(url);
                   }
                   Get.back();
-                  cartController.addProductToCart(name, urls);
+                  cartController.updateProductToCart(
+                      widget.idProduct, name, urls);
                 }
               },
               duration: Duration(milliseconds: 200),

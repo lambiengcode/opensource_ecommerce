@@ -312,6 +312,7 @@ class _AddressPageState extends State<AddressPage> {
                                 mProfile[index]['coordinates']['lng'],
                               ),
                               mProfile[index]['fullAddress'],
+                              mProfile[index]['id'],
                             );
                             Get.back();
                           } else {
@@ -355,16 +356,7 @@ class _AddressPageState extends State<AddressPage> {
             }
 
             return GestureDetector(
-              onTap: () {
-                if (widget.mode == PICK_ON) {
-                  pickAddressController.pickFromAddress(
-                    currentLocation.latitude,
-                    currentLocation.longitude,
-                    snapshot.data,
-                  );
-                  Get.back();
-                }
-              },
+              onTap: () {},
               child: _buildLocation(
                   context, title, snapshot.data, icon, '09889917877'),
             );

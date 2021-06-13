@@ -30,7 +30,6 @@ class _SignupStaffPageState extends State<SignupStaffPage> {
   File _image = null;
 
   bool hidePassword = true;
-  bool loading = false;
 
   hideKeyboard() => textFieldFocus.unfocus();
 
@@ -53,243 +52,247 @@ class _SignupStaffPageState extends State<SignupStaffPage> {
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
 
-    return loading
-        ? Loading()
-        : Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              elevation: .0,
-              backgroundColor: mC,
-              brightness: Brightness.light,
-              leading: IconButton(
-                onPressed: () => Get.back(),
-                icon: Icon(
-                  Feather.arrow_left,
-                  color: colorTitle,
-                  size: _size.width / 15.0,
-                ),
-              ),
-              title: Text(
-                'getStarted'.trArgs(),
-                style: TextStyle(
-                  color: colorTitle,
-                  fontSize: _size.width / 20.5,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            body: Container(
-              height: _size.height,
-              width: _size.width,
-              color: mC,
-              child: Form(
-                key: _formKey,
-                child: NotificationListener<OverscrollIndicatorNotification>(
-                  onNotification: (overscroll) {
-                    overscroll.disallowGlow();
-                    return true;
-                  },
-                  child: SingleChildScrollView(
-                    physics: ClampingScrollPhysics(),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: .0,
+        backgroundColor: mC,
+        brightness: Brightness.light,
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: Icon(
+            Feather.arrow_left,
+            color: colorTitle,
+            size: _size.width / 15.0,
+          ),
+        ),
+        title: Text(
+          'getStarted'.trArgs(),
+          style: TextStyle(
+            color: colorTitle,
+            fontSize: _size.width / 20.5,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      body: Container(
+        height: _size.height,
+        width: _size.width,
+        color: mC,
+        child: Form(
+          key: _formKey,
+          child: NotificationListener<OverscrollIndicatorNotification>(
+            onNotification: (overscroll) {
+              overscroll.disallowGlow();
+              return true;
+            },
+            child: SingleChildScrollView(
+              physics: ClampingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(height: 16.0),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 0.0,
+                    ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(height: 16.0),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 0.0,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () => showImageBottomSheet(),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Container(
-                                          height: _size.width * .31,
-                                          width: _size.width * .31,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: colorPrimary,
-                                              width: 3.0,
-                                            ),
-                                            shape: BoxShape.circle,
+                        GestureDetector(
+                          onTap: () => showImageBottomSheet(),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                children: [
+                                  Container(
+                                    height: _size.width * .31,
+                                    width: _size.width * .31,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: colorPrimary,
+                                        width: 3.0,
+                                      ),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Container(
+                                      height: _size.width * .28,
+                                      width: _size.width * .28,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: mC,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: mCL,
+                                            offset: Offset(3, 3),
+                                            blurRadius: 3,
+                                            spreadRadius: -3,
                                           ),
-                                          child: Container(
-                                            height: _size.width * .28,
-                                            width: _size.width * .28,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: mC,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: mCL,
-                                                  offset: Offset(3, 3),
-                                                  blurRadius: 3,
-                                                  spreadRadius: -3,
-                                                ),
-                                              ],
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                    'https://avatars.githubusercontent.com/u/60530946?s=460&u=e342f079ed3571122e21b42eedd0ae251a9d91ce&v=4'),
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                child: Column(
-                                  children: <Widget>[
-                                    SizedBox(height: 12.0),
-                                    _buildLineInfo(
-                                      context,
-                                      'phone'.trArgs(),
-                                      'validPhone'.trArgs(),
-                                      _phoneController,
-                                    ),
-                                    _buildDivider(context),
-                                    _buildLineInfo(
-                                      context,
-                                      'fullName'.trArgs(),
-                                      'validFullName'.trArgs(),
-                                      _fullNameController,
-                                    ),
-                                    _buildDivider(context),
-                                    _buildLineInfo(
-                                      context,
-                                      'email'.trArgs(),
-                                      'validEmail'.trArgs(),
-                                      _emailController,
-                                    ),
-                                    _buildDivider(context),
-                                    _buildLineInfo(
-                                      context,
-                                      'password'.trArgs(),
-                                      'validPsw'.trArgs(),
-                                      _passwordController,
-                                    ),
-                                    _buildDivider(context),
-                                    Container(
-                                      padding: EdgeInsets.fromLTRB(
-                                          14.0, 24.0, 18.0, 4.0),
-                                      child: TextFormField(
-                                        controller: _confirmPswController,
-                                        cursorColor: colorTitle,
-                                        cursorRadius: Radius.circular(30.0),
-                                        style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: _size.width / 26.0,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        validator: (val) =>
-                                            val.trim() != password
-                                                ? 'validConfirmPsw'.trArgs()
-                                                : null,
-                                        obscureText: hidePassword,
-                                        decoration: InputDecoration(
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.always,
-                                          contentPadding: EdgeInsets.only(
-                                            left: 12.0,
-                                          ),
-                                          border: InputBorder.none,
-                                          labelText: 'confirmPsw'.trArgs(),
-                                          labelStyle: TextStyle(
-                                            color: colorTitle,
-                                            fontSize: _size.width / 26.0,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                        ],
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              'https://avatars.githubusercontent.com/u/60530946?s=460&u=e342f079ed3571122e21b42eedd0ae251a9d91ce&v=4'),
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                     ),
-                                    _buildDivider(context),
-                                    SizedBox(height: 8.0),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 12.0),
-                              GestureDetector(
-                                onTap: () async {
-                                  if (_formKey.currentState.validate()) {
-                                    setState(() {
-                                      loading = true;
-                                    });
-                                  }
-                                  var res = await _authService.register(
-                                    email,
-                                    password,
-                                    phone,
-                                    fullName,
-                                  );
-
-                                  if (res['status'] == 200) {
-                                    Get.offAndToNamed('/root');
-                                  } else {
-                                    setState(() {
-                                      loading = false;
-                                      email = res['email'];
-                                      password = res['password'];
-                                      fullName = res['fullName'];
-                                      phone = res['phone'];
-                                      _confirmPswController.text =
-                                          res['password'];
-                                      _emailController.text = res['email'];
-                                      _passwordController.text =
-                                          res['password'];
-                                      _phoneController.text = res['phone'];
-                                      _fullNameController.text =
-                                          res['fullName'];
-                                    });
-                                    GetSnackBar snackBar = GetSnackBar(
-                                      title: 'Signup Fail!',
-                                      subTitle: 'Email exists, try again!',
-                                    );
-                                    snackBar.show();
-                                  }
-                                },
-                                child: Container(
-                                  height: 46.8,
-                                  margin: EdgeInsets.symmetric(
-                                    horizontal: _size.width * .12,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(40.0),
-                                    color: colorTitle,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'createAccount'.trArgs(),
-                                      style: TextStyle(
-                                        color: colorPrimaryTextOpacity,
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 36.0),
                             ],
                           ),
-                        )
+                        ),
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(height: 12.0),
+                              _buildLineInfo(
+                                context,
+                                'phone'.trArgs(),
+                                'validPhone'.trArgs(),
+                                _phoneController,
+                              ),
+                              _buildDivider(context),
+                              _buildLineInfo(
+                                context,
+                                'fullName'.trArgs(),
+                                'validFullName'.trArgs(),
+                                _fullNameController,
+                              ),
+                              _buildDivider(context),
+                              _buildLineInfo(
+                                context,
+                                'email'.trArgs(),
+                                'validEmail'.trArgs(),
+                                _emailController,
+                              ),
+                              _buildDivider(context),
+                              _buildLineInfo(
+                                context,
+                                'password'.trArgs(),
+                                'validPsw'.trArgs(),
+                                _passwordController,
+                              ),
+                              _buildDivider(context),
+                              Container(
+                                padding:
+                                    EdgeInsets.fromLTRB(14.0, 24.0, 18.0, 4.0),
+                                child: TextFormField(
+                                  controller: _confirmPswController,
+                                  cursorColor: colorTitle,
+                                  cursorRadius: Radius.circular(30.0),
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: _size.width / 26.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  validator: (val) => val.trim() != password
+                                      ? 'validConfirmPsw'.trArgs()
+                                      : null,
+                                  obscureText: hidePassword,
+                                  decoration: InputDecoration(
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    contentPadding: EdgeInsets.only(
+                                      left: 12.0,
+                                    ),
+                                    border: InputBorder.none,
+                                    labelText: 'confirmPsw'.trArgs(),
+                                    labelStyle: TextStyle(
+                                      color: colorTitle,
+                                      fontSize: _size.width / 26.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              _buildDivider(context),
+                              SizedBox(height: 8.0),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 12.0),
+                        GestureDetector(
+                          onTap: () async {
+                            if (_formKey.currentState.validate()) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.white),
+                                      ),
+                                    );
+                                  },
+                                  barrierColor: Color(0x80000000),
+                                  barrierDismissible: false);
+
+                              var res = await _authService.register(
+                                email,
+                                password,
+                                phone,
+                                fullName,
+                              );
+                              Get.back();
+                              if (res['status'] == 200) {
+                                Get.offAndToNamed('/root');
+                              } else {
+                                setState(() {
+                                  email = res['email'];
+                                  password = res['password'];
+                                  fullName = res['fullName'];
+                                  phone = res['phone'];
+                                  _confirmPswController.text = res['password'];
+                                  _emailController.text = res['email'];
+                                  _passwordController.text = res['password'];
+                                  _phoneController.text = res['phone'];
+                                  _fullNameController.text = res['fullName'];
+                                });
+                                GetSnackBar snackBar = GetSnackBar(
+                                  title: 'Signup Fail!',
+                                  subTitle: 'Email exists, try again!',
+                                );
+                                snackBar.show();
+                              }
+                            }
+                          },
+                          child: Container(
+                            height: 46.8,
+                            margin: EdgeInsets.symmetric(
+                              horizontal: _size.width * .12,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40.0),
+                              color: colorTitle,
+                            ),
+                            child: Center(
+                              child: Text(
+                                'createAccount'.trArgs(),
+                                style: TextStyle(
+                                  color: colorPrimaryTextOpacity,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 36.0),
                       ],
                     ),
-                  ),
-                ),
+                  )
+                ],
               ),
             ),
-          );
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildLineInfo(context, title, valid, controller) {

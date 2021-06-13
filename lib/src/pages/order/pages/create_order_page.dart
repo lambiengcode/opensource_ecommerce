@@ -1,3 +1,4 @@
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/order/controllers/cart_client_controller.dart';
 import 'package:van_transport/src/pages/order/widgets/add_product_card.dart';
@@ -15,10 +16,12 @@ class CreateOrderPage extends StatefulWidget {
 
 class _CreateOrderPageState extends State<CreateOrderPage> {
   final cartController = Get.put(CartClientController());
+  SlidableController slidableController = new SlidableController();
 
   @override
   void initState() {
     super.initState();
+    slidableController = SlidableController();
     cartController.getListCart();
   }
 
@@ -50,34 +53,34 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
       ),
       body: Container(
         color: mCL,
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.only(top: 16.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(50.0),
-                  ),
-                  color: mCM.withOpacity(.85),
-                ),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child:
-                          NotificationListener<OverscrollIndicatorNotification>(
-                        onNotification: (overscroll) {
-                          overscroll.disallowGlow();
-                          return true;
-                        },
-                        child: StreamBuilder(
-                          stream: cartController.getListCartController,
-                          builder: (context, AsyncSnapshot snapshot) {
-                            if (!snapshot.hasData) {
-                              return Container();
-                            }
+        child: StreamBuilder(
+          stream: cartController.getListCartController,
+          builder: (context, AsyncSnapshot snapshot) {
+            if (!snapshot.hasData) {
+              return Container();
+            }
 
-                            return ListView.builder(
+            return Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 16.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(50.0),
+                      ),
+                      color: mCM.withOpacity(.85),
+                    ),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: NotificationListener<
+                              OverscrollIndicatorNotification>(
+                            onNotification: (overscroll) {
+                              overscroll.disallowGlow();
+                              return true;
+                            },
+                            child: ListView.builder(
                               padding: EdgeInsets.only(
                                 left: 12.5,
                                 right: 12.5,
@@ -86,36 +89,85 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                               physics: ClampingScrollPhysics(),
                               itemCount: snapshot.data.length + 1,
                               itemBuilder: (context, index) {
-                                return index == snapshot.data.length
-                                    ? GestureDetector(
-                                        onTap: () =>
-                                            Get.toNamed(Routes.ADDPRODUCT),
-                                        child: AddProductCard(),
-                                      )
-                                    : ProductOrderCard(
-                                      name: snapshot.data[index]['name'],
-                                      weight: snapshot.data[index]['weight'],
-                                      typeProduct:snapshot.data[index]['type'],
-                                      urlToImage: snapshot.data[index]['image'][0],
-                                    );
+                                return Container(
+                                  child: Slidable(
+                                    actionPane: SlidableDrawerActionPane(),
+                                    actionExtentRatio: 0.25,
+                                    controller: slidableController,
+                                    child: index == snapshot.data.length
+                                        ? GestureDetector(
+                                            onTap: () =>
+                                                Get.toNamed(Routes.ADDPRODUCT),
+                                            child: AddProductCard(),
+                                          )
+                                        : GestureDetector(
+                                            onTap: () => Get.toNamed(
+                                              Routes.EDITPRODUCTORDER,
+                                              arguments: snapshot.data[index],
+                                            ),
+                                            child: ProductOrderCard(
+                                              name: snapshot.data[index]
+                                                  ['name'],
+                                              weight: snapshot.data[index]
+                                                  ['weight'],
+                                              typeProduct: snapshot.data[index]
+                                                  ['type'],
+                                              urlToImage: snapshot.data[index]
+                                                  ['image'][0],
+                                            ),
+                                          ),
+                                    secondaryActions: <Widget>[
+                                      GestureDetector(
+                                        onTap: () {
+                                          cartController.deleteCartClient(
+                                              snapshot.data[index]['_id']);
+                                          slidableController.activeState
+                                              .close();
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.fromLTRB(
+                                              12.0, 24.0, 6.0, 24.0),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(4.0),
+                                            color: mCD,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: mCL,
+                                                  offset: Offset(3, 3),
+                                                  blurRadius: 3,
+                                                  spreadRadius: -3),
+                                            ],
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: Icon(
+                                            Feather.trash_2,
+                                            color: colorTitle,
+                                            size: width / 15.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
                               },
-                            );
-                          },
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            _buildBottomCheckout(context),
-          ],
+                _buildBottomCheckout(context, snapshot.data.length),
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget _buildBottomCheckout(context) {
+  Widget _buildBottomCheckout(context, quantity) {
     return Container(
       color: mCM,
       child: Neumorphic(
@@ -147,7 +199,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                     ),
                   ),
                   TextSpan(
-                    text: '2',
+                    text: '$quantity',
                     style: TextStyle(
                       color: colorPrimary,
                       fontSize: width / 20.0,

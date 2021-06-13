@@ -26,8 +26,11 @@ import 'package:van_transport/src/pages/order/pages/check_out_order_page.dart';
 import 'package:van_transport/src/pages/order/pages/check_out_page.dart';
 import 'package:van_transport/src/pages/order/pages/create_order_page.dart';
 import 'package:van_transport/src/pages/order/pages/details_orders_page.dart';
+import 'package:van_transport/src/pages/order/pages/edit_product_page.dart'
+    as EditOrder;
 import 'package:van_transport/src/pages/order/pages/pick_address_cart_page.dart';
 import 'package:van_transport/src/pages/order/pages/pick_address_page.dart';
+import 'package:van_transport/src/pages/order/pages/pick_delivery_page.dart';
 import 'package:van_transport/src/pages/payment/web_view_payment.dart';
 import 'package:van_transport/src/pages/profile/pages/add_friend_page.dart';
 import 'package:van_transport/src/pages/profile/pages/address_page.dart';
@@ -42,6 +45,7 @@ import 'package:van_transport/src/pages/profile/pages/settings_page.dart';
 import 'package:van_transport/src/pages/staff/staff_page.dart';
 import 'package:van_transport/src/pages/sub_city/sub_city_page.dart';
 import 'package:van_transport/src/pages/sub_transport/sub_transport_page.dart';
+import 'package:van_transport/src/pages/transport/pages/choose_sub_transport.dart';
 import 'package:van_transport/src/pages/transport/pages/edit_transport_page.dart';
 import 'package:van_transport/src/pages/transport/pages/register_transport_page.dart';
 import 'package:van_transport/src/pages/transport/transport_page.dart';
@@ -166,8 +170,29 @@ class AppPages {
       children: [],
     ),
     GetPage(
+      name: Routes.EDITPRODUCTORDER,
+      page: () => EditOrder.EditProductPage(
+        name: Get.arguments['name'],
+        idProduct: Get.arguments['_id'],
+        typeProduct: Get.arguments['type'],
+        weight: Get.arguments['weight'],
+      ),
+      transition: Transition.rightToLeft,
+      transitionDuration: Duration(milliseconds: 200),
+      children: [],
+    ),
+    GetPage(
       name: Routes.DETAILSORDERS,
       page: () => DetailsOrdersPage(),
+      transition: Transition.rightToLeft,
+      transitionDuration: Duration(milliseconds: 200),
+      children: [],
+    ),
+    GetPage(
+      name: Routes.PICKDELIVERY,
+      page: () => PickDeliveryPage(
+        idMerchant: Get.arguments,
+      ),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 200),
       children: [],
@@ -385,6 +410,15 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 200),
       children: [
+        GetPage(
+          name: Routes.ASSIGN_STAFF,
+          page: () => ChooseSubTransportPage(
+            idUser: Get.arguments,
+          ),
+          transition: Transition.rightToLeft,
+          transitionDuration: Duration(milliseconds: 200),
+          children: [],
+        ),
         GetPage(
           name: Routes.MIDDLETRANSPORT,
           page: () => TransportMiddleware(),

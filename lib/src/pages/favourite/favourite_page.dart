@@ -121,7 +121,7 @@ class _FavouritePageState extends State<FavouritePage> {
                 },
                 child: ListView.builder(
                   physics: ClampingScrollPhysics(),
-                  itemCount: 10000,
+                  itemCount: 10,
                   itemBuilder: (context, index) {
                     return Container(
                       child: Slidable(

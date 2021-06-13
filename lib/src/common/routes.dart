@@ -38,6 +38,12 @@ class ApiGateway {
   static const ADD_PRODUCT_TO_CART_MERCHANT = '/User/Merchant/AddProductToCart';
   static const GET_CART_CLIENT = '/User/Client/GetMyCart';
   static const GET_CART_MERCHANT = '/User/Merchant/GetMyCart';
+  static const GET_TRANSPORT_DELIVERY =
+      '/Admin/GetTransportByAddress?receiverIdAddress=';
+  static const PAYMENT_CART_MERCHANT = '/User/Merchant/PaymentCart';
+  static const DELETE_CART_MERCHANT = '/User/Merchant/DeleteProductFromCart';
+  static const DELETE_CART_CLIENT = '/User/Client/DeleteProductFromCart';
+  static const UPDATE_CART_CLIENT = '/User/Client/UpdateProductFromCart';
 
   // Device: 2
   static const CREATE_DEVICE = '/Device/Create';
@@ -57,6 +63,7 @@ class ApiGateway {
   static const UPDATE_TRANSPORTSUB = '/TransportSub/Update';
   static const GET_TRANSPORTSUB = '/TransportSub/GetInfo';
   static const DELETE_TRANSPORTSUB = '/TransportSub/ChangeStatus';
+  static const GET_ALL_SUB_BY_STATUS = '/Transport/GetAllTransportSub?status=';
 
   static const CREATE_PACKAGE = '/Package/Create';
 

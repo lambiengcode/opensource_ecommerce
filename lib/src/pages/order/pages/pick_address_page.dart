@@ -167,27 +167,27 @@ class _PickAddressPageState extends State<PickAddressPage> {
       ),
       body: Container(
         color: mCL,
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.only(top: 16.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(50.0),
-                  ),
-                  color: mCM.withOpacity(.85),
-                ),
-                child: Column(
-                  children: [
-                    StreamBuilder(
-                      stream: cartController.getListCartController,
-                      builder: (context, AsyncSnapshot snapshot) {
-                        if (!snapshot.hasData) {
-                          return Container();
-                        }
+        child: StreamBuilder(
+          stream: cartController.getListCartController,
+          builder: (context, AsyncSnapshot snapshot) {
+            if (!snapshot.hasData) {
+              return Container();
+            }
 
-                        return Expanded(
+            return Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 16.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(50.0),
+                      ),
+                      color: mCM.withOpacity(.85),
+                    ),
+                    child: Column(
+                      children: [
+                        Expanded(
                           child: NotificationListener<
                               OverscrollIndicatorNotification>(
                             onNotification: (overscroll) {
@@ -212,27 +212,28 @@ class _PickAddressPageState extends State<PickAddressPage> {
                               },
                             ),
                           ),
-                        );
-                      },
+                        )
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            GetBuilder<PickAddressController>(
-              builder: (_) => _buildBottomCheckout(
-                context,
-                _.placeFrom,
-                _.placeTo,
-              ),
-            )
-          ],
+                GetBuilder<PickAddressController>(
+                  builder: (_) => _buildBottomCheckout(
+                    context,
+                    _.placeFrom,
+                    _.placeTo,
+                    snapshot.data.length,
+                  ),
+                )
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget _buildBottomCheckout(context, fromAddress, toAddress) {
+  Widget _buildBottomCheckout(context, fromAddress, toAddress, quantity) {
     return Container(
       color: mCM,
       child: Neumorphic(
@@ -279,7 +280,7 @@ class _PickAddressPageState extends State<PickAddressPage> {
                         ),
                       ),
                       TextSpan(
-                        text: '2',
+                        text: '$quantity',
                         style: TextStyle(
                           color: colorPrimary,
                           fontSize: width / 20.0,

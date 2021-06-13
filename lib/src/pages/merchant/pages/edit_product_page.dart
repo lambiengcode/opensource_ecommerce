@@ -27,7 +27,6 @@ class _EditProductPageState extends State<EditProductPage> {
   TextEditingController descController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController totalController = TextEditingController();
-  bool loading = false;
 
   void showImageBottomSheet() {
     showModalBottomSheet(
@@ -59,112 +58,115 @@ class _EditProductPageState extends State<EditProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    return loading
-        ? Loading()
-        : Scaffold(
-            appBar: AppBar(
-              backgroundColor: mC,
-              elevation: .0,
-              centerTitle: true,
-              brightness: Brightness.light,
-              leading: IconButton(
-                onPressed: () => Get.back(),
-                icon: Icon(
-                  Feather.arrow_left,
-                  color: colorTitle,
-                  size: width / 15.0,
-                ),
-              ),
-              title: Text(
-                'Edit Product',
-                style: TextStyle(
-                  color: colorTitle,
-                  fontSize: width / 20.0,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Lato',
-                ),
-              ),
-              actions: [
-                IconButton(
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      setState(() {
-                        loading = true;
-                      });
-                      if (_image != null) {
-                        StorageService storageService = StorageService();
-                        String urlToImage =
-                            await storageService.uploadImageNotProfile(_image);
-                        merchantController.updateProduct(
-                          widget.infoProduct['_id'],
-                          _title,
-                          _desc,
-                          _price,
-                          _total,
-                          urlToImage,
-                          widget.infoProduct['FK_merchant'],
-                          widget.infoProduct['FK_groupProduct'],
-                        );
-                      } else {
-                        merchantController.updateProduct(
-                          widget.infoProduct['_id'],
-                          _title,
-                          _desc,
-                          _price,
-                          _total,
-                          widget.infoProduct['image'],
-                          widget.infoProduct['FK_merchant'],
-                          widget.infoProduct['FK_groupProduct'],
-                        );
-                      }
-                      setState(() {
-                        loading = false;
-                      });
-                    }
-                  },
-                  icon: Icon(
-                    Feather.check,
-                    color: colorPrimary,
-                    size: width / 16.0,
-                  ),
-                ),
-              ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: mC,
+        elevation: .0,
+        centerTitle: true,
+        brightness: Brightness.light,
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: Icon(
+            Feather.arrow_left,
+            color: colorTitle,
+            size: width / 15.0,
+          ),
+        ),
+        title: Text(
+          'Edit Product',
+          style: TextStyle(
+            color: colorTitle,
+            fontSize: width / 20.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Lato',
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              if (_formKey.currentState.validate()) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                      );
+                    },
+                    barrierColor: Color(0x80000000),
+                    barrierDismissible: false);
+                if (_image != null) {
+                  StorageService storageService = StorageService();
+                  String urlToImage =
+                      await storageService.uploadImageNotProfile(_image);
+                  merchantController.updateProduct(
+                    widget.infoProduct['_id'],
+                    _title,
+                    _desc,
+                    _price,
+                    _total,
+                    urlToImage,
+                    widget.infoProduct['FK_merchant'],
+                    widget.infoProduct['FK_groupProduct'],
+                  );
+                  Get.back();
+                } else {
+                  Get.back();
+                  merchantController.updateProduct(
+                    widget.infoProduct['_id'],
+                    _title,
+                    _desc,
+                    _price,
+                    _total,
+                    widget.infoProduct['image'],
+                    widget.infoProduct['FK_merchant'],
+                    widget.infoProduct['FK_groupProduct'],
+                  );
+                }
+              }
+            },
+            icon: Icon(
+              Feather.check,
+              color: colorPrimary,
+              size: width / 16.0,
             ),
-            body: Container(
-              color: mC,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    SizedBox(height: 12.0),
-                    GestureDetector(
-                      onTap: () => showImageBottomSheet(),
-                      child: VerticalTransportCard(
-                        image: _image,
-                        address: _price,
-                        title: _title,
-                        urlToImage: widget.infoProduct['image'],
-                        desc: _desc,
-                      ),
-                    ),
-                    SizedBox(height: 16.0),
-                    _buildLineInfo(
-                        context, 'title'.trArgs(), '', titleController),
-                    _buildDivider(context),
-                    _buildLineInfo(
-                        context, 'price'.trArgs(), '', priceController),
-                    _buildDivider(context),
-                    _buildLineInfo(
-                        context, 'total'.trArgs(), '', totalController),
-                    _buildDivider(context),
-                    _buildLineInfo(
-                        context, 'description'.trArgs(), '', descController),
-                    _buildDivider(context),
-                  ],
+          ),
+        ],
+      ),
+      body: Container(
+        color: mC,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              SizedBox(height: 12.0),
+              GestureDetector(
+                onTap: () => showImageBottomSheet(),
+                child: VerticalTransportCard(
+                  image: _image,
+                  address: _price,
+                  title: _title,
+                  urlToImage: widget.infoProduct['image'],
+                  desc: _desc,
                 ),
               ),
-            ),
-          );
+              SizedBox(height: 16.0),
+              _buildLineInfo(context, 'title'.trArgs(), '', titleController),
+              _buildDivider(context),
+              _buildLineInfo(context, 'price'.trArgs(), '', priceController),
+              _buildDivider(context),
+              _buildLineInfo(context, 'total'.trArgs(), '', totalController),
+              _buildDivider(context),
+              _buildLineInfo(
+                  context, 'description'.trArgs(), '', descController),
+              _buildDivider(context),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildLineInfo(context, title, valid, controller) {

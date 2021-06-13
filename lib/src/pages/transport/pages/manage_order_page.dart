@@ -1,16 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:van_transport/src/pages/profile/widgets/bottom_settings_address.dart';
 import 'package:van_transport/src/pages/sub_transport/widgets/sub_city_card.dart';
+import 'package:van_transport/src/pages/transport/controllers/transport_controller.dart';
+import 'package:van_transport/src/services/string_service.dart';
 
 class TransportManageOrderPage extends StatefulWidget {
   final String pageName;
-  TransportManageOrderPage({this.pageName});
+  final String idUser;
+  TransportManageOrderPage({this.pageName, this.idUser});
   @override
   State<StatefulWidget> createState() => _TransportManageOrderPageState();
 }
 
 class _TransportManageOrderPageState extends State<TransportManageOrderPage> {
+  final transportController = Get.put(TransportController());
   List<String> values = ['Delete Sub Transport'];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.idUser != null) {
+      transportController.getAllSubTransportByStatus('INACTIVE');
+    } else {
+      transportController.getAllSubTransportByStatus('ACTIVE');
+    }
+  }
 
   showGroupProductSettings(id) {
     showModalBottomSheet(
@@ -34,16 +49,41 @@ class _TransportManageOrderPageState extends State<TransportManageOrderPage> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 12.0),
-      child: ListView.builder(
-        itemCount: 2,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onLongPress: () => showGroupProductSettings(index.toString()),
-            child: SubCityCard(
-              fullName: 'Hồ Chí Minh',
-              manager: 'Đào Hồng Vinh',
-              address: 'Hồ Chí Minh, Việt Nam',
-            ),
+      child: StreamBuilder(
+        stream: transportController.getSubTransportStream,
+        builder: (context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            return Container();
+          }
+
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onLongPress: () {
+                  if (widget.idUser != null) {
+                  } else {
+                    showGroupProductSettings(index.toString());
+                  }
+                },
+                onTap: () {
+                  if (widget.idUser != null) {
+                    transportController.assignStaff(
+                      snapshot.data[index]['_id'],
+                      widget.idUser,
+                    );
+                  }
+                },
+                child: SubCityCard(
+                  fullName: snapshot.data[index]['name'],
+                  manager: snapshot.data[index]['name'],
+                  address: StringService().formatString(
+                    20,
+                    snapshot.data[index]['location']['address'],
+                  ),
+                ),
+              );
+            },
           );
         },
       ),

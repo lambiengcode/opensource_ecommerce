@@ -112,11 +112,8 @@ class _TransportPage extends State<TransportPage>
                                                 .toString(),
                                             selectedP.geometry.location.lng
                                                 .toString(),
-                                            first.countryName,
-                                            first.subLocality,
                                             selectedP.formattedAddress
-                                                .toString()
-                                                .split(',')[0],
+                                                .toString(),
                                           );
                                         },
                                       ),

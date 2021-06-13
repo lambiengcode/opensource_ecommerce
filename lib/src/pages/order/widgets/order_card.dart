@@ -5,6 +5,16 @@ import 'package:van_transport/src/widgets/error_loading_image.dart';
 import 'package:van_transport/src/widgets/place_holder_image.dart';
 
 class OrderCard extends StatefulWidget {
+  final String title;
+  final String transport;
+  final String subTitle;
+  final String urlToImage;
+  OrderCard({
+    this.title = '18110239',
+    this.transport = 'Grab',
+    this.subTitle = '2 ngày nữa',
+    this.urlToImage = '',
+  });
   @override
   State<StatefulWidget> createState() => _OrderCardState();
 }
@@ -52,8 +62,7 @@ class _OrderCardState extends State<OrderCard> {
                 fit: BoxFit.cover,
                 placeholder: (context, url) => PlaceHolderImage(),
                 errorWidget: (context, url, error) => ErrorLoadingImage(),
-                imageUrl:
-                    "https://images.unsplash.com/photo-1591882351016-6f26999cea0a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTR8fHNob2V8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                imageUrl: widget.urlToImage,
               ),
             ),
           ),
@@ -63,7 +72,7 @@ class _OrderCardState extends State<OrderCard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Mã ĐH: Grab1621353522646',
+                widget.title,
                 style: TextStyle(
                   color: colorTitle,
                   fontSize: width / 24.0,
@@ -85,7 +94,7 @@ class _OrderCardState extends State<OrderCard> {
                       ),
                     ),
                     TextSpan(
-                      text: 'Grab',
+                      text: widget.transport,
                       style: TextStyle(
                         color: colorPrimary,
                         fontSize: width / 26.5,
@@ -110,7 +119,7 @@ class _OrderCardState extends State<OrderCard> {
                       ),
                     ),
                     TextSpan(
-                      text: '2 ngày nữa',
+                      text: widget.subTitle,
                       style: TextStyle(
                         color: colorTitle,
                         fontSize: width / 26.5,

@@ -42,8 +42,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   String code = '';
 
-  bool loading = false;
-
   TextEditingController _fullNameController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -96,89 +94,94 @@ class _MyProfilePageState extends State<MyProfilePage> {
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
 
-    return loading
-        ? Loading()
-        : Scaffold(
-            appBar: AppBar(
-              backgroundColor: mC,
-              centerTitle: true,
-              elevation: .0,
-              leading: IconButton(
-                onPressed: () => Get.back(),
-                icon: Icon(
-                  Feather.arrow_left,
-                  color: colorTitle,
-                  size: _size.width / 15.0,
-                ),
-              ),
-              title: Text(
-                'myInfo'.trArgs(),
-                style: TextStyle(
-                  color: colorTitle,
-                  fontSize: _size.width / 20.0,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Lato',
-                ),
-              ),
-              actions: [
-                IconButton(
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      setState(() {
-                        loading = true;
-                      });
-                      if (_image != null) {
-                        StorageService storageService = StorageService();
-                        String urlToImage = await storageService.uploadImage(
-                            _image, widget.email);
-                        profileController.updateProfile(
-                          _fullName,
-                          _phone,
-                          urlToImage,
-                        );
-                      } else {
-                        profileController.updateProfile(
-                          _fullName,
-                          _phone,
-                          widget.urlToImage,
-                        );
-                      }
-                      setState(() {
-                        loading = false;
-                      });
-                    }
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: mC,
+        centerTitle: true,
+        elevation: .0,
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: Icon(
+            Feather.arrow_left,
+            color: colorTitle,
+            size: _size.width / 15.0,
+          ),
+        ),
+        title: Text(
+          'myInfo'.trArgs(),
+          style: TextStyle(
+            color: colorTitle,
+            fontSize: _size.width / 20.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Lato',
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              if (_formKey.currentState.validate()) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                      );
+                    },
+                    barrierColor: Color(0x80000000),
+                    barrierDismissible: false);
+                if (_image != null) {
+                  StorageService storageService = StorageService();
+                  String urlToImage =
+                      await storageService.uploadImage(_image, widget.email);
+                  profileController.updateProfile(
+                    _fullName,
+                    _phone,
+                    urlToImage,
+                  );
+                  Get.back();
+                } else {
+                  Get.back();
+                  profileController.updateProfile(
+                    _fullName,
+                    _phone,
+                    widget.urlToImage,
+                  );
+                }
+              }
+            },
+            icon: Icon(
+              Feather.check,
+              color: colorPrimary,
+              size: _size.width / 15.0,
+            ),
+          ),
+        ],
+      ),
+      body: Container(
+        color: mC,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 8.0),
+              Expanded(
+                child: NotificationListener<OverscrollIndicatorNotification>(
+                  onNotification: (overscroll) {
+                    overscroll.disallowGlow();
+                    return true;
                   },
-                  icon: Icon(
-                    Feather.check,
-                    color: colorPrimary,
-                    size: _size.width / 15.0,
-                  ),
-                ),
-              ],
-            ),
-            body: Container(
-              color: mC,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 8.0),
-                    Expanded(
-                      child:
-                          NotificationListener<OverscrollIndicatorNotification>(
-                        onNotification: (overscroll) {
-                          overscroll.disallowGlow();
-                          return true;
-                        },
-                        child: _buildFirstPage(context),
-                      ),
-                    ),
-                  ],
+                  child: _buildFirstPage(context),
                 ),
               ),
-            ),
-          );
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildFirstPage(context) {

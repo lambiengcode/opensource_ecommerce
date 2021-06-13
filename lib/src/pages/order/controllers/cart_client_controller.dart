@@ -18,19 +18,50 @@ class CartClientController extends GetxController {
 
   getListCart() async {
     var res = await userService.getCartClient();
-    print(res);
     listCartController.add(res);
+  }
+
+  deleteCartClient(idProduct) async {
+    var body = {
+      "idProduct": idProduct,
+    };
+    var status = await userService.deleteItemCartClient(body);
+    if (status == 200) {
+      getListCart();
+    }
   }
 
   addProductToCart(name, List<String> images) async {
     var body = {
-      "name": "Quat Sanko",
+      "name": name,
       "weight": weight,
       "type": valueSendServer[typeProduct].toString(),
       "image": images.join(' '),
     };
 
     int status = await userService.addProductToCartClient(body);
+    if (status == 200) {
+      getListCart();
+      Get.back();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Add failure!',
+        subTitle: 'Check again product infomations.',
+      );
+      getSnackBar.show();
+    }
+  }
+
+  updateProductToCart(id, name, List<String> images) async {
+    var body = {
+      "idProduct": id,
+      "name": name,
+      "weight": weight,
+      "type": valueSendServer[typeProduct].toString(),
+      "image": images.join(' '),
+    };
+
+    int status = await userService.updateProductToCartClient(body);
     if (status == 200) {
       getListCart();
       Get.back();
@@ -52,6 +83,12 @@ class CartClientController extends GetxController {
     this.typeProduct = index;
     update();
     Get.back();
+  }
+
+  setTypeProductByString(type) {
+    int index = valueSendServer.indexOf(type);
+    this.typeProduct = index;
+    update();
   }
 
   Stream<List<dynamic>> get getListCartController => listCartController.stream;

@@ -58,7 +58,9 @@ class TransportService {
       headers: getHeaders(),
     );
     print(convert.jsonDecode(response.body));
-    return response.statusCode == 200 ? convert.jsonDecode(response.body)['data'] : null;
+    return response.statusCode == 200
+        ? convert.jsonDecode(response.body)['data']
+        : null;
   }
 
   Future<int> createTransportSub(body) async {
@@ -80,6 +82,18 @@ class TransportService {
         ? convert.jsonDecode(response.body)['data']
         : convert.jsonDecode(response.body);
     json['status'] = response.statusCode;
+    return json;
+  }
+
+  Future<List<dynamic>> getSubTransportByStatus(status) async {
+    var response = await http.get(
+      baseUrl + ApiGateway.GET_ALL_SUB_BY_STATUS + status,
+      headers: getHeaders(),
+    );
+    var json = response.statusCode == 200
+        ? convert.jsonDecode(response.body)['data']
+        : [];
+    print(json);
     return json;
   }
 

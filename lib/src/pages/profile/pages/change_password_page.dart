@@ -22,108 +22,114 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
   String _oldPassword = '';
   String _newPassword = '';
-  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
-    return loading
-        ? Loading()
-        : Scaffold(
-            appBar: AppBar(
-              backgroundColor: mC,
-              centerTitle: true,
-              elevation: .0,
-              leading: IconButton(
-                onPressed: () => Get.back(),
-                icon: Icon(
-                  Feather.arrow_left,
-                  color: colorTitle,
-                  size: _size.width / 15.0,
-                ),
-              ),
-              title: Text(
-                'changePsw'.trArgs(),
-                style: TextStyle(
-                  color: colorTitle,
-                  fontSize: _size.width / 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              actions: [
-                IconButton(
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      setState(() {
-                        loading = true;
-                      });
-                      var res = await _authService.changePassword(
-                          _oldPassword, _newPassword);
-                      if (res['status'] == 200) {
-                        Get.back();
-                        GetSnackBar snackBar = GetSnackBar(
-                          title: 'Successfully!',
-                          subTitle: 'Change password successfully!',
-                        );
-                        snackBar.show();
-                      } else {
-                        setState(() {
-                          loading = false;
-                          _oldPassword = res['oldPassword'];
-                          _newPassword = res['newPassword'];
-                          _oldPasswordController.text = res['oldPassword'];
-                          _newPasswordController.text = res['newPassword'];
-                          _confirmPasswordController.text = res['newPassword'];
-                        });
-                        GetSnackBar snackBar = GetSnackBar(
-                          title: 'Change Password Fail!',
-                          subTitle: 'Wrong old password, try again.',
-                        );
-                        snackBar.show();
-                      }
-                    }
-                  },
-                  icon: Icon(
-                    Feather.check,
-                    color: colorPrimary,
-                    size: _size.width / 16.0,
-                  ),
-                )
-              ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: mC,
+        centerTitle: true,
+        elevation: .0,
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: Icon(
+            Feather.arrow_left,
+            color: colorTitle,
+            size: _size.width / 15.0,
+          ),
+        ),
+        title: Text(
+          'changePsw'.trArgs(),
+          style: TextStyle(
+            color: colorTitle,
+            fontSize: _size.width / 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              if (_formKey.currentState.validate()) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                      );
+                    },
+                    barrierColor: Color(0x80000000),
+                    barrierDismissible: false);
+                var res = await _authService.changePassword(
+                    _oldPassword, _newPassword);
+                Get.back();
+                if (res['status'] == 200) {
+                  Get.back();
+                  GetSnackBar snackBar = GetSnackBar(
+                    title: 'Successfully!',
+                    subTitle: 'Change password successfully!',
+                  );
+                  snackBar.show();
+                } else {
+                  setState(() {
+                    _oldPassword = res['oldPassword'];
+                    _newPassword = res['newPassword'];
+                    _oldPasswordController.text = res['oldPassword'];
+                    _newPasswordController.text = res['newPassword'];
+                    _confirmPasswordController.text = res['newPassword'];
+                  });
+                  GetSnackBar snackBar = GetSnackBar(
+                    title: 'Change Password Fail!',
+                    subTitle: 'Wrong old password, try again.',
+                  );
+                  snackBar.show();
+                }
+              }
+            },
+            icon: Icon(
+              Feather.check,
+              color: colorPrimary,
+              size: _size.width / 16.0,
             ),
-            body: Container(
-              color: mC,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    SizedBox(height: 12.0),
-                    _buildLineInfo(
-                      context,
-                      'currentPsw'.trArgs(),
-                      'validPsw'.trArgs(),
-                      _oldPasswordController,
-                    ),
-                    _buildDivider(context),
-                    _buildLineInfo(
-                      context,
-                      'newPsw'.trArgs(),
-                      'validPsw'.trArgs(),
-                      _newPasswordController,
-                    ),
-                    _buildDivider(context),
-                    _buildLineInfo(
-                      context,
-                      'confirmPsw'.trArgs(),
-                      'validConfirmPsw'.trArgs(),
-                      _confirmPasswordController,
-                    ),
-                    _buildDivider(context),
-                  ],
-                ),
+          )
+        ],
+      ),
+      body: Container(
+        color: mC,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              SizedBox(height: 12.0),
+              _buildLineInfo(
+                context,
+                'currentPsw'.trArgs(),
+                'validPsw'.trArgs(),
+                _oldPasswordController,
               ),
-            ),
-          );
+              _buildDivider(context),
+              _buildLineInfo(
+                context,
+                'newPsw'.trArgs(),
+                'validPsw'.trArgs(),
+                _newPasswordController,
+              ),
+              _buildDivider(context),
+              _buildLineInfo(
+                context,
+                'confirmPsw'.trArgs(),
+                'validConfirmPsw'.trArgs(),
+                _confirmPasswordController,
+              ),
+              _buildDivider(context),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildLineInfo(context, title, valid, controller) {
