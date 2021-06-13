@@ -255,7 +255,7 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
                             Get.toNamed(Routes.AUTHENTICATION);
                           } else {
                             cartController.addToCart(
-                              widget.data['FK_groupProduct'],
+                              widget.data['FK_product'],
                               _quantity.toString(),
                             );
                           }

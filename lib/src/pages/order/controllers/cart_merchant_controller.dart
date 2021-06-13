@@ -28,6 +28,7 @@ class CartMerchantController extends GetxController {
       'idProduct': idProduct,
       'quantity': quantity,
     };
+    print(idProduct);
 
     int status = await userService.addProductToCartMerchant(body);
     if (status == 200) {

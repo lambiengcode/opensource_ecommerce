@@ -75,7 +75,7 @@ class _CarouselImageState extends State<CarouselImage> {
             bottom: 10.0,
             child: Container(
               width: _size.width * .9,
-              padding: EdgeInsets.only(left: 24.0),
+              padding: EdgeInsets.only(left: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: map<Widget>(imgList, (index, url) {

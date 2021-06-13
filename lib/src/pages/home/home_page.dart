@@ -314,7 +314,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildCarouselBanner(context) {
     final _size = MediaQuery.of(context).size;
     return Container(
-      height: _size.height * .135,
+      height: _size.height * .13,
       margin: EdgeInsets.symmetric(
         horizontal: 14.0,
       ),
