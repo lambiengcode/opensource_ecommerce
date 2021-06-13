@@ -15,11 +15,11 @@ class CarouselImage extends StatefulWidget {
 
 class _CarouselImageState extends State<CarouselImage> {
   List imgList = [
-    'https://www.highlandscoffee.com.vn/vnt_upload/weblink/HCO-7605-FESTIVE-2020-WEB-FB-2000X639_1.png',
-    'https://www.highlandscoffee.com.vn/vnt_upload/news/12_2019/HCO-7605-FESTIVE-2020-INSIDE-BOOKLET-FA-2.jpg',
-    'https://www.highlandscoffee.com.vn/vnt_upload/weblink/HCO-7548-PHIN-SUA-DA-2019-TALENT-WEB_1.jpg',
-    'https://www.highlandscoffee.com.vn/vnt_upload/weblink/web_1.png',
-    'https://www.highlandscoffee.com.vn/vnt_upload/news/12_2019/HCO-7605-FESTIVE-2020-INSIDE-BOOKLET-FA-3.jpg'
+    'https://salt.tikicdn.com/cache/w824/ts/banner/61/45/25/6c3240218851d381e6e02f2e94e5edfa.png.jpg',
+    'https://salt.tikicdn.com/cache/w824/ts/banner/ae/bc/81/9af01aec2fdde78a41d33874cd57784b.jpg',
+    'https://salt.tikicdn.com/cache/w824/ts/banner/5a/dc/c6/24c5c8b774cbd907c52497c467581166.png.jpg',
+    'https://salt.tikicdn.com/cache/w824/ts/banner/1f/00/a2/312c8be9356a2e1be67d50376946ddce.png.jpg',
+    'https://salt.tikicdn.com/cache/w824/ts/banner/53/fe/02/369e48600953dea7d8a1d5df5a71ac98.png.jpg',
   ];
 
   List<T> map<T>(List list, Function handler) {
@@ -58,7 +58,7 @@ class _CarouselImageState extends State<CarouselImage> {
               return Builder(
                 builder: (BuildContext context) {
                   return ClipRRect(
-                    borderRadius: BorderRadius.circular(16.0),
+                    borderRadius: BorderRadius.circular(12.0),
                     child: CachedNetworkImage(
                         width: _size.width,
                         fit: BoxFit.cover,

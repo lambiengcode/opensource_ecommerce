@@ -6,7 +6,6 @@ import 'package:van_transport/src/pages/home/controllers/product_global_controll
 import 'package:van_transport/src/pages/home/widget/action_button.dart';
 import 'package:van_transport/src/pages/home/widget/carousel_banner.dart';
 import 'package:van_transport/src/pages/home/widget/horizontal_store_card.dart';
-import 'package:van_transport/src/pages/home/widget/vertical_store_card.dart';
 import 'package:van_transport/src/pages/transport/widgets/vertical_transport_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -99,27 +98,26 @@ class _HomePageState extends State<HomePage> {
                 child: GetBuilder<ProductGlobalController>(
                   builder: (_) => Column(
                     children: [
-                      SizedBox(height: 8.0),
                       _buildCarouselBanner(context),
                       SizedBox(height: 12.0),
                       _buildTitle(context, 'category'.trArgs()),
-                      SizedBox(height: 12.0),
+                      SizedBox(height: 5.0),
                       _buildHorizontalAction(context),
-                      SizedBox(height: 12.0),
+                      SizedBox(height: 10.0),
                       _buildTitle(context, 'mostPopular'.trArgs()),
-                      SizedBox(height: 12.0),
+                      SizedBox(height: 10.0),
                       _buildPopularStore(context, _.listProduct1),
-                      SizedBox(height: 12.0),
+                      SizedBox(height: 10.0),
                       _buildTitle(context, 'onSale'.trArgs()),
-                      SizedBox(height: 12.0),
+                      SizedBox(height: 10.0),
                       _buildPopularStore(context, _.listProduct2),
-                      SizedBox(height: 12.0),
+                      SizedBox(height: 10.0),
                       _buildTitle(context, 'nearBy'.trArgs()),
-                      SizedBox(height: 12.0),
+                      SizedBox(height: 10.0),
                       _buildPopularStore(context, _.listProduct3),
-                      SizedBox(height: 12.0),
+                      SizedBox(height: 10.0),
                       _buildTitle(context, 'All Product'.trArgs()),
-                      SizedBox(height: 12.0),
+                      SizedBox(height: 10.0),
                       ListView.builder(
                         controller: scrollController,
                         padding: EdgeInsets.only(top: .0),
@@ -245,7 +243,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        SizedBox(height: 16.0),
+        SizedBox(height: 12.0),
         GestureDetector(
           onTap: () => Get.toNamed('/category'),
           child: Container(
@@ -316,7 +314,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildCarouselBanner(context) {
     final _size = MediaQuery.of(context).size;
     return Container(
-      height: _size.height * .125,
+      height: _size.height * .135,
       margin: EdgeInsets.symmetric(
         horizontal: 14.0,
       ),

@@ -54,24 +54,24 @@ class _VerticalTransportCardState extends State<VerticalTransportCard> {
       child: Stack(
         children: [
           Container(
-            height: _size.width * .28,
-            margin: EdgeInsets.only(top: _size.width * .01),
+            height: _size.width * .3,
+            margin: EdgeInsets.symmetric(vertical: _size.width * .01),
             padding: EdgeInsets.only(left: _size.width * .35 + 8.0, right: 8.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.horizontal(
                 left: Radius.circular(12.0),
               ),
-              color: mC,
+              color: mCL,
               boxShadow: [
                 BoxShadow(
                   color: mCD,
-                  offset: Offset(5, 5),
-                  blurRadius: 10,
+                  offset: Offset(1, 1),
+                  blurRadius: 1,
                 ),
                 BoxShadow(
-                  color: mCL,
-                  offset: Offset(-5, -5),
-                  blurRadius: 10,
+                  color: mC,
+                  offset: Offset(-2, -2),
+                  blurRadius: 2,
                 ),
               ],
             ),
@@ -179,10 +179,10 @@ class _VerticalTransportCardState extends State<VerticalTransportCard> {
                       child: CachedNetworkImage(
                         width: _size.width * .35,
                         height: _size.width * .3,
-                        fit:
-                            widget.address.contains(',') || widget.address == ''
-                                ? BoxFit.cover
-                                : BoxFit.contain,
+                        fit: widget.address.contains('000') ||
+                                widget.address == ''
+                            ? BoxFit.cover
+                            : BoxFit.contain,
                         placeholder: (context, url) => PlaceHolderImage(),
                         errorWidget: (context, url, error) =>
                             ErrorLoadingImage(),

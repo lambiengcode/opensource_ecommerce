@@ -17,7 +17,7 @@ class ProductGlobalController extends GetxController {
         }) // filter keys
         .toList() // create a copy to avoid concurrent modifications
         .forEach(res.remove);
-
+    res.shuffle();
     listProduct1.addAll(res);
     res.shuffle();
     listProduct2.addAll(res);

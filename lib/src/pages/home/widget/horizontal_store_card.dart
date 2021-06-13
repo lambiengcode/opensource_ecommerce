@@ -27,29 +27,29 @@ class _HorizontalStoreCardState extends State<HorizontalStoreCard> {
       child: Stack(
         children: [
           Container(
-            width: _size.width * .38,
-            margin: EdgeInsets.only(left: _size.width * .01, bottom: 4.0),
+            width: _size.width * .4,
+            margin: EdgeInsets.only(left: _size.width * .01, bottom: 2.5),
             padding: EdgeInsets.only(left: 6.5, right: 4.5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16.0),
-              color: mC,
+              color: mCL,
               boxShadow: [
                 BoxShadow(
                   color: mCD,
-                  offset: Offset(5, 5),
-                  blurRadius: 5,
+                  offset: Offset(1, 1),
+                  blurRadius: 1,
                 ),
                 BoxShadow(
-                  color: mCL,
-                  offset: Offset(-5, -5),
-                  blurRadius: 5,
+                  color: mC,
+                  offset: Offset(-2, -2),
+                  blurRadius: 2,
                 ),
               ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: _size.width * .28),
+                SizedBox(height: _size.width * .269),
                 Text(
                   StringService().formatString(25, widget.title),
                   maxLines: 1,
@@ -99,7 +99,9 @@ class _HorizontalStoreCardState extends State<HorizontalStoreCard> {
               child: CachedNetworkImage(
                 width: _size.width * .40,
                 height: _size.width * .26,
-                fit: BoxFit.cover,
+                fit: (widget.address.contains('000'))
+                    ? BoxFit.contain
+                    : BoxFit.cover,
                 placeholder: (context, url) => PlaceHolderImage(),
                 errorWidget: (context, url, error) => ErrorLoadingImage(),
                 imageUrl: widget.urlToImage,

@@ -1,4 +1,5 @@
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/home/controllers/product_global_controller.dart';
 import 'package:van_transport/src/pages/home/widget/horizontal_store_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/services/string_service.dart';
 
 class SearchProductPage extends StatefulWidget {
   @override
@@ -13,6 +15,9 @@ class SearchProductPage extends StatefulWidget {
 }
 
 class _SearchProductPageState extends State<SearchProductPage> {
+  final productController = Get.put(ProductGlobalController());
+  final scrollController = ScrollController();
+  int page = 1;
   List<String> categories = [
     'Popular',
     'Electric',
@@ -29,17 +34,8 @@ class _SearchProductPageState extends State<SearchProductPage> {
       statusBarBrightness: Brightness.light,
       statusBarIconBrightness: Brightness.light,
     ));
+    productController.getProduct(page);
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark,
-    ));
-    super.dispose();
   }
 
   @override
@@ -49,43 +45,58 @@ class _SearchProductPageState extends State<SearchProductPage> {
         height: height,
         width: width,
         color: mC,
-        child: Column(
-          children: [
-            SizedBox(height: height / 20.0),
-            _buildTopbar(),
-            SizedBox(height: 24.0),
-            _buildListCategories(),
-            SizedBox(height: 6.0),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: ClampingScrollPhysics(),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 12.0),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 12.0),
-                      _buildTitle('Popular Sale'),
-                      SizedBox(height: 12.0),
-                      _buildPopularStore(context),
-                      SizedBox(height: 12.0),
-                      _buildTitle('Recommanded for you'),
-                      SizedBox(height: 12.0),
-                      _buildPopularStore(context),
-                      SizedBox(height: 12.0),
-                      _buildTitle('Top Collection'),
-                      SizedBox(height: 12.0),
-                      _buildPopularStore(context),
-                      SizedBox(height: 12.0),
-                      _buildTitle('Upcomming'),
-                      SizedBox(height: 12.0),
-                      _buildPopularStore(context),
-                      SizedBox(height: 24.0),
-                    ],
+        child: GetBuilder<ProductGlobalController>(
+          builder: (_) => Column(
+            children: [
+              SizedBox(height: height / 20.0),
+              _buildTopbar(),
+              SizedBox(height: 24.0),
+              _buildListCategories(),
+              SizedBox(height: 6.0),
+              Expanded(
+                child: NotificationListener<ScrollNotification>(
+                  onNotification: (scrollNotification) {
+                    if (scrollNotification is ScrollStartNotification) {
+                    } else if (scrollNotification is ScrollUpdateNotification) {
+                    } else if (scrollNotification is ScrollEndNotification) {
+                      setState(() {
+                        page++;
+                      });
+                      productController.getProduct(page);
+                    }
+                    return;
+                  },
+                  child: SingleChildScrollView(
+                    physics: ClampingScrollPhysics(),
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 12.0),
+                      child: Column(
+                        children: [
+                          SizedBox(height: 12.0),
+                          _buildTitle('Popular Sale'),
+                          SizedBox(height: 12.0),
+                          _buildPopularStore(context, _.listProduct1),
+                          SizedBox(height: 12.0),
+                          _buildTitle('Recommanded for you'),
+                          SizedBox(height: 12.0),
+                          _buildPopularStore(context, _.listProduct2),
+                          SizedBox(height: 12.0),
+                          _buildTitle('Top Collection'),
+                          SizedBox(height: 12.0),
+                          _buildPopularStore(context, _.listProduct3),
+                          SizedBox(height: 12.0),
+                          _buildTitle('Upcomming'),
+                          SizedBox(height: 12.0),
+                          _buildPopularStore(context, _.listProduct4),
+                          SizedBox(height: 24.0),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -179,51 +190,53 @@ class _SearchProductPageState extends State<SearchProductPage> {
   }
 
   Widget _buildTitle(title) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            color: colorTitle,
-            fontFamily: 'Lato',
-            fontWeight: FontWeight.w600,
-            fontSize: width / 22.5,
+    return Padding(
+      padding: const EdgeInsets.only(right: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: colorTitle,
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.w600,
+              fontSize: width / 22.5,
+            ),
           ),
-        ),
-        Text(
-          'viewall'.trArgs(),
-          style: TextStyle(
-            color: colorPrimary,
-            fontFamily: 'Lato',
-            fontWeight: FontWeight.w400,
-            fontSize: width / 26.0,
+          Text(
+            'viewall'.trArgs(),
+            style: TextStyle(
+              color: colorPrimary,
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.w400,
+              fontSize: width / 26.0,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  Widget _buildPopularStore(context) {
+  Widget _buildPopularStore(context, data) {
     final _size = MediaQuery.of(context).size;
     return Container(
       height: _size.width * .42,
       child: ListView.builder(
-        padding: EdgeInsets.only(right: 12.0),
+        controller: scrollController,
+        padding: EdgeInsets.only(left: 6.0, right: 12.0),
         scrollDirection: Axis.horizontal,
-        itemCount: 10,
+        itemCount: data.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () => Get.toNamed(Routes.DETAILSPRODUCT, arguments: {
-              'name': 'CARAMEL PHIN FREEZE',
-              'image':
-                  'https://images.unsplash.com/photo-1494314671902-399b18174975?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxzZWFyY2h8NDR8fGNvZmZlZXxlbnwwfHwwfA%3D%3D&auto=format&fit=crop&w=500&q=60',
-              'owner': 'lambiengcode\'store',
-              'description':
-                  'Nếu bạn là người yêu thích những gì mới mẻ và sành điệu để khơi nguồn cảm hứng. Hãy thưởng thức ngay các món nước đá xay độc đáo mang hương vị tự nhiên tại Highlands Coffee để đánh thức mọi giác quan của bạn, giúp bạn luôn căng tràn sức sống.',
-              'price': '49000',
-            }),
-            child: HorizontalStoreCard(),
+            onTap: () =>
+                Get.toNamed(Routes.DETAILSPRODUCT, arguments: data[index]),
+            child: HorizontalStoreCard(
+              address: StringService().formatPrice(data[index]['price']),
+              title: data[index]['name'],
+              urlToImage: data[index]['image'],
+              desc: data[index]['description'],
+            ),
           );
         },
       ),
