@@ -30,6 +30,65 @@ flutter run
 <img src="https://github.com/hongvinhmobile/project_college_ec/blob/dev/screenshots/details.png?raw=true" width="200px"/>
 </p>
 
+### Factory Design Pattern
+
+- Create Enum ***route_type.dart***
+```dart
+enum RouteType {
+  myPoints,
+  myFriends,
+  address,
+  settings,
+}
+```
+
+- Create Abstract Class - ***route.dart***
+```dart
+abstract class Route {
+  getRoute() {}
+}
+```
+
+- Create Concrete Class - ***settings_route.dart***, similar with ***friend_route.dart, point_route.dart, address_route.dart***
+```dart
+import 'package:van_transport/src/models/route.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
+
+class SettingsRoute implements Route {
+  @override
+  getRoute() {
+    return Routes.SETTINGS;
+  }
+}
+```
+
+- Create Factory Class - ***food_factory.dart*** 
+```dart
+import 'package:van_transport/src/factory/route_type.dart';
+import 'package:van_transport/src/models/address_route.dart';
+import 'package:van_transport/src/models/friend_route.dart';
+import 'package:van_transport/src/models/point_route.dart';
+import 'package:van_transport/src/models/route.dart';
+import 'package:van_transport/src/models/settings_route.dart';
+
+class MenuFactory {
+  static Route getRoute(RouteType type) {
+    switch (type) {
+      case RouteType.myPoints:
+        return PointRoute();
+      case RouteType.myFriends:
+        return FriendRoute();
+      case RouteType.address:
+        return AddressRoute();
+      case RouteType.settings:
+        return SettingsRoute();
+      default:
+        return PointRoute();
+    }
+  }
+}
+```
+
 ### Author
 ```text
 lambiengcode
