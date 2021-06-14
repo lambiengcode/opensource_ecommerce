@@ -62,7 +62,7 @@ class SettingsRoute implements Route {
 }
 ```
 
-- Create Factory Class - ***food_factory.dart*** 
+- Create Factory Class - ***menu_factory.dart*** 
 ```dart
 import 'package:van_transport/src/factory/route_type.dart';
 import 'package:van_transport/src/models/address_route.dart';
