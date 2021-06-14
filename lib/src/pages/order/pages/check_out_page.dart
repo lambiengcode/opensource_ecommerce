@@ -9,6 +9,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:van_transport/src/services/string_service.dart';
+import 'package:van_transport/src/widgets/snackbar.dart';
 
 class CheckOutPage extends StatefulWidget {
   @override
@@ -126,7 +127,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                                 '${StringService().formatPrice(price.toString())} đ',
                               ),
                               _buildPriceText(
-                                  context, 'taxes'.trArgs(), '100 đ'),
+                                  context, 'taxes'.trArgs(), '200 đ'),
                             ],
                           ),
                         ),
@@ -184,21 +185,6 @@ class _CheckOutPageState extends State<CheckOutPage> {
   }
 
   Widget _buildBottomCheckout(context, idMerchant, price) {
-    void showPaymentBottomSheet() {
-      showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(40.0),
-          ),
-        ),
-        isScrollControlled: true,
-        context: context,
-        builder: (context) {
-          return BottomSheetPayment();
-        },
-      );
-    }
-
     return Container(
       color: mCM,
       child: Neumorphic(
@@ -230,21 +216,31 @@ class _CheckOutPageState extends State<CheckOutPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  '$price đ',
-                  style: TextStyle(
-                    color: colorBlack,
-                    fontSize: width / 18.0,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.bold,
-                    wordSpacing: 1.2,
-                    letterSpacing: 1.2,
+                GetBuilder<PickAddressController>(
+                  builder: (_) => Text(
+                    '${_.transportInfo != null ? StringService().formatPrice((int.parse(price.replaceAll(',', '')) + double.tryParse(_.transportInfo['price']) + 200).round().toString()) : StringService().formatPrice((int.parse(price.replaceAll(',', '')) + 200).toString())} đ',
+                    style: TextStyle(
+                      color: colorBlack,
+                      fontSize: width / 20.0,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.bold,
+                      wordSpacing: 1.2,
+                      letterSpacing: 1.2,
+                    ),
                   ),
                 ),
                 NeumorphicButton(
                   onPressed: () {
                     // showPaymentBottomSheet();
-                    pickAddressController.paymentCartMerchant();
+                    if (pickAddressController.transportInfo == null) {
+                      GetSnackBar getSnackBar = GetSnackBar(
+                        title: 'Không thể thanh toán đơn hàng',
+                        subTitle: 'Bạn chưa chọn nhà vận chuyển',
+                      );
+                      getSnackBar.show();
+                    } else {
+                      pickAddressController.paymentCartMerchant(price);
+                    }
                   },
                   duration: Duration(milliseconds: 200),
                   style: NeumorphicStyle(

@@ -193,8 +193,8 @@ class _PickAddressCartPageState extends State<PickAddressCartPage> {
                         Get.toNamed(Routes.CHECKOUT);
                       } else {
                         GetSnackBar getSnackBar = GetSnackBar(
-                          title: 'Please pick address!',
-                          subTitle: 'Pick from and to address now.',
+                          title: 'Hãy chọn vị trí!',
+                          subTitle: 'Chọn nơi nhận hàng',
                         );
                         getSnackBar.show();
                       }
@@ -258,7 +258,10 @@ class _PickAddressCartPageState extends State<PickAddressCartPage> {
         ),
         GestureDetector(
           onTap: () {
-            Get.toNamed(Routes.ADDRESS, arguments: PICK_ON);
+            Get.toNamed(Routes.ADDRESS, arguments: {
+              'pickMode': PICK_ON,
+              'isFrom': true,
+            });
           },
           child: Text(
             value,

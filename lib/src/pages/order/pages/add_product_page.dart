@@ -10,6 +10,7 @@ import 'package:van_transport/src/pages/order/controllers/cart_client_controller
 import 'package:van_transport/src/pages/order/widgets/bottom_sheet_input_weight.dart';
 import 'package:van_transport/src/pages/order/widgets/bottom_sheet_product_type.dart';
 import 'package:van_transport/src/services/storage_service.dart';
+import 'package:van_transport/src/widgets/snackbar.dart';
 
 class AddProductPage extends StatefulWidget {
   @override
@@ -96,7 +97,6 @@ class _AddProductPageState extends State<AddProductPage> {
                       ),
                       alignment: Alignment.center,
                       child: TextFormField(
-                        autofocus: true,
                         onFieldSubmitted: (val) => null,
                         cursorColor: fCL,
                         cursorRadius: Radius.circular(4.0),
@@ -117,7 +117,7 @@ class _AddProductPageState extends State<AddProductPage> {
                             left: 24.0,
                           ),
                           border: InputBorder.none,
-                          hintText: "Type name...",
+                          hintText: "Nhập tên...",
                           hintStyle: TextStyle(
                             color: fCL,
                             fontSize: 15.0,
@@ -178,7 +178,7 @@ class _AddProductPageState extends State<AddProductPage> {
           children: [
             GetBuilder<CartClientController>(
               builder: (_) => _buildAddressValue('weight'.trArgs(),
-                  _.weight == null ? 'Input Weight' : _.weight),
+                  _.weight == null ? 'inputWeight'.trArgs() : _.weight),
             ),
             SizedBox(height: 18.0),
             GetBuilder<CartClientController>(
@@ -188,7 +188,25 @@ class _AddProductPageState extends State<AddProductPage> {
             SizedBox(height: 24.0),
             NeumorphicButton(
               onPressed: () async {
-                if (images.length > 0) {
+                if (images.length == 0) {
+                  GetSnackBar getSnackBar = GetSnackBar(
+                    title: 'Không thể thêm sản phẩm',
+                    subTitle: 'Hãy tải lên ít nhất 1 hình ảnh',
+                  );
+                  getSnackBar.show();
+                } else if (cartController.weight == null) {
+                  GetSnackBar getSnackBar = GetSnackBar(
+                    title: 'Không thể thêm sản phẩm',
+                    subTitle: 'Hãy nhập khối lượng của sản phẩm!',
+                  );
+                  getSnackBar.show();
+                } else if (name == null) {
+                  GetSnackBar getSnackBar = GetSnackBar(
+                    title: 'Không thể thêm sản phẩm',
+                    subTitle: 'Hãy nhập tên của sản phẩm!',
+                  );
+                  getSnackBar.show();
+                } else {
                   showDialog(
                       context: context,
                       builder: (context) {
@@ -297,7 +315,8 @@ class _AddProductPageState extends State<AddProductPage> {
           child: Text(
             value,
             style: TextStyle(
-              color: title == 'Type Product' || value == 'Input Weight'
+              color: title == 'typeProduct'.trArgs() ||
+                      value == 'inputWeight'.trArgs()
                   ? colorPrimary
                   : colorTitle,
               fontSize: width / 22.5,

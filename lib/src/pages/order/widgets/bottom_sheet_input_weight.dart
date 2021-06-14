@@ -20,8 +20,10 @@ class _BottomInputWeightState extends State<BottomInputWeight> {
   @override
   void dispose() {
     super.dispose();
-    if (int.parse(weight.replaceAll(',', '')) > 0) {
-      cartController.setWeight(weight);
+    if (weight != '') {
+      if (int.parse(weight.replaceAll(',', '')) > 0) {
+        cartController.setWeight(weight);
+      }
     }
   }
 
@@ -29,10 +31,12 @@ class _BottomInputWeightState extends State<BottomInputWeight> {
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
     return Container(
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       decoration: BoxDecoration(
         color: mC,
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20.0),
+          top: Radius.circular(12.0),
         ),
       ),
       child: SingleChildScrollView(
@@ -61,7 +65,7 @@ class _BottomInputWeightState extends State<BottomInputWeight> {
                 ],
               ),
             ),
-            SizedBox(height: 8.0),
+            SizedBox(height: 16.0),
             Container(
               height: width * .195,
               child: Row(
@@ -69,12 +73,12 @@ class _BottomInputWeightState extends State<BottomInputWeight> {
                   Expanded(
                     child: Container(
                       margin: EdgeInsets.symmetric(
-                        horizontal: 16.0,
+                        horizontal: 24.0,
                         vertical: 12.0,
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(
-                          30.0,
+                          4.0,
                         ),
                         color: mC,
                         boxShadow: [
@@ -97,7 +101,7 @@ class _BottomInputWeightState extends State<BottomInputWeight> {
                         controller: _msgController,
                         onFieldSubmitted: (val) => null,
                         cursorColor: fCL,
-                        cursorRadius: Radius.circular(30.0),
+                        cursorRadius: Radius.circular(4.0),
                         keyboardType: TextInputType.text,
                         style: TextStyle(
                           color: colorTitle,
@@ -116,7 +120,7 @@ class _BottomInputWeightState extends State<BottomInputWeight> {
                             left: 24.0,
                           ),
                           border: InputBorder.none,
-                          hintText: "Type weight of product...",
+                          hintText: "Nhập khối lượng sản phẩm...",
                           hintStyle: TextStyle(
                             color: fCL,
                             fontSize: 15.0,
@@ -164,15 +168,15 @@ class _BottomInputWeightState extends State<BottomInputWeight> {
                 ],
               ),
             ),
-            SizedBox(height: 4.0),
+            SizedBox(height: 6.0),
             NeumorphicButton(
               onPressed: () => Get.back(),
               duration: Duration(milliseconds: 200),
-              margin: EdgeInsets.symmetric(horizontal: 32.0),
+              margin: EdgeInsets.symmetric(horizontal: 24.0),
               style: NeumorphicStyle(
                 shape: NeumorphicShape.convex,
                 boxShape: NeumorphicBoxShape.roundRect(
-                  BorderRadius.circular(30.0),
+                  BorderRadius.circular(4.0),
                 ),
                 depth: 15.0,
                 intensity: 1,
@@ -200,7 +204,7 @@ class _BottomInputWeightState extends State<BottomInputWeight> {
                 ],
               ),
             ),
-            SizedBox(height: 32.0),
+            SizedBox(height: 40.0),
           ],
         ),
       ),

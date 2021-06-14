@@ -10,6 +10,7 @@ import 'package:van_transport/src/pages/order/controllers/cart_client_controller
 import 'package:van_transport/src/pages/order/widgets/bottom_sheet_input_weight.dart';
 import 'package:van_transport/src/pages/order/widgets/bottom_sheet_product_type.dart';
 import 'package:van_transport/src/services/storage_service.dart';
+import 'package:van_transport/src/widgets/snackbar.dart';
 
 class EditProductPage extends StatefulWidget {
   final String name;
@@ -41,6 +42,7 @@ class _EditProductPageState extends State<EditProductPage> {
   @override
   void initState() {
     super.initState();
+    print(widget.idProduct);
     name = widget.name;
     _nameController.text = widget.name;
     cartController.setWeight(widget.weight);
@@ -117,7 +119,6 @@ class _EditProductPageState extends State<EditProductPage> {
                       ),
                       alignment: Alignment.center,
                       child: TextFormField(
-                        autofocus: true,
                         controller: _nameController,
                         onFieldSubmitted: (val) => null,
                         cursorColor: fCL,
@@ -139,7 +140,7 @@ class _EditProductPageState extends State<EditProductPage> {
                             left: 24.0,
                           ),
                           border: InputBorder.none,
-                          hintText: "Type name...",
+                          hintText: "Nhập tên...",
                           hintStyle: TextStyle(
                             color: fCL,
                             fontSize: 15.0,
@@ -210,7 +211,19 @@ class _EditProductPageState extends State<EditProductPage> {
             SizedBox(height: 24.0),
             NeumorphicButton(
               onPressed: () async {
-                if (images.length > 0) {
+                if (images.length == 0) {
+                  GetSnackBar getSnackBar = GetSnackBar(
+                    title: 'Không thể thêm sản phẩm',
+                    subTitle: 'Hãy tải lên ít nhất 1 hình ảnh',
+                  );
+                  getSnackBar.show();
+                } else if (cartController.weight == null) {
+                  GetSnackBar getSnackBar = GetSnackBar(
+                    title: 'Không thể thêm sản phẩm',
+                    subTitle: 'Hãy nhập khối lượng của sản phẩm!',
+                  );
+                  getSnackBar.show();
+                } else {
                   showDialog(
                       context: context,
                       builder: (context) {

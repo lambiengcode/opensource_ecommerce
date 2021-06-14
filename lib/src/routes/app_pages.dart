@@ -28,6 +28,7 @@ import 'package:van_transport/src/pages/order/pages/create_order_page.dart';
 import 'package:van_transport/src/pages/order/pages/details_orders_page.dart';
 import 'package:van_transport/src/pages/order/pages/edit_product_page.dart'
     as EditOrder;
+import 'package:van_transport/src/pages/order/pages/input_info_receiver_page.dart';
 import 'package:van_transport/src/pages/order/pages/pick_address_cart_page.dart';
 import 'package:van_transport/src/pages/order/pages/pick_address_page.dart';
 import 'package:van_transport/src/pages/order/pages/pick_delivery_page.dart';
@@ -183,7 +184,9 @@ class AppPages {
     ),
     GetPage(
       name: Routes.DETAILSORDERS,
-      page: () => DetailsOrdersPage(),
+      page: () => DetailsOrdersPage(
+        data: Get.arguments,
+      ),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 200),
       children: [],
@@ -193,6 +196,13 @@ class AppPages {
       page: () => PickDeliveryPage(
         idMerchant: Get.arguments,
       ),
+      transition: Transition.rightToLeft,
+      transitionDuration: Duration(milliseconds: 200),
+      children: [],
+    ),
+    GetPage(
+      name: Routes.INPUTINFOREVICER,
+      page: () => InputInfoReceiverPage(),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 200),
       children: [],
@@ -245,7 +255,10 @@ class AppPages {
     ),
     GetPage(
       name: Routes.ADDRESS,
-      page: () => AddressPage(mode: Get.arguments),
+      page: () => AddressPage(
+        mode: Get.arguments == null ? null : Get.arguments['pickMode'],
+        isFrom: Get.arguments == null ? null : Get.arguments['isFrom'],
+      ),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 200),
       children: [],

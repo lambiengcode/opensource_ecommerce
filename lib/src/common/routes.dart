@@ -40,10 +40,15 @@ class ApiGateway {
   static const GET_CART_MERCHANT = '/User/Merchant/GetMyCart';
   static const GET_TRANSPORT_DELIVERY =
       '/Admin/GetTransportByAddress?receiverIdAddress=';
+  static const GET_TRANSPORT_DELIVERY_CLIENT =
+      '/Admin/GetTransportByAddressClient?senderIdAddress=';
   static const PAYMENT_CART_MERCHANT = '/User/Merchant/PaymentCart';
+  static const PAYMENT_CART_CLIENT = '/User/Client/PaymentCart';
   static const DELETE_CART_MERCHANT = '/User/Merchant/DeleteProductFromCart';
   static const DELETE_CART_CLIENT = '/User/Client/DeleteProductFromCart';
   static const UPDATE_CART_CLIENT = '/User/Client/UpdateProductFromCart';
+  static const UPDATE_CART_MERCHANT = '/User/Merchant/UpdateProductFromCart';
+  static const GET_ORDER_BY_STATUS = '/User/OrderByStatus?status=';
 
   // Device: 2
   static const CREATE_DEVICE = '/Device/Create';
@@ -71,6 +76,8 @@ class ApiGateway {
   static const GET_MERCHANT = '/Merchant/GetInfo';
   static const CREATE_MERCHANT = '/Merchant/Create';
   static const UPDATE_MERCHANT = '/Merchant/Update';
+  static const GET_MERCHANT_BY_ID = '/Merchant/GetById?id=';
+  static const GET_ORDER_BY_STATUS_MERCHANT = '/Merchant/OrderByStatus?status=';
 
   // Group Product: 4
   static const CREATE_GROUP_PRODUCT = '/GroupProduct/Create';

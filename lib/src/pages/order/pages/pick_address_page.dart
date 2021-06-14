@@ -95,8 +95,6 @@ class _PickAddressPageState extends State<PickAddressPage> {
                                           ),
                                         ),
                                         onPressed: () {
-                                          pickAddressController
-                                              .pickAddress(selectedP);
                                           Get.back();
                                         },
                                       ),
@@ -299,8 +297,8 @@ class _PickAddressPageState extends State<PickAddressPage> {
                         Get.toNamed(Routes.CHECKOUTORDER);
                       } else {
                         GetSnackBar getSnackBar = GetSnackBar(
-                          title: 'Please pick address!',
-                          subTitle: 'Pick from and to address now.',
+                          title: 'Hãy chọn vị trí!',
+                          subTitle: 'Chọn nơi nhận hàng và nơi lấy hàng',
                         );
                         getSnackBar.show();
                       }
@@ -365,8 +363,14 @@ class _PickAddressPageState extends State<PickAddressPage> {
         GestureDetector(
           onTap: () {
             title == 'toAddress'.trArgs()
-                ? chooseLocation(context)
-                : Get.toNamed(Routes.ADDRESS, arguments: PICK_ON);
+                ? Get.toNamed(Routes.INPUTINFOREVICER)
+                : Get.toNamed(
+                    Routes.ADDRESS,
+                    arguments: {
+                      'pickMode': PICK_ON,
+                      'isFrom': true,
+                    },
+                  );
           },
           child: Text(
             value,

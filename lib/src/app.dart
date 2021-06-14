@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class App extends StatefulWidget {
   static bool firstCome = true;
   static String token;
-  static int time = 3;
+  static int time = 2;
 
   @override
   State<StatefulWidget> createState() => _AppState();

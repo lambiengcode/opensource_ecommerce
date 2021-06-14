@@ -3,6 +3,7 @@ import 'package:van_transport/src/services/merchant_service.dart';
 
 class ProductGlobalController extends GetxController {
   final productService = MerchantService();
+  String merchantName = '';
 
   List<dynamic> listProduct1 = [];
   List<dynamic> listProduct2 = [];
@@ -28,5 +29,13 @@ class ProductGlobalController extends GetxController {
       listProduct4.addAll(res);
     }
     update();
+  }
+
+  getMerchantById(idMerchant) async {
+    var res = await productService.getMerchantById(idMerchant);
+    if (idMerchant != null) {
+      merchantName = res['name'];
+      update();
+    }
   }
 }

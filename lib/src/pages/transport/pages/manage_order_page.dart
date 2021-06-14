@@ -75,8 +75,9 @@ class _TransportManageOrderPageState extends State<TransportManageOrderPage> {
                   }
                 },
                 child: SubCityCard(
-                  fullName: snapshot.data[index]['name'],
-                  manager: snapshot.data[index]['name'],
+                  fullName: StringService()
+                      .formatString(25, snapshot.data[index]['name']),
+                  manager: '0989917877',
                   address: StringService().formatString(
                     20,
                     snapshot.data[index]['location']['address'],

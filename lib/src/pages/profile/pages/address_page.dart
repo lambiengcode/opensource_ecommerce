@@ -16,7 +16,8 @@ import 'package:van_transport/src/services/distance_service.dart';
 
 class AddressPage extends StatefulWidget {
   final String mode;
-  AddressPage({this.mode});
+  final bool isFrom;
+  AddressPage({this.mode, this.isFrom = false});
 
   @override
   _AddressPageState createState() => _AddressPageState();
@@ -300,20 +301,36 @@ class _AddressPageState extends State<AddressPage> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onLongPress: () {
-                          showAddressBottomSheet(mProfile[index]['id']);
+                          if (widget.mode != PICK_ON) {
+                            showAddressBottomSheet(mProfile[index]['id']);
+                          }
                         },
                         onTap: () {
                           if (widget.mode == PICK_ON) {
-                            pickAddressController.pickFromAddress(
-                              double.parse(
-                                mProfile[index]['coordinates']['lat'],
-                              ),
-                              double.parse(
-                                mProfile[index]['coordinates']['lng'],
-                              ),
-                              mProfile[index]['fullAddress'],
-                              mProfile[index]['id'],
-                            );
+                            if (widget.isFrom && widget.isFrom != null) {
+                              pickAddressController.pickFromAddress(
+                                double.parse(
+                                  mProfile[index]['coordinates']['lat'],
+                                ),
+                                double.parse(
+                                  mProfile[index]['coordinates']['lng'],
+                                ),
+                                mProfile[index]['fullAddress'],
+                                mProfile[index]['id'],
+                              );
+                            } else {
+                              pickAddressController.pickAddress(
+                                double.parse(
+                                  mProfile[index]['coordinates']['lat'],
+                                ),
+                                double.parse(
+                                  mProfile[index]['coordinates']['lng'],
+                                ),
+                                mProfile[index]['fullAddress'],
+                                mProfile[index]['id'],
+                                mProfile[index]['phoneNumber'],
+                              );
+                            }
                             Get.back();
                           } else {
                             Get.toNamed(

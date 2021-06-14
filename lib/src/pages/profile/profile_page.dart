@@ -383,7 +383,9 @@ class _ProfilePageState extends State<ProfilePage> {
           Get.toNamed(
             role == 'ADMIN'
                 ? Routes.ADMIN
-                : Routes.DELIVERY + Routes.MIDDLETRANSPORT,
+                : role == 'MERCHANT'
+                    ? Routes.MERCHANT + Routes.MIDDLEWAREMERCHANT
+                    : Routes.DELIVERY + Routes.MIDDLETRANSPORT,
           );
         } else {
           getSnackBar.show();

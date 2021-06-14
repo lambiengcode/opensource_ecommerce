@@ -155,6 +155,16 @@ class MerchantService {
     return convert.jsonDecode(response.body)['data'];
   }
 
+  Future<Map<String, dynamic>> getMerchantById(idMerchant) async {
+    var response = await http.get(
+      baseUrl + ApiGateway.GET_MERCHANT_BY_ID + idMerchant,
+      headers: getHeaders(),
+    );
+    print(idMerchant);
+    print(convert.jsonDecode(response.body)['data']);
+    return convert.jsonDecode(response.body)['data'];
+  }
+
   Map<String, String> getHeaders() {
     return {
       'authorization': 'Bearer ${App.token}',

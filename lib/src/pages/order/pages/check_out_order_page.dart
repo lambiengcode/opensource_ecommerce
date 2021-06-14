@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
+import 'package:van_transport/src/services/string_service.dart';
 
 class CheckOutOrderPage extends StatefulWidget {
   @override
@@ -51,27 +53,32 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
       ),
       body: Container(
         color: mCL,
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.only(top: 16.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(50.0),
-                  ),
-                  color: mCM.withOpacity(.85),
-                ),
-                child: Column(
-                  children: [
-                    StreamBuilder(
-                      stream: cartController.getListCartController,
-                      builder: (context, AsyncSnapshot snapshot) {
-                        if (!snapshot.hasData) {
-                          return Container();
-                        }
+        child: StreamBuilder(
+          stream: cartController.getListCartController,
+          builder: (context, AsyncSnapshot snapshot) {
+            if (!snapshot.hasData) {
+              return Container();
+            }
 
-                        return Expanded(
+            double weight = 0.0;
+            snapshot.data.forEach((e) {
+              weight += double.tryParse(e['weight'].replaceAll(',', ''));
+            });
+
+            return Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 16.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(50.0),
+                      ),
+                      color: mCM.withOpacity(.85),
+                    ),
+                    child: Column(
+                      children: [
+                        Expanded(
                           child: NotificationListener<
                               OverscrollIndicatorNotification>(
                             onNotification: (overscroll) {
@@ -96,45 +103,45 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
                               },
                             ),
                           ),
-                        );
-                      },
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                _buildPriceText(
-                                    context, 'weight'.trArgs(), '2 Kg'),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                GetBuilder<PickAddressController>(
-                                  builder: (_) => _buildPriceText(
-                                      context,
-                                      'distance'.trArgs(),
-                                      '${_.distance == null ? 'Calculating' : _.distance}'),
+                        ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    _buildPriceText(context, 'weight'.trArgs(),
+                                        '${weight.toStringAsFixed(1)} Kg'),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    GetBuilder<PickAddressController>(
+                                      builder: (_) => _buildPriceText(
+                                          context,
+                                          'distance'.trArgs(),
+                                          '${_.distance == null ? 'Calculating' : _.distance}'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            _buildBottomCheckout(context),
-          ],
+                _buildBottomCheckout(context, weight.toStringAsFixed(2)),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -176,7 +183,7 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
     );
   }
 
-  Widget _buildBottomCheckout(context) {
+  Widget _buildBottomCheckout(context, weight) {
     void showPaymentBottomSheet() {
       showModalBottomSheet(
         shape: RoundedRectangleBorder(
@@ -209,26 +216,36 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
         ),
         child: Column(
           children: [
-            _buildActionValue('transport'.trArgs(), 'Ahamove'),
+            GetBuilder<PickAddressController>(
+                builder: (_) => _buildActionValue(
+                      'transport'.trArgs(),
+                      _.transportInfo == null
+                          ? 'chooseTransport'.trArgs()
+                          : _.transportInfo['FK_Transport']['name'],
+                    )),
             SizedBox(height: 16.0),
-            _buildActionValue('taxs'.trArgs(), '100 đ'),
+            _buildActionValue('taxes'.trArgs(), '200 đ'),
             SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  '\$260',
-                  style: TextStyle(
-                    color: colorBlack,
-                    fontSize: width / 16.0,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.bold,
-                    wordSpacing: 1.2,
-                    letterSpacing: 1.2,
+                GetBuilder<PickAddressController>(
+                  builder: (_) => Text(
+                    '${_.transportInfo != null ? StringService().formatPrice((double.tryParse(_.transportInfo['price']) + 200).round().toString()) : StringService().formatPrice((200).toString())} đ',
+                    style: TextStyle(
+                      color: colorBlack,
+                      fontSize: width / 20.0,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.bold,
+                      wordSpacing: 1.2,
+                      letterSpacing: 1.2,
+                    ),
                   ),
                 ),
                 NeumorphicButton(
-                  onPressed: () => showPaymentBottomSheet(),
+                  onPressed: () {
+                    pickAddressController.paymentCartClient(weight);
+                  },
                   duration: Duration(milliseconds: 200),
                   style: NeumorphicStyle(
                     shape: NeumorphicShape.convex,
@@ -285,15 +302,21 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
             fontWeight: FontWeight.w400,
           ),
         ),
-        Text(
-          value,
-          style: TextStyle(
-            color: value == 'Pick Coupon' || value == 'Pick Transport'
-                ? colorPrimary
-                : colorTitle,
-            fontSize: width / 24.0,
-            fontFamily: 'Lato',
-            fontWeight: FontWeight.w400,
+        GestureDetector(
+          onTap: () {
+            Get.toNamed(Routes.PICKDELIVERY);
+          },
+          child: Text(
+            value,
+            style: TextStyle(
+              color: value == 'chooseCoupon'.trArgs() ||
+                      value == 'chooseTransport'.trArgs()
+                  ? colorPrimary
+                  : colorTitle,
+              fontSize: width / 24.0,
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ),
       ],

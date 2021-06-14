@@ -43,7 +43,7 @@ class TransportService {
 
   Future<int> updateTransport(body) async {
     var response = await http.post(
-      baseUrl + ApiGateway.UPDATE_PRICE_TYPE,
+      baseUrl + ApiGateway.UPDATE_TRANSPORT,
       body: body,
       headers: getHeaders(),
     );

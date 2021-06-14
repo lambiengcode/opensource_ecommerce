@@ -3,7 +3,6 @@ import 'package:van_transport/src/pages/home/controllers/product_global_controll
 import 'package:van_transport/src/pages/home/widget/horizontal_store_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
@@ -29,11 +28,6 @@ class _SearchProductPageState extends State<SearchProductPage> {
 
   @override
   void initState() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.light,
-    ));
     productController.getProduct(page);
     super.initState();
   }
@@ -134,12 +128,12 @@ class _SearchProductPageState extends State<SearchProductPage> {
         boxShape: NeumorphicBoxShape.circle(),
         depth: 6.0,
         intensity: .75,
-        color: title == 'Back' ? colorBlack : mC,
+        color: title == 'Back' ? colorBlack.withOpacity(.95) : mC,
       ),
       padding: EdgeInsets.all(width / 25.0),
       child: Icon(
         icon,
-        color: title == 'Back' ? mC : colorBlack,
+        color: title == 'Back' ? colorPrimaryTextOpacity : colorBlack,
         size: width / 18.0,
       ),
       duration: Duration(milliseconds: 200),

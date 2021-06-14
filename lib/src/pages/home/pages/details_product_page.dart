@@ -1,5 +1,6 @@
 import 'package:van_transport/src/app.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/home/controllers/product_global_controller.dart';
 import 'package:van_transport/src/pages/order/controllers/cart_merchant_controller.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -32,24 +33,16 @@ class DetailsProductPage extends StatefulWidget {
 
 class _DetailsProductPageState extends State<DetailsProductPage> {
   final cartController = Get.put(CartMerchantController());
+  final productController = Get.put(ProductGlobalController());
   int _quantity = 1;
   @override
   void initState() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark,
-    ));
+    productController.getMerchantById(widget.data['FK_merchant']);
     super.initState();
   }
 
   @override
   void dispose() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.light,
-    ));
     super.dispose();
   }
 
@@ -57,18 +50,21 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        color: mCL,
         child: Stack(
           children: [
             Positioned(
-              top: .0,
+              top: height / 9.5,
               left: .0,
               right: .0,
               child: Container(
-                height: height * .5,
+                height: height * .325,
+                width: width,
                 decoration: BoxDecoration(
+                  color: mCL,
                   image: DecorationImage(
                     image: NetworkImage(widget.image),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),
@@ -80,7 +76,7 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
               child: Container(
                 height: height * .5,
                 decoration: BoxDecoration(
-                  color: colorBlack.withOpacity(.5),
+                  color: colorBlack.withOpacity(.2),
                 ),
               ),
             ),
@@ -105,7 +101,7 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
               left: .0,
               right: .0,
               child: Container(
-                height: height * .56,
+                height: height * .55,
                 child: Neumorphic(
                   style: NeumorphicStyle(
                     shape: NeumorphicShape.convex,
@@ -145,7 +141,7 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 32.0),
+                      SizedBox(height: 24.0),
                       Row(
                         children: [
                           Expanded(
@@ -169,27 +165,29 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
                                 GestureDetector(
                                   onTap: () => Get.toNamed(Routes.STORE,
                                       arguments: widget.data['FK_merchant']),
-                                  child: RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(
-                                            text: 'Store: ',
+                                  child: GetBuilder<ProductGlobalController>(
+                                    builder: (_) => RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          TextSpan(
+                                              text: 'Store: ',
+                                              style: TextStyle(
+                                                color: colorTitle,
+                                                fontSize: width / 24.0,
+                                                fontFamily: 'Lato',
+                                                fontWeight: FontWeight.w400,
+                                              )),
+                                          TextSpan(
+                                            text: _.merchantName,
                                             style: TextStyle(
-                                              color: colorTitle,
+                                              color: colorPrimary,
                                               fontSize: width / 24.0,
                                               fontFamily: 'Lato',
                                               fontWeight: FontWeight.w400,
-                                            )),
-                                        TextSpan(
-                                          text: widget.owner,
-                                          style: TextStyle(
-                                            color: colorPrimary,
-                                            fontSize: width / 24.0,
-                                            fontFamily: 'Lato',
-                                            fontWeight: FontWeight.w400,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -208,12 +206,12 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 20.0),
+                      SizedBox(height: 10.0),
                       Text(
-                        'Details',
+                        'Mô tả',
                         style: TextStyle(
                           color: colorBlack,
-                          fontSize: width / 20.0,
+                          fontSize: width / 22.5,
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.bold,
                         ),
@@ -230,13 +228,13 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
                         ),
                         textAlign: TextAlign.justify,
                       ),
-                      SizedBox(height: 28.0),
+                      SizedBox(height: 16.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           _buildQuantityButton(context),
                           Text(
-                            'Total: \$260',
+                            'Total: ${StringService().formatPrice(widget.price.toString())} đ',
                             style: TextStyle(
                               color: colorBlack,
                               fontSize: width / 22.5,
@@ -248,7 +246,7 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 28.0),
+                      SizedBox(height: 20.0),
                       NeumorphicButton(
                         onPressed: () {
                           if (App.token == '') {
@@ -323,7 +321,9 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
       child: Icon(
         icon,
         size: _size.width / 18.0,
-        color: mC,
+        color: icon == Feather.arrow_left
+            ? colorBlack.withOpacity(.65)
+            : colorPrimary.withOpacity(.85),
       ),
       padding: EdgeInsets.all(_size.width / 28.0),
       style: NeumorphicStyle(
@@ -333,9 +333,9 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
         ),
         depth: -.5,
         intensity: 1,
-        color: mCL.withOpacity(.15),
+        color: mCL.withOpacity(.35),
       ),
-      duration: Duration(milliseconds: 500),
+      duration: Duration(milliseconds: 200),
     );
   }
 

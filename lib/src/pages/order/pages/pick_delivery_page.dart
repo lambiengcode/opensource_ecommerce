@@ -21,7 +21,11 @@ class _PickDeliveryPageState extends State<PickDeliveryPage>
   @override
   void initState() {
     super.initState();
-    pickAddressController.getListTransport(widget.idMerchant);
+    if (widget.idMerchant != null) {
+      pickAddressController.getListTransport(widget.idMerchant);
+    } else {
+      pickAddressController.getListTransportForClientCart();
+    }
   }
 
   @override

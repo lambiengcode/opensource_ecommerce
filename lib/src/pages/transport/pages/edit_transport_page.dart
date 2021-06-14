@@ -11,7 +11,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:van_transport/src/services/storage_service.dart';
-import 'package:van_transport/src/widgets/loading_page.dart';
 
 class EditTransportPage extends StatefulWidget {
   final transportInfo;
@@ -71,6 +70,7 @@ class _EditTransportPageState extends State<EditTransportPage> {
   @override
   void initState() {
     super.initState();
+    print(widget.transportInfo['headquarters']);
     transportController.getTransport();
     _title = widget.transportInfo['name'];
     _desc = widget.transportInfo['description'];

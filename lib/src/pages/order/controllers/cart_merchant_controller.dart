@@ -11,6 +11,7 @@ class CartMerchantController extends GetxController {
   getCartMerchant() async {
     var res = await userService.getCartMerchant();
     cartController.add(res);
+    update();
   }
 
   deleteCartMerchant(idProduct) async {
@@ -33,7 +34,28 @@ class CartMerchantController extends GetxController {
     int status = await userService.addProductToCartMerchant(body);
     if (status == 200) {
       getCartMerchant();
-      Get.back();
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Đã thêm vào giỏ hàng',
+        subTitle: 'Hãy kiểm tra lại giỏ hàng cuả bạn.',
+      );
+      getSnackBar.show();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Add failure!',
+        subTitle: 'Check again product infomations.',
+      );
+      getSnackBar.show();
+    }
+  }
+
+  updateCart(idProduct, quantity) async {
+    var body = {
+      'idProduct': idProduct,
+      'quantity': quantity,
+    };
+    int status = await userService.updateProductToCartMerchant(body);
+    if (status == 200) {
+      getCartMerchant();
     } else {
       GetSnackBar getSnackBar = GetSnackBar(
         title: 'Add failure!',

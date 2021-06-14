@@ -61,7 +61,7 @@ class _HorizontalStoreCardState extends State<HorizontalStoreCard> {
                 ),
                 SizedBox(height: 3.0),
                 Text(
-                  (widget.address.contains('000')
+                  (StringService().isNumeric(widget.address.replaceAll(',', ''))
                           ? 'price'.trArgs()
                           : 'address'.trArgs()) +
                       ': ' +
@@ -99,7 +99,8 @@ class _HorizontalStoreCardState extends State<HorizontalStoreCard> {
               child: CachedNetworkImage(
                 width: _size.width * .40,
                 height: _size.width * .26,
-                fit: (widget.address.contains('000'))
+                fit: StringService()
+                        .isNumeric(widget.address.replaceAll(',', ''))
                     ? BoxFit.contain
                     : BoxFit.cover,
                 placeholder: (context, url) => PlaceHolderImage(),

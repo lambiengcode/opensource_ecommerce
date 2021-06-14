@@ -1,6 +1,7 @@
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/empty/empty_order_page.dart';
 import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
+import 'package:van_transport/src/pages/merchant/pages/manage_order_merchant_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/product_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/revenue_page.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
@@ -41,9 +42,9 @@ class _TransportPage extends State<MerchantPage>
       });
     });
     _pages = [
-      EmptyOrderPage(),
-      Container(color: mC),
-      EmptyOrderPage(),
+      ManageOrderMerchantPage(pageName: 'AWAIT_FOR_COMFIRMATION'),
+      ManageOrderMerchantPage(pageName: 'ON_GOING'),
+      ManageOrderMerchantPage(pageName: 'DELIVERED'),
       ProductPage(idMerchant: widget.merchantInfo['_id']),
       RevenuePage(),
     ];

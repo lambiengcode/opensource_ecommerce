@@ -20,12 +20,14 @@ class DetailsProductGroupPage extends StatefulWidget {
 class _DetailsProductGroupPageState extends State<DetailsProductGroupPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final merchantController = Get.put(MerchantController());
+  final scrollController = ScrollController();
   final stringService = StringService();
   SlidableController slidableController = new SlidableController();
+  int page = 1;
 
   @override
   void initState() {
-    merchantController.getProductByGroup(widget.idGroup, 1);
+    merchantController.getProductByGroup(widget.idGroup, page);
     slidableController = SlidableController();
     super.initState();
   }
@@ -90,79 +92,78 @@ class _DetailsProductGroupPageState extends State<DetailsProductGroupPage> {
         width: width,
         padding: EdgeInsets.only(top: 16.0),
         child: NotificationListener<OverscrollIndicatorNotification>(
-          onNotification: (overscroll) {
-            overscroll.disallowGlow();
-            return true;
+          onNotification: (scrollNotification) {
+            if (scrollNotification is ScrollStartNotification) {
+            } else if (scrollNotification is ScrollUpdateNotification) {
+            } else if (scrollNotification is ScrollEndNotification) {
+              setState(() {
+                page++;
+              });
+              merchantController.getProductByGroup(widget.idGroup, page);
+            }
+            return;
           },
-          child: StreamBuilder(
-            stream: merchantController.getProductStream,
-            builder: (context, AsyncSnapshot snapshot) {
-              if (!snapshot.hasData) {
-                return Container();
-              }
-
-              var mProducts = snapshot.data;
-
-              return ListView.builder(
-                physics: ClampingScrollPhysics(),
-                itemCount: mProducts.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    child: Slidable(
-                      actionPane: SlidableDrawerActionPane(),
-                      actionExtentRatio: 0.25,
-                      controller: slidableController,
-                      child: GestureDetector(
-                        onTap: () => Get.toNamed(
-                          Routes.MERCHANT + Routes.EDITPRODUCT,
-                          arguments: mProducts[index],
-                        ),
-                        child: VerticalTransportCard(
-                          image: null,
-                          address: stringService
-                              .formatPrice(mProducts[index]['price']),
-                          title: mProducts[index]['name'],
-                          urlToImage: mProducts[index]['image'],
-                          desc: mProducts[index]['description'],
-                        ),
+          child: GetBuilder<MerchantController>(
+            builder: (_) => ListView.builder(
+              controller: scrollController,
+              physics: ClampingScrollPhysics(),
+              itemCount: _.products1.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  child: Slidable(
+                    actionPane: SlidableDrawerActionPane(),
+                    actionExtentRatio: 0.25,
+                    controller: slidableController,
+                    child: GestureDetector(
+                      onTap: () => Get.toNamed(
+                        Routes.MERCHANT + Routes.EDITPRODUCT,
+                        arguments: _.products1[index],
                       ),
-                      secondaryActions: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            slidableController.activeState.close();
-                            merchantController.deleteProduct(
-                              mProducts[index]['_id'],
-                              mProducts[index]['FK_groupProduct'],
-                            );
-                          },
-                          child: Container(
-                            margin: EdgeInsets.fromLTRB(12.0, 12.0, 6.0, 18.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4.0),
-                              color: mCD,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: mCL,
-                                  offset: Offset(3, 3),
-                                  blurRadius: 3,
-                                  spreadRadius: -3,
-                                ),
-                              ],
-                            ),
-                            alignment: Alignment.center,
-                            child: Icon(
-                              Feather.trash_2,
-                              color: colorTitle,
-                              size: width / 15.0,
-                            ),
+                      child: VerticalTransportCard(
+                        image: null,
+                        address: stringService
+                            .formatPrice(_.products1[index]['price']),
+                        title: _.products1[index]['name'],
+                        urlToImage: _.products1[index]['image'],
+                        desc: _.products1[index]['description'],
+                      ),
+                    ),
+                    secondaryActions: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          slidableController.activeState.close();
+                          merchantController.deleteProduct(
+                            _.products1[index]['_id'],
+                            _.products1[index]['FK_groupProduct'],
+                          );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(12.0, 12.0, 6.0, 18.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4.0),
+                            color: mCD,
+                            boxShadow: [
+                              BoxShadow(
+                                color: mCL,
+                                offset: Offset(3, 3),
+                                blurRadius: 3,
+                                spreadRadius: -3,
+                              ),
+                            ],
+                          ),
+                          alignment: Alignment.center,
+                          child: Icon(
+                            Feather.trash_2,
+                            color: colorTitle,
+                            size: width / 15.0,
                           ),
                         ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),

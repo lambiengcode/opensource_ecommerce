@@ -17,10 +17,10 @@ class _OrderPageState extends State<OrderPage>
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   var _pages = [
-    ManageOrderPage(pageName: 'Ongoin'),
-    ManageOrderPage(pageName: 'WaitForConfirm'),
-    ManageOrderPage(pageName: 'ToYou'),
-    ManageOrderPage(pageName: 'History'),
+    ManageOrderPage(pageName: 'ON_GOING'),
+    ManageOrderPage(pageName: 'AWAIT_FOR_COMFIRMATION'),
+    ManageOrderPage(pageName: 'CANCEL'),
+    ManageOrderPage(pageName: 'DELIVERED'),
   ];
 
   @override
@@ -47,6 +47,8 @@ class _OrderPageState extends State<OrderPage>
           onPressed: () {
             if (App.token != '') {
               Get.toNamed(Routes.CREATEORDER);
+            } else {
+              Get.toNamed(Routes.AUTHENTICATION);
             }
           },
           icon: Icon(
@@ -69,6 +71,8 @@ class _OrderPageState extends State<OrderPage>
             onPressed: () {
               if (App.token != '') {
                 Get.toNamed(Routes.CART);
+              } else {
+                Get.toNamed(Routes.AUTHENTICATION);
               }
             },
             icon: Icon(
@@ -112,7 +116,7 @@ class _OrderPageState extends State<OrderPage>
             Container(
               width: width * .125,
               child: Tab(
-                text: 'toYou'.trArgs(),
+                text: 'reject'.trArgs(),
               ),
             ),
             Container(

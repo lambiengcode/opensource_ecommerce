@@ -288,11 +288,11 @@ class _SignupPageState extends State<SignupPage> {
           });
         },
         inputFormatters: [
-          title == 'Phone Number' || title == 'Số Điện Thoại'
+          title == 'phone'.trArgs()
               ? FilteringTextInputFormatter.digitsOnly
               : FilteringTextInputFormatter.singleLineFormatter,
         ],
-        obscureText: title == 'Password' || title == 'Mật khẩu' ? true : false,
+        obscureText: title == 'password'.trArgs() ? true : false,
         decoration: InputDecoration(
           floatingLabelBehavior: FloatingLabelBehavior.always,
           contentPadding: EdgeInsets.only(

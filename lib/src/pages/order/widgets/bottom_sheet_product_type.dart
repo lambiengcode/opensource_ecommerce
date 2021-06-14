@@ -67,7 +67,7 @@ class _BottomProductTypeState extends State<BottomProductType> {
               endIndent: 12.0,
             ),
             _buildAction(context, widget.values[2], 2),
-            SizedBox(height: 16.0),
+            SizedBox(height: 24.0),
           ],
         ),
       ),

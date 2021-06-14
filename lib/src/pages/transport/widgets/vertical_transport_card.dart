@@ -112,7 +112,7 @@ class _VerticalTransportCardState extends State<VerticalTransportCard> {
                 ),
                 SizedBox(height: 4.0),
                 Text(
-                  (widget.address.contains('000')
+                  (StringService().isNumeric(widget.address.replaceAll(',', ''))
                           ? 'price'.trArgs()
                           : 'address'.trArgs()) +
                       ': ' +
@@ -179,7 +179,8 @@ class _VerticalTransportCardState extends State<VerticalTransportCard> {
                       child: CachedNetworkImage(
                         width: _size.width * .35,
                         height: _size.width * .3,
-                        fit: widget.address.contains('000') ||
+                        fit: !StringService().isNumeric(
+                                    widget.address.replaceAll(',', '')) ||
                                 widget.address == ''
                             ? BoxFit.cover
                             : BoxFit.contain,

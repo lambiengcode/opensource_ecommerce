@@ -26,6 +26,7 @@ abstract class Routes {
   static const PICKADDRESSCART = '/pickAddressCart';
   static const PICKDELIVERY = '/pickDelivery';
   static const EDITPRODUCT = '/editProduct';
+  static const INPUTINFOREVICER = '/inputInfoReceiver';
 
   // Profile
   static const EDITPROFILE = '/editProfile';

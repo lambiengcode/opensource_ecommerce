@@ -96,6 +96,15 @@ class UserService {
     return response.statusCode;
   }
 
+  Future<int> updateProductToCartMerchant(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.UPDATE_CART_MERCHANT,
+      headers: getHeaders(),
+      body: body,
+    );
+    return response.statusCode;
+  }
+
   Future<int> addProductToCartMerchant(body) async {
     var response = await http.post(
       baseUrl + ApiGateway.ADD_PRODUCT_TO_CART_MERCHANT,
@@ -114,13 +123,23 @@ class UserService {
     return response.statusCode;
   }
 
+  Future<int> paymentCartClient(body) async {
+    var response = await http.post(
+      baseUrl + ApiGateway.PAYMENT_CART_CLIENT,
+      headers: getHeaders(),
+      body: body,
+    );
+
+    return response.statusCode;
+  }
+
   Future<int> deleteItemCartMerchant(body) async {
     var response = await http.post(
       baseUrl + ApiGateway.DELETE_CART_MERCHANT,
       headers: getHeaders(),
       body: body,
     );
-    print(convert.jsonDecode(response.body));
+
     return response.statusCode;
   }
 
@@ -157,6 +176,20 @@ class UserService {
         : null;
   }
 
+  Future<dynamic> getTransportDeliveryClient(idAddress, lat, lng) async {
+    var response = await http.get(
+      baseUrl +
+          ApiGateway.GET_TRANSPORT_DELIVERY_CLIENT +
+          idAddress +
+          '&receiverLat=$lat&receiverLng=$lng',
+      headers: getHeaders(),
+    );
+
+    return response.statusCode == 200
+        ? convert.jsonDecode(response.body)['data']
+        : null;
+  }
+
   Future<List<dynamic>> getCartClient() async {
     var response = await http.get(
       baseUrl + ApiGateway.GET_CART_CLIENT,
@@ -166,6 +199,18 @@ class UserService {
     print(convert.jsonDecode(response.body)['data']);
     return response.statusCode == 200
         ? convert.jsonDecode(response.body)['data']['products']
+        : null;
+  }
+
+  Future<List<dynamic>> getOrderByStatus(status) async {
+    var response = await http.get(
+      baseUrl + ApiGateway.GET_ORDER_BY_STATUS + status,
+      headers: getHeaders(),
+    );
+
+    print(convert.jsonDecode(response.body)['data']);
+    return response.statusCode == 200
+        ? convert.jsonDecode(response.body)['data']
         : null;
   }
 

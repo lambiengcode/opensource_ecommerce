@@ -1,20 +1,36 @@
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/order/widgets/cart_card.dart';
-import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/pages/order/widgets/drawer_address.dart';
+import 'package:van_transport/src/services/string_service.dart';
 
 class DetailsOrdersPage extends StatefulWidget {
+  final data;
+  DetailsOrdersPage({@required this.data});
   @override
   State<StatefulWidget> createState() => _DetailsOrdersPageState();
 }
 
 class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    super.initState();
+    print(widget.data['canReceive']);
+    print(widget.data['canDelete']);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: Container(
+        width: width * .75,
+        child: Drawer(child: DrawerAddress(data: widget.data)),
+      ),
       appBar: AppBar(
         backgroundColor: mCL,
         elevation: .0,
@@ -25,7 +41,7 @@ class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
           icon: Icon(
             Feather.arrow_left,
             color: colorTitle,
-            size: width / 16.5,
+            size: width / 15.0,
           ),
         ),
         title: Text(
@@ -37,6 +53,17 @@ class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
             fontFamily: 'Lato',
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () => _scaffoldKey.currentState.openEndDrawer(),
+            icon: Icon(
+              Feather.map,
+              color: colorPrimary,
+              size: width / 16.5,
+            ),
+          ),
+          SizedBox(width: 4.0),
+        ],
       ),
       body: Container(
         color: mCL,
@@ -67,9 +94,20 @@ class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
                             top: 16.0,
                           ),
                           physics: ClampingScrollPhysics(),
-                          itemCount: 2,
+                          itemCount:
+                              widget.data['FK_Product'][0]['products'].length,
                           itemBuilder: (context, index) {
-                            return CartCard();
+                            return CartCard(
+                              name: StringService().formatString(
+                                24,
+                                widget.data['FK_Product'][0]['products'][index]
+                                    ['name'],
+                              ),
+                              urlToString: widget.data['FK_Product'][0]
+                                  ['products'][index]['image'],
+                              price: widget.data['FK_Product'][0]['products']
+                                  [index]['price'],
+                            );
                           },
                         ),
                       ),
@@ -79,13 +117,17 @@ class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          _buildPriceText(context, 'product'.trArgs(), '2'),
+                          _buildPriceText(context, 'product'.trArgs(),
+                              '${widget.data['FK_Product'][0]['products'].length}'),
                           _buildPriceText(
                             context,
                             'subTotal'.trArgs(),
-                            '\$250',
+                            StringService().formatPrice(
+                                    double.tryParse(widget.data['prices'])
+                                        .round()
+                                        .toString()) +
+                                ' đ',
                           ),
-                          _buildPriceText(context, 'taxes'.trArgs(), '\$10'),
                         ],
                       ),
                     ),
@@ -108,7 +150,7 @@ class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
             text: title,
             style: TextStyle(
               color: colorDarkGrey.withOpacity(.6),
-              fontSize: width / 26.0,
+              fontSize: width / 28.0,
               fontFamily: 'Lato',
               fontWeight: FontWeight.w400,
             ),
@@ -117,7 +159,7 @@ class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
             text: ':\t',
             style: TextStyle(
               color: colorDarkGrey.withOpacity(.6),
-              fontSize: width / 26.0,
+              fontSize: width / 28.0,
               fontFamily: 'Lato',
               fontWeight: FontWeight.w400,
             ),
@@ -126,9 +168,9 @@ class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
             text: value,
             style: TextStyle(
               color: colorBlack,
-              fontSize: width / 22.5,
+              fontSize: width / 24.0,
               fontFamily: 'Lato',
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],
@@ -156,45 +198,56 @@ class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '\$260',
+              StringService().formatPrice(double.tryParse(widget.data['prices'])
+                      .round()
+                      .toString()) +
+                  ' đ',
               style: TextStyle(
                 color: colorBlack,
-                fontSize: width / 16.0,
+                fontSize: width / 22.0,
                 fontFamily: 'Lato',
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 wordSpacing: 1.2,
                 letterSpacing: 1.2,
               ),
             ),
             NeumorphicButton(
-              onPressed: () => Get.toNamed(Routes.CHECKOUT),
+              onPressed: () {
+                if (widget.data['canReceive']) {
+                } else if (widget.data['canDelete']) {}
+              },
               duration: Duration(milliseconds: 200),
               style: NeumorphicStyle(
                 shape: NeumorphicShape.convex,
                 boxShape: NeumorphicBoxShape.roundRect(
-                  BorderRadius.circular(20.0),
+                  BorderRadius.circular(16.0),
                 ),
-                depth: 15.0,
+                depth: 5.0,
                 intensity: 1,
-                color: colorPrimary.withOpacity(.85),
+                color: !widget.data['canReceive'] && !widget.data['canDelete']
+                    ? colorDarkGrey
+                    : widget.data['canReceive']
+                        ? colorPrimary
+                        : colorHigh,
               ),
               padding: EdgeInsets.symmetric(
                 vertical: 16.0,
-                horizontal: 28.0,
+                horizontal: 32.0,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.sensor_door_sharp,
-                    color: mC,
-                    size: width / 18.0,
-                  ),
-                  SizedBox(width: 8.0),
                   Text(
-                    'checkOut'.trArgs(),
+                    !widget.data['canReceive'] && !widget.data['canDelete']
+                        ? 'Đang giao hàng'
+                        : widget.data['canReceive']
+                            ? 'Nhận đơn hàng'
+                            : 'Huỷ đơn hàng',
                     style: TextStyle(
-                      color: mC,
+                      color: !widget.data['canReceive'] &&
+                              !widget.data['canDelete']
+                          ? mCM
+                          : mC,
                       fontSize: width / 26.0,
                       fontFamily: 'Lato',
                       fontWeight: FontWeight.w600,

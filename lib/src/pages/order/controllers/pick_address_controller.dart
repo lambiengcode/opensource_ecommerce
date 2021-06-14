@@ -1,8 +1,7 @@
 import 'dart:async';
-
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:van_transport/src/services/distance_service.dart';
 import 'package:van_transport/src/services/user_service.dart';
@@ -11,12 +10,21 @@ import 'package:van_transport/src/widgets/snackbar.dart';
 class PickAddressController extends GetxController {
   StreamController<dynamic> listTransport =
       StreamController<dynamic>.broadcast();
+  TextEditingController addressController = TextEditingController();
   final DistanceService distanceService = DistanceService();
   final userService = UserService();
   String placeTo, placeFrom;
   LatLng locationTo, locationFrom;
   String distance;
-  String idAddress;
+  String idAddressFrom, idAddressTo;
+  String phone;
+  InfoReceiver infoReceiver = InfoReceiver(
+    fullName: '',
+    phone: '',
+    title: '',
+    description: '',
+    address: '',
+  );
   var senderInfo, recipientInfo, transportInfo;
 
   initData() {
@@ -25,12 +33,33 @@ class PickAddressController extends GetxController {
     update();
   }
 
-  pickAddress(PickResult input) {
-    locationTo = LatLng(
-      input.geometry.location.lat,
-      input.geometry.location.lng,
+  initialFormInput() {
+    addressController.text = placeTo ?? '';
+  }
+
+  disposeFormInput() {
+    locationTo = null;
+    phone = null;
+    placeTo = null;
+    idAddressTo = null;
+    infoReceiver = InfoReceiver(
+      fullName: '',
+      phone: '',
+      title: '',
+      description: '',
+      address: '',
     );
-    placeTo = input.formattedAddress;
+  }
+
+  pickAddress(lat, lng, fullAddress, idAddress, phoneNumber) {
+    locationTo = LatLng(
+      lat,
+      lng,
+    );
+    phone = phoneNumber;
+    placeTo = fullAddress;
+    this.idAddressTo = idAddress;
+    addressController.text = placeTo;
     update();
   }
 
@@ -40,8 +69,20 @@ class PickAddressController extends GetxController {
       lng,
     );
     placeFrom = fullAddress;
-    this.idAddress = idAddress;
+    this.idAddressFrom = idAddress;
     update();
+  }
+
+  saveInfoReceiver(fullName, phone, title, description) {
+    infoReceiver = InfoReceiver(
+      fullName: fullName,
+      phone: phone,
+      title: title,
+      description: description,
+      address: placeTo,
+    );
+    update();
+    Get.back();
   }
 
   calDistance() async {
@@ -56,7 +97,16 @@ class PickAddressController extends GetxController {
   }
 
   getListTransport(idMerchant) async {
-    var res = await userService.getTransportDelivery(idAddress, idMerchant);
+    var res = await userService.getTransportDelivery(idAddressFrom, idMerchant);
+    listTransport.add(res);
+  }
+
+  getListTransportForClientCart() async {
+    var res = await userService.getTransportDeliveryClient(
+      idAddressFrom,
+      locationFrom.latitude,
+      locationFrom.longitude,
+    );
     listTransport.add(res);
   }
 
@@ -67,7 +117,7 @@ class PickAddressController extends GetxController {
     update();
   }
 
-  paymentCartMerchant() async {
+  paymentCartMerchant(price) async {
     var body = {
       "title": "Đơn hàng Van Transport",
       "description": "Đơn hàng mới",
@@ -84,7 +134,10 @@ class PickAddressController extends GetxController {
       "FK_SubTransport": transportInfo['start']['_id'],
       "FK_SubTransportAwait": transportInfo['end']['_id'],
       "distance": transportInfo['distance'],
-      "prices": transportInfo['price'],
+      "prices": (int.parse(price.toString().replaceAll(',', '')) +
+              double.tryParse(transportInfo['price']).round() +
+              200)
+          .toString(),
       "weight": "0",
       "estimatedDate": "1622221281950",
     };
@@ -94,7 +147,52 @@ class PickAddressController extends GetxController {
       transportInfo = null;
       senderInfo = null;
       recipientInfo = null;
-      idAddress = null;
+      idAddressFrom = null;
+      Get.offAndToNamed(Routes.ROOT);
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Mua hàng thành công!',
+        subTitle: 'Kiểm tra lại đơn hàng nhé.',
+      );
+      getSnackBar.show();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Payment failure!',
+        subTitle: 'Check again your infomation',
+      );
+      getSnackBar.show();
+    }
+  }
+
+  paymentCartClient(weight) async {
+    var body = {
+      "title": infoReceiver.title,
+      "description": infoReceiver.description,
+      "recipientName": infoReceiver.fullName,
+      "recipientAddress": placeTo,
+      "recipientLat": locationTo.latitude.toString(),
+      "recipientLng": locationFrom.longitude.toString(),
+      "recipientPhone": infoReceiver.phone,
+      "senderPhone": phone,
+      "senderAddress": placeTo,
+      "senderLat": locationTo.latitude.toString(),
+      "senderLng": locationTo.longitude.toString(),
+      "estimatedDate": "1622221281950",
+      "FK_Transport": transportInfo['FK_Transport']['_id'],
+      "FK_SubTransport": transportInfo['start']['_id'],
+      "FK_SubTransportAwait": transportInfo['end']['_id'],
+      "distance": transportInfo['distance'],
+      "prices":
+          (double.tryParse(transportInfo['price']).round() + 200).toString(),
+      "weight": weight,
+    };
+
+    int status = await userService.paymentCartClient(body);
+    if (status == 200) {
+      transportInfo = null;
+      senderInfo = null;
+      recipientInfo = null;
+      idAddressFrom = null;
+      disposeFormInput();
       Get.offAndToNamed(Routes.ROOT);
       GetSnackBar getSnackBar = GetSnackBar(
         title: 'Mua hàng thành công!',
@@ -111,4 +209,20 @@ class PickAddressController extends GetxController {
   }
 
   Stream<dynamic> get getListTransportController => listTransport.stream;
+}
+
+class InfoReceiver {
+  final String fullName;
+  final String phone;
+  final String address;
+  final String title;
+  final String description;
+
+  InfoReceiver({
+    this.address,
+    this.description,
+    this.fullName,
+    this.phone,
+    this.title,
+  });
 }

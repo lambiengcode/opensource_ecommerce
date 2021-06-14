@@ -1,4 +1,6 @@
 class StringService {
+  RegExp _numeric = RegExp(r'^-?[0-9]+$');
+
   formatString(int length, String input) {
     if (input.length <= length) {
       return input;
@@ -10,9 +12,7 @@ class StringService {
   formatPrice(String money) {
     String result = '';
     int convertMoney = int.parse(money);
-    convertMoney % 1000 == 0
-        ? money = money
-        : money = (convertMoney - convertMoney % 1000 + 1000).toString();
+    money = convertMoney.toString();
     int count = 0;
     for (int i = money.length - 1; i >= 0; i--) {
       if (count == 3) {
@@ -32,5 +32,10 @@ class StringService {
 
   formatPhoneString(String phone) {
     return phone[0] == '0' ? phone : '0' + phone;
+  }
+
+  isNumeric(String input) {
+    print(_numeric.hasMatch(input));
+    return _numeric.hasMatch(input);
   }
 }

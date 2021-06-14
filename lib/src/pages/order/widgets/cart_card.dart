@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/order/controllers/cart_merchant_controller.dart';
 import 'package:van_transport/src/services/string_service.dart';
 import 'package:van_transport/src/widgets/error_loading_image.dart';
 import 'package:van_transport/src/widgets/place_holder_image.dart';
@@ -13,11 +14,13 @@ class CartCard extends StatefulWidget {
   final String price;
   final String quantity;
   final String urlToString;
+  final String idProduct;
   CartCard({
     @required this.name,
     @required this.price,
-    @required this.quantity,
+    this.quantity,
     @required this.urlToString,
+    this.idProduct,
   });
   @override
   State<StatefulWidget> createState() => _CartCardState();
@@ -100,22 +103,22 @@ class _CartCardState extends State<CartCard> {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: '\$ ',
-                                  style: TextStyle(
-                                    color: colorPrimary,
-                                    fontSize: width / 24.0,
-                                    fontFamily: 'Lato',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                TextSpan(
                                   text:
                                       StringService().formatPrice(widget.price),
                                   style: TextStyle(
                                     color: colorPrimary,
-                                    fontSize: width / 20.0,
+                                    fontSize: width / 22.5,
                                     fontFamily: 'Lato',
                                     fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: ' đ',
+                                  style: TextStyle(
+                                    color: colorPrimary,
+                                    fontSize: width / 26.0,
+                                    fontFamily: 'Lato',
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ],
@@ -126,7 +129,9 @@ class _CartCardState extends State<CartCard> {
                     ],
                   ),
                 ),
-                _buildQuantityButton(context),
+                widget.quantity != null
+                    ? _buildQuantityButton(context)
+                    : Container(),
               ],
             ),
           ),
@@ -159,8 +164,19 @@ class _CartCardState extends State<CartCard> {
   }
 
   Widget _buildQuantityActionButton(context, icon) {
+    final cartController = Get.put(CartMerchantController());
     return NeumorphicButton(
-      onPressed: () => icon == Feather.arrow_left ? Get.back() : null,
+      onPressed: () {
+        if (widget.idProduct != null) {
+          if (icon == Feather.minus && int.parse(widget.quantity) > 1) {
+            cartController.updateCart(
+                widget.idProduct, (int.parse(widget.quantity) - 1).toString());
+          } else {
+            cartController.updateCart(
+                widget.idProduct, (int.parse(widget.quantity) + 1).toString());
+          }
+        }
+      },
       child: Icon(
         icon,
         size: width / 32.0,

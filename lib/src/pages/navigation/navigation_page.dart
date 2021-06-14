@@ -38,9 +38,9 @@ class _NavigationState extends State<Navigation> {
         child: ConvexAppBar.badge(
           {3: currentPage == 3 ? '' : '2'},
           initialActiveIndex: 2,
-          height: 60.0,
-          top: -24.0,
-          curveSize: 85.0,
+          height: 62.5,
+          top: -18.0,
+          curveSize: 75.0,
           style: TabStyle.reactCircle,
           activeColor: colorTitle,
           color: colorTitle,

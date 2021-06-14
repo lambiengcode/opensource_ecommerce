@@ -1,3 +1,4 @@
+import 'package:van_transport/src/common/constant_code.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/models/action.dart';
 import 'package:van_transport/src/pages/home/controllers/action_controller.dart';
@@ -157,7 +158,10 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: [
         GestureDetector(
-          onTap: () => Get.toNamed(Routes.ADDRESS),
+          onTap: () => Get.toNamed(Routes.ADDRESS, arguments: {
+            'pickMode': '',
+            'isFrom': false,
+          }),
           child: Container(
             color: Colors.transparent,
             child: Row(
@@ -245,7 +249,7 @@ class _HomePageState extends State<HomePage> {
         ),
         SizedBox(height: 12.0),
         GestureDetector(
-          onTap: () => Get.toNamed('/category'),
+          onTap: () => Get.toNamed(Routes.SEARCHPRODUCT),
           child: Container(
             margin: EdgeInsets.symmetric(
               horizontal: 14.0,

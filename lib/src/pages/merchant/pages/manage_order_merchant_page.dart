@@ -6,14 +6,14 @@ import 'package:van_transport/src/pages/order/widgets/order_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:van_transport/src/services/string_service.dart';
 
-class ManageOrderPage extends StatefulWidget {
+class ManageOrderMerchantPage extends StatefulWidget {
   final String pageName;
-  ManageOrderPage({this.pageName});
+  ManageOrderMerchantPage({this.pageName});
   @override
-  State<StatefulWidget> createState() => _ManageOrderPageState();
+  State<StatefulWidget> createState() => _ManageOrderMerchantPageState();
 }
 
-class _ManageOrderPageState extends State<ManageOrderPage> {
+class _ManageOrderMerchantPageState extends State<ManageOrderMerchantPage> {
   final orderController = Get.put(OrderController());
 
   @override

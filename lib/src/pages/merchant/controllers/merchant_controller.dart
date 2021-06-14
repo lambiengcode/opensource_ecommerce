@@ -29,14 +29,14 @@ class MerchantController extends GetxController {
   }
 
   getProductByGroup(idGroup, page) async {
-    var res = await merchantService.getProductByGroup(idGroup, page);
-    productController.add(res);
     if (page == 1) {
       products1.clear();
       products2.clear();
       products3.clear();
       products4.clear();
     }
+    var res = await merchantService.getProductByGroup(idGroup, page);
+    print(res);
     if (res.length > 0) {
       products1.addAll(res);
       res.shuffle();
@@ -45,6 +45,7 @@ class MerchantController extends GetxController {
       products3.addAll(res);
       res.shuffle();
       products4.addAll(res);
+      productController.add(products1);
       update();
     }
   }

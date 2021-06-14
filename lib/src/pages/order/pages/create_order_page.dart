@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/widgets/snackbar.dart';
 
 class CreateOrderPage extends StatefulWidget {
   @override
@@ -211,7 +212,17 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
               ),
             ),
             NeumorphicButton(
-              onPressed: () => Get.toNamed(Routes.PICKADDRESS),
+              onPressed: () {
+                if (quantity == 0) {
+                  GetSnackBar getSnackBar = GetSnackBar(
+                    title: 'Không thể thực hiện thanh toán',
+                    subTitle: 'Đơn hàng của bạn đang rỗng!',
+                  );
+                  getSnackBar.show();
+                } else {
+                  Get.toNamed(Routes.PICKADDRESS);
+                }
+              },
               duration: Duration(milliseconds: 200),
               style: NeumorphicStyle(
                 shape: NeumorphicShape.convex,

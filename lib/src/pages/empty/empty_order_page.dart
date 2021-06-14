@@ -23,7 +23,7 @@ class _EmptyOrderPageState extends State<EmptyOrderPage> {
               child: Lottie.asset('assets/lottie/lottie_order.json'),
             ),
             Text(
-              'No order right now. Let\'s order now!',
+              'Chưa có đơn hàng nào.',
               style: TextStyle(
                 color: colorDarkGrey,
                 fontSize: width / 24.0,

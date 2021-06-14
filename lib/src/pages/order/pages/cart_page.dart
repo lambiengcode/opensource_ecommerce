@@ -113,6 +113,8 @@ class _CartPageState extends State<CartPage> {
                                           .toString(),
                                       urlToString: snapshot.data[index]
                                           ['product']['image'],
+                                      idProduct: snapshot.data[index]['product']
+                                          ['_id'],
                                     ),
                                     secondaryActions: <Widget>[
                                       GestureDetector(
@@ -166,7 +168,7 @@ class _CartPageState extends State<CartPage> {
                                 '${StringService().formatPrice(price.toString())} đ',
                               ),
                               _buildPriceText(
-                                  context, 'taxes'.trArgs(), '100 đ'),
+                                  context, 'taxes'.trArgs(), '200 đ'),
                             ],
                           ),
                         ),

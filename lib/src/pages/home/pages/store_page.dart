@@ -3,7 +3,6 @@ import 'package:van_transport/src/pages/home/widget/horizontal_store_card.dart';
 import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
@@ -22,24 +21,9 @@ class _StorePageState extends State<StorePage> {
   int page = 1;
   @override
   void initState() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.light,
-    ));
     super.initState();
     merchantController.getProductByMerchant(widget.idMerchant, page);
     merchantController.getGroupProduct(widget.idMerchant);
-  }
-
-  @override
-  void dispose() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark,
-    ));
-    super.dispose();
   }
 
   @override
@@ -49,15 +33,29 @@ class _StorePageState extends State<StorePage> {
         height: height,
         width: width,
         color: mC,
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: EdgeInsets.only(left: 6.0),
         child: GetBuilder<MerchantController>(
           builder: (_) => Column(
             children: [
               SizedBox(height: height / 20.0),
-              _buildTopbar(),
-              SizedBox(height: 24.0),
-              _buildListCategories(),
-              SizedBox(height: 6.0),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: Column(
+                  children: [
+                    _buildTopbar(),
+                    SizedBox(height: 24.0),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 6.0),
+                child: Column(
+                  children: [
+                    _buildListCategories(),
+                    SizedBox(height: 6.0),
+                  ],
+                ),
+              ),
               Expanded(
                 child: NotificationListener<ScrollNotification>(
                   onNotification: (scrollNotification) {
@@ -134,12 +132,12 @@ class _StorePageState extends State<StorePage> {
         boxShape: NeumorphicBoxShape.circle(),
         depth: 6.0,
         intensity: .75,
-        color: title == 'Back' ? colorBlack : mC,
+        color: title == 'Back' ? colorBlack.withOpacity(.95) : mC,
       ),
       padding: EdgeInsets.all(width / 25.0),
       child: Icon(
         icon,
-        color: title == 'Back' ? mC : colorBlack,
+        color: title == 'Back' ? colorPrimaryTextOpacity : colorBlack,
         size: width / 18.0,
       ),
       duration: Duration(milliseconds: 200),
@@ -155,7 +153,7 @@ class _StorePageState extends State<StorePage> {
         }
 
         return Container(
-          height: width * .135,
+          height: height * .075,
           width: width,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -213,28 +211,31 @@ class _StorePageState extends State<StorePage> {
   }
 
   Widget _buildTitle(title) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            color: colorTitle,
-            fontFamily: 'Lato',
-            fontWeight: FontWeight.w600,
-            fontSize: width / 22.5,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: colorTitle,
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.w600,
+              fontSize: width / 22.5,
+            ),
           ),
-        ),
-        Text(
-          'viewall'.trArgs(),
-          style: TextStyle(
-            color: colorPrimary,
-            fontFamily: 'Lato',
-            fontWeight: FontWeight.w400,
-            fontSize: width / 26.0,
+          Text(
+            'viewall'.trArgs(),
+            style: TextStyle(
+              color: colorPrimary,
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.w400,
+              fontSize: width / 26.0,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
