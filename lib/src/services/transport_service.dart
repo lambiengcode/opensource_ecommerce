@@ -117,6 +117,20 @@ class TransportService {
     return response.statusCode;
   }
 
+  Future<List<dynamic>> getOrderByStatus(status, idSubTransport) async {
+    var response = await http.get(
+      baseUrl +
+          ApiGateway.GET_ORDER_BY_STATUS_TRANSPORT +
+          status +
+          '&id=$idSubTransport',
+      headers: getHeaders(),
+    );
+
+    return response.statusCode == 200
+        ? convert.jsonDecode(response.body)['data']
+        : [];
+  }
+
   Map<String, String> getHeaders() {
     return {
       'authorization': 'Bearer ${App.token}',

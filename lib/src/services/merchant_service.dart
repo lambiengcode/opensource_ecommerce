@@ -165,6 +165,17 @@ class MerchantService {
     return convert.jsonDecode(response.body)['data'];
   }
 
+  Future<List<dynamic>> getOrderByStatus(status) async {
+    var response = await http.get(
+      baseUrl + ApiGateway.GET_ORDER_BY_STATUS_MERCHANT + status,
+      headers: getHeaders(),
+    );
+
+    return response.statusCode == 200
+        ? convert.jsonDecode(response.body)['data']
+        : [];
+  }
+
   Map<String, String> getHeaders() {
     return {
       'authorization': 'Bearer ${App.token}',

@@ -69,6 +69,8 @@ class ApiGateway {
   static const GET_TRANSPORTSUB = '/TransportSub/GetInfo';
   static const DELETE_TRANSPORTSUB = '/TransportSub/ChangeStatus';
   static const GET_ALL_SUB_BY_STATUS = '/Transport/GetAllTransportSub?status=';
+  static const GET_ORDER_BY_STATUS_TRANSPORT =
+      '/TransportSub/OrderByStatus?status=';
 
   static const CREATE_PACKAGE = '/Package/Create';
 

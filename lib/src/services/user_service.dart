@@ -211,7 +211,7 @@ class UserService {
     print(convert.jsonDecode(response.body)['data']);
     return response.statusCode == 200
         ? convert.jsonDecode(response.body)['data']
-        : null;
+        : [];
   }
 
   Map<String, String> getHeaders() {

@@ -63,7 +63,16 @@ class _ProfilePageState extends State<ProfilePage> {
               stream: profileController.getProfileController,
               builder: (context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
-                  return Container();
+                  return Container(
+                    height: height * .8,
+                    width: width,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        valueColor:
+                            new AlwaysStoppedAnimation<Color>(colorTitle),
+                      ),
+                    ),
+                  );
                 }
 
                 var mProfile = snapshot.data;
@@ -284,7 +293,20 @@ class _ProfilePageState extends State<ProfilePage> {
                     SizedBox(height: 24.0),
                     GestureDetector(
                       onTap: () async {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white),
+                                ),
+                              );
+                            },
+                            barrierColor: Color(0x80000000),
+                            barrierDismissible: false);
                         await _authService.signOut();
+                        Get.back();
                         Get.offAndToNamed('/root');
                       },
                       child: Container(

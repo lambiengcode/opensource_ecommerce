@@ -62,7 +62,7 @@ class _AddProductCardState extends State<AddProductCard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Add New Product to Order',
+                        'Thêm sản phẩm mới',
                         style: TextStyle(
                           color: colorTitle,
                           fontSize: width / 24.0,
@@ -74,7 +74,7 @@ class _AddProductCardState extends State<AddProductCard> {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: 'Unknown ',
+                              text: '0 ',
                               style: TextStyle(
                                 color: colorPrimary,
                                 fontSize: width / 24.0,

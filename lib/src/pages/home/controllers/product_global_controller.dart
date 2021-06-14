@@ -21,7 +21,7 @@ class ProductGlobalController extends GetxController {
     res.shuffle();
     listProduct1.addAll(res);
     res.shuffle();
-    listProduct2.addAll(res);
+    listProduct2.addAll(res.reversed);
     res.shuffle();
     listProduct3.addAll(res);
     res.shuffle();
@@ -29,6 +29,7 @@ class ProductGlobalController extends GetxController {
       listProduct4.addAll(res);
     }
     update();
+    return res.length > 0 ? page + 1 : page;
   }
 
   getMerchantById(idMerchant) async {

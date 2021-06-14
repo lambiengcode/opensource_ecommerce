@@ -26,7 +26,6 @@ class _OrderCardState extends State<OrderCard> {
   @override
   void initState() {
     super.initState();
-    print(widget.urlToImage);
   }
 
   @override

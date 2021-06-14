@@ -236,7 +236,6 @@ class _EditMerchantPageState extends State<EditMerchantPage> {
                     _desc,
                     urlToImage,
                     _address,
-                    widget.merchantInfo['FK_category'],
                     _phone,
                     _lat,
                     _lng,
@@ -250,7 +249,6 @@ class _EditMerchantPageState extends State<EditMerchantPage> {
                     _desc,
                     widget.merchantInfo['image'],
                     _address,
-                    widget.merchantInfo['FK_category'],
                     _phone,
                     _lat,
                     _lng,
@@ -432,8 +430,8 @@ class _EditMerchantPageState extends State<EditMerchantPage> {
     Future<void> _pickImage(ImageSource source) async {
       File selected = await ImagePicker.pickImage(
         source: source,
-        maxHeight: 450.0,
-        maxWidth: 450.0,
+        maxHeight: 400.0,
+        maxWidth: 400.0,
       );
       if (selected != null) {
         setState(() {

@@ -19,8 +19,9 @@ class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
   @override
   void initState() {
     super.initState();
-    print(widget.data['canReceive']);
-    print(widget.data['canDelete']);
+    // print(widget.data);
+    // print(widget.data['canReceive']);
+    // print(widget.data['canDelete']);
   }
 
   @override

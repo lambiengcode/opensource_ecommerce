@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:van_transport/src/pages/empty/empty_order_page.dart';
-import 'package:van_transport/src/pages/order/controllers/order_controller.dart';
+import 'package:van_transport/src/pages/merchant/controllers/order_merchant_controller.dart';
 import 'package:van_transport/src/pages/order/widgets/order_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:van_transport/src/services/string_service.dart';
@@ -14,7 +14,7 @@ class ManageOrderMerchantPage extends StatefulWidget {
 }
 
 class _ManageOrderMerchantPageState extends State<ManageOrderMerchantPage> {
-  final orderController = Get.put(OrderController());
+  final orderController = Get.put(OrderMerchantController());
 
   @override
   void initState() {
@@ -39,10 +39,12 @@ class _ManageOrderMerchantPageState extends State<ManageOrderMerchantPage> {
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: () => Get.toNamed(
-                        Routes.DETAILSORDERS,
-                        arguments: snapshot.data[index],
-                      ),
+                      onTap: () {
+                        Get.toNamed(
+                          Routes.DETAILSORDERS,
+                          arguments: snapshot.data[index],
+                        );
+                      },
                       child: OrderCard(
                         title: StringService().formatString(
                           25,

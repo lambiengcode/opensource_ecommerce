@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:van_transport/src/pages/home/controllers/product_global_controller.dart';
 import 'package:van_transport/src/pages/navigation/navigation_page.dart';
 import 'package:van_transport/src/pages/splash/splash.dart';
 import 'package:van_transport/src/widgets/loading_page.dart';
@@ -11,20 +12,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 class App extends StatefulWidget {
   static bool firstCome = true;
   static String token;
-  static int time = 2;
+  static int time = 3;
 
   @override
   State<StatefulWidget> createState() => _AppState();
 }
 
 class _AppState extends State<App> with WidgetsBindingObserver {
+  final productController = Get.put(ProductGlobalController());
   Timer _timmerInstance;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Future<String> jwt;
   Future<String> locale;
 
   void startTimmer() {
-    var oneSec = Duration(seconds: 1);
+    var oneSec = Duration(milliseconds: 600);
     _timmerInstance = Timer.periodic(
       oneSec,
       (Timer timer) => setState(
@@ -54,6 +56,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       DeviceOrientation.portraitDown,
       DeviceOrientation.portraitUp,
     ]);
+    productController.getProduct(1);
     super.initState();
     if (App.time > 0) {
       startTimmer();

@@ -426,8 +426,8 @@ class _SignupStaffPageState extends State<SignupStaffPage> {
     Future<void> _pickImage(ImageSource source) async {
       File selected = await ImagePicker.pickImage(
         source: source,
-        maxHeight: 450.0,
-        maxWidth: 450.0,
+        maxHeight: 400.0,
+        maxWidth: 400.0,
       );
       if (selected != null) {
         setState(() {
