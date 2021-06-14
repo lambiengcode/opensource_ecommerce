@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/services/string_service.dart';
 import 'package:van_transport/src/widgets/error_loading_image.dart';
 import 'package:van_transport/src/widgets/place_holder_image.dart';
 import 'package:get/get.dart';
@@ -68,7 +69,7 @@ class _UserCardState extends State<UserCard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'FullName: ${widget.fullName}',
+                'FullName: ${StringService().formatString(18, widget.fullName)}',
                 style: TextStyle(
                   color: colorTitle,
                   fontSize: width / 24.0,
@@ -81,7 +82,7 @@ class _UserCardState extends State<UserCard> {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'Phone: ',
+                      text: 'Email: ',
                       style: TextStyle(
                         color: colorPrimary,
                         fontSize: width / 28.5,
@@ -90,7 +91,8 @@ class _UserCardState extends State<UserCard> {
                       ),
                     ),
                     TextSpan(
-                      text: widget.phone,
+                      text: StringService().formatString(
+                          20, widget.phone.replaceAll('@gmail.com', '')),
                       style: TextStyle(
                         color: colorPrimary,
                         fontSize: width / 26.5,

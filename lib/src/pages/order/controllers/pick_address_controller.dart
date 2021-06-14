@@ -6,6 +6,7 @@ import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:van_transport/src/services/distance_service.dart';
 import 'package:van_transport/src/services/user_service.dart';
 import 'package:van_transport/src/widgets/snackbar.dart';
+import 'dart:convert' as convert;
 
 class PickAddressController extends GetxController {
   StreamController<dynamic> listTransport =
@@ -117,7 +118,18 @@ class PickAddressController extends GetxController {
     update();
   }
 
-  paymentCartMerchant(price) async {
+  paymentCartMerchant(price, paymentMethod, context) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          );
+        },
+        barrierColor: Color(0x80000000),
+        barrierDismissible: false);
     var body = {
       "title": "Đơn hàng Van Transport",
       "description": "Đơn hàng mới",
@@ -140,30 +152,59 @@ class PickAddressController extends GetxController {
           .toString(),
       "weight": "0",
       "estimatedDate": "1622221281950",
+      "typePayment": paymentMethod.toString().toUpperCase(),
     };
-
-    int status = await userService.paymentCartMerchant(body);
-    if (status == 200) {
-      transportInfo = null;
-      senderInfo = null;
-      recipientInfo = null;
-      idAddressFrom = null;
-      Get.offAndToNamed(Routes.ROOT);
-      GetSnackBar getSnackBar = GetSnackBar(
-        title: 'Mua hàng thành công!',
-        subTitle: 'Kiểm tra lại đơn hàng nhé.',
-      );
-      getSnackBar.show();
+    var response = await userService.paymentCartMerchant(body);
+    var res = convert.jsonDecode(response.body);
+    print(senderInfo['name']);
+    print(res);
+    Get.back();
+    if (response.statusCode == 200) {
+      if (paymentMethod == 'POINT') {
+        transportInfo = null;
+        senderInfo = null;
+        recipientInfo = null;
+        idAddressFrom = null;
+        Get.offAndToNamed(Routes.ROOT);
+        GetSnackBar getSnackBar = GetSnackBar(
+          title: 'Mua hàng thành công!',
+          subTitle: 'Kiểm tra lại đơn hàng nhé.',
+        );
+        getSnackBar.show();
+      } else {
+        String url = res['data'];
+        update();
+        if (url != null) {
+          Get.toNamed(Routes.PAYMENTWEBVIEW, arguments: url);
+        } else {
+          GetSnackBar getSnackBar = GetSnackBar(
+            title: 'Mua hàng thất bại!',
+            subTitle: 'Máy chủ đang quá tải.',
+          );
+          getSnackBar.show();
+        }
+      }
     } else {
       GetSnackBar getSnackBar = GetSnackBar(
-        title: 'Payment failure!',
-        subTitle: 'Check again your infomation',
+        title: 'Mua hàng thất bại!',
+        subTitle: 'Máy chủ đang quá tải.',
       );
       getSnackBar.show();
     }
   }
 
-  paymentCartClient(weight) async {
+  paymentCartClient(weight, paymentMethod, context) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          );
+        },
+        barrierColor: Color(0x80000000),
+        barrierDismissible: false);
     var body = {
       "title": infoReceiver.title,
       "description": infoReceiver.description,
@@ -184,25 +225,41 @@ class PickAddressController extends GetxController {
       "prices":
           (double.tryParse(transportInfo['price']).round() + 200).toString(),
       "weight": weight,
+      "typePayment": paymentMethod.toString().toUpperCase(),
     };
-
-    int status = await userService.paymentCartClient(body);
-    if (status == 200) {
-      transportInfo = null;
-      senderInfo = null;
-      recipientInfo = null;
-      idAddressFrom = null;
-      disposeFormInput();
-      Get.offAndToNamed(Routes.ROOT);
-      GetSnackBar getSnackBar = GetSnackBar(
-        title: 'Mua hàng thành công!',
-        subTitle: 'Kiểm tra lại đơn hàng nhé.',
-      );
-      getSnackBar.show();
+    var response = await userService.paymentCartClient(body);
+    var res = convert.jsonDecode(response.body);
+    print(res);
+    Get.back();
+    if (response.statusCode == 200) {
+      if (paymentMethod == 'POINT') {
+        transportInfo = null;
+        senderInfo = null;
+        recipientInfo = null;
+        idAddressFrom = null;
+        Get.offAndToNamed(Routes.ROOT);
+        GetSnackBar getSnackBar = GetSnackBar(
+          title: 'Mua hàng thành công!',
+          subTitle: 'Kiểm tra lại đơn hàng nhé.',
+        );
+        getSnackBar.show();
+      } else {
+        String url = res['data'];
+        update();
+        if (url != null) {
+          Get.toNamed(Routes.PAYMENTWEBVIEW, arguments: url);
+        } else {
+          GetSnackBar getSnackBar = GetSnackBar(
+            title: 'Mua hàng thất bại!',
+            subTitle: 'Máy chủ đang quá tải.',
+          );
+          getSnackBar.show();
+        }
+      }
     } else {
       GetSnackBar getSnackBar = GetSnackBar(
-        title: 'Payment failure!',
-        subTitle: 'Check again your infomation',
+        title: 'Mua hàng thất bại!',
+        subTitle: 'Máy chủ đang quá tải.',
       );
       getSnackBar.show();
     }

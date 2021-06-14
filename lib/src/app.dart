@@ -56,7 +56,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       DeviceOrientation.portraitDown,
       DeviceOrientation.portraitUp,
     ]);
-    productController.getProduct(1);
+    productController.getProduct();
     super.initState();
     if (App.time > 0) {
       startTimmer();

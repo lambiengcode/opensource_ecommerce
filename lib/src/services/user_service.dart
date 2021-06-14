@@ -114,23 +114,23 @@ class UserService {
     return response.statusCode;
   }
 
-  Future<int> paymentCartMerchant(body) async {
+  Future<dynamic> paymentCartMerchant(body) async {
     var response = await http.post(
       baseUrl + ApiGateway.PAYMENT_CART_MERCHANT,
       headers: getHeaders(),
       body: body,
     );
-    return response.statusCode;
+    return response;
   }
 
-  Future<int> paymentCartClient(body) async {
+  Future<dynamic> paymentCartClient(body) async {
     var response = await http.post(
       baseUrl + ApiGateway.PAYMENT_CART_CLIENT,
       headers: getHeaders(),
       body: body,
     );
 
-    return response.statusCode;
+    return response;
   }
 
   Future<int> deleteItemCartMerchant(body) async {

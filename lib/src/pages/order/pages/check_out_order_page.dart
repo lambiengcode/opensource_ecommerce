@@ -1,3 +1,4 @@
+import 'package:van_transport/src/common/constant_code.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/order/controllers/cart_client_controller.dart';
 import 'package:van_transport/src/pages/order/controllers/pick_address_controller.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:van_transport/src/services/string_service.dart';
+import 'package:van_transport/src/widgets/snackbar.dart';
 
 class CheckOutOrderPage extends StatefulWidget {
   @override
@@ -194,7 +196,10 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
         isScrollControlled: true,
         context: context,
         builder: (context) {
-          return BottomSheetPayment();
+          return BottomSheetPayment(
+            typeOrders: PAYMENT_ORDERS_CLIENT,
+            point: weight,
+          );
         },
       );
     }
@@ -244,7 +249,15 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
                 ),
                 NeumorphicButton(
                   onPressed: () {
-                    pickAddressController.paymentCartClient(weight);
+                    if (pickAddressController.transportInfo == null) {
+                      GetSnackBar getSnackBar = GetSnackBar(
+                        title: 'Không thể thanh toán đơn hàng',
+                        subTitle: 'Bạn chưa chọn nhà vận chuyển',
+                      );
+                      getSnackBar.show();
+                    } else {
+                      showPaymentBottomSheet();
+                    }
                   },
                   duration: Duration(milliseconds: 200),
                   style: NeumorphicStyle(

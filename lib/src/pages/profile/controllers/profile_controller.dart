@@ -49,8 +49,8 @@ class ProfileController extends GetxController {
       Get.toNamed(Routes.PAYMENTWEBVIEW, arguments: url);
     } else {
       GetSnackBar getSnackBar = GetSnackBar(
-        title: 'Buy point failure!',
-        subTitle: 'Check again your infomation',
+        title: 'Mua hàng thất bại!',
+        subTitle: 'Máy chủ đang quá tải.',
       );
       getSnackBar.show();
     }

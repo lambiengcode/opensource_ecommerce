@@ -150,9 +150,9 @@ class _TransportPage extends State<TransportPage>
   }
 
   var _pages = [
-    TransportManageOrderPage(pageName: 'Ongoing'),
-    TransportManageOrderPage(pageName: 'Reject'),
-    TransportManageOrderPage(pageName: 'History'),
+    TransportManageOrderPage(pageName: 'ON_GOING'),
+    TransportManageOrderPage(pageName: 'CANCEL'),
+    TransportManageOrderPage(pageName: 'DELIVERED'),
     ManageStaffPage(),
     RevenuePage(),
   ];

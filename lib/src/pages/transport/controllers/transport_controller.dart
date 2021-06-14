@@ -67,11 +67,12 @@ class TransportController extends GetxController {
 
     int status = await transportService.registerStaff(body);
     if (status == 200) {
+      getAssignTransport();
       Get.back();
     } else {
       GetSnackBar getSnackBar = GetSnackBar(
-        title: 'Update failure!',
-        subTitle: 'Check again your information.',
+        title: 'Đăng kí thất bại',
+        subTitle: 'Hãy kiểm tra lại thông tin bạn nhập',
       );
       getSnackBar.show();
     }
@@ -81,7 +82,7 @@ class TransportController extends GetxController {
     var body = {
       'title': title,
       'price': price,
-      'avalable': avalable,
+      'available': avalable,
       'type': type,
     };
 

@@ -18,7 +18,7 @@ class _OrderPageState extends State<OrderPage>
 
   var _pages = [
     ManageOrderPage(pageName: 'ON_GOING'),
-    ManageOrderPage(pageName: 'AWAIT_FOR_COMFIRMATION'),
+    ManageOrderPage(pageName: 'AWAIT_FOR_CONFIRMATION'),
     ManageOrderPage(pageName: 'CANCEL'),
     ManageOrderPage(pageName: 'DELIVERED'),
   ];

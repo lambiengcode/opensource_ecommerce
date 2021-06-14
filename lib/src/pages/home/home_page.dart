@@ -1,4 +1,3 @@
-import 'package:van_transport/src/common/constant_code.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/models/action.dart';
 import 'package:van_transport/src/pages/home/controllers/action_controller.dart';
@@ -25,7 +24,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final productController = Get.put(ProductGlobalController());
   final scrollController = ScrollController();
-  int page = 1;
+  final scrollHorizontalController = ScrollController();
   LocationData currentLocation;
   Future<dynamic> _myLocation;
 
@@ -65,10 +64,19 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    productController.getProduct(page);
+    productController.getProduct();
     _myLocation = getUserLocation();
     Get.put(ActionController(), permanent: true);
     Get.put(CarouselBannerController(index: 0), permanent: true);
+    scrollController.addListener(() {
+      if (scrollController.position.atEdge) {
+        if (scrollController.position.pixels == 0) {
+          // You're at the top.
+        } else {
+          productController.getProduct();
+        }
+      }
+    });
   }
 
   @override
@@ -82,17 +90,10 @@ class _HomePageState extends State<HomePage> {
             _buildTopBar(context),
             SizedBox(height: 12.0),
             Expanded(
-                child: NotificationListener<ScrollNotification>(
-              onNotification: (scrollNotification) {
-                if (scrollNotification is ScrollStartNotification) {
-                } else if (scrollNotification is ScrollUpdateNotification) {
-                } else if (scrollNotification is ScrollEndNotification) {
-                  setState(() {
-                    page++;
-                  });
-                  productController.getProduct(page);
-                }
-                return;
+                child: NotificationListener<OverscrollIndicatorNotification>(
+              onNotification: (overscroll) {
+                overscroll.disallowGlow();
+                return true;
               },
               child: SingleChildScrollView(
                 physics: ClampingScrollPhysics(),
@@ -378,25 +379,35 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildPopularStore(context, data) {
     final _size = MediaQuery.of(context).size;
-    return Container(
-      height: _size.width * .42,
-      child: ListView.builder(
-        controller: scrollController,
-        padding: EdgeInsets.only(left: 6.0, right: 12.0),
-        scrollDirection: Axis.horizontal,
-        itemCount: data.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () =>
-                Get.toNamed(Routes.DETAILSPRODUCT, arguments: data[index]),
-            child: HorizontalStoreCard(
-              address: StringService().formatPrice(data[index]['price']),
-              title: data[index]['name'],
-              urlToImage: data[index]['image'],
-              desc: data[index]['description'],
-            ),
-          );
-        },
+    return NotificationListener<ScrollNotification>(
+      onNotification: (scrollNotification) {
+        if (scrollNotification is ScrollStartNotification) {
+        } else if (scrollNotification is ScrollUpdateNotification) {
+        } else if (scrollNotification is ScrollEndNotification) {
+          productController.getProduct();
+        }
+        return;
+      },
+      child: Container(
+        height: _size.width * .42,
+        child: ListView.builder(
+          controller: scrollHorizontalController,
+          padding: EdgeInsets.only(left: 6.0, right: 12.0),
+          scrollDirection: Axis.horizontal,
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () =>
+                  Get.toNamed(Routes.DETAILSPRODUCT, arguments: data[index]),
+              child: HorizontalStoreCard(
+                address: StringService().formatPrice(data[index]['price']),
+                title: data[index]['name'],
+                urlToImage: data[index]['image'],
+                desc: data[index]['description'],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

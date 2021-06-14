@@ -64,7 +64,8 @@ class _CartPageState extends State<CartPage> {
             int price = 0;
             for (int i = 0; i < snapshot.data.length; i++) {
               quantity += snapshot.data[i]['quantity'];
-              price += int.parse(snapshot.data[i]['product']['price']);
+              price += int.parse(snapshot.data[i]['product']['price']) *
+                  snapshot.data[i]['quantity'];
             }
 
             return Column(

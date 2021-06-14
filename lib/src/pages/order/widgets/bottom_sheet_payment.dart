@@ -4,6 +4,7 @@ import 'package:van_transport/src/common/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/pages/order/controllers/pick_address_controller.dart';
 import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
 
 class BottomSheetPayment extends StatefulWidget {
@@ -16,6 +17,7 @@ class BottomSheetPayment extends StatefulWidget {
 
 class _BottomSheetPaymentState extends State<BottomSheetPayment> {
   final profileController = Get.put(ProfileController());
+  final pickAddressController = Get.put(PickAddressController());
   String paymentMethod;
   List<String> methods = ['Point', 'Paypal', 'VNPAY'];
 
@@ -64,7 +66,7 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
             ),
             SizedBox(height: 18.0),
             Text(
-              'Choose payment method',
+              'Chọn phuơng thức thanh toán',
               style: TextStyle(
                 color: colorDarkGrey,
                 fontSize: width / 22.5,
@@ -99,21 +101,7 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
                         methods[2]),
               ],
             ),
-            paymentMethod != methods[2]
-                ? SizedBox(height: 24.0)
-                : Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 4.0),
-                    child: Text(
-                      '* Thanh toán bằng VNPAY sẽ không được hoàn trả đơn hàng',
-                      style: TextStyle(
-                        color: colorHigh,
-                        fontFamily: 'Lato',
-                        fontSize: width / 28.5,
-                      ),
-                      textAlign: TextAlign.justify,
-                    ),
-                  ),
+            SizedBox(height: 24.0),
             NeumorphicButton(
               onPressed: () {
                 Get.back();
@@ -122,6 +110,12 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
                     widget.point,
                     paymentMethod.toUpperCase(),
                   );
+                } else if (widget.typeOrders == PAYMENT_ORDERS_MERCHANT) {
+                  pickAddressController.paymentCartMerchant(
+                      widget.point, paymentMethod.toUpperCase(), context);
+                } else {
+                  pickAddressController.paymentCartClient(
+                      widget.point, paymentMethod.toUpperCase(), context);
                 }
               },
               duration: Duration(milliseconds: 200),
@@ -142,7 +136,7 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Payment with $paymentMethod',
+                    'Thanh toán bằng $paymentMethod',
                     style: TextStyle(
                       color: mC,
                       fontSize: width / 26.0,

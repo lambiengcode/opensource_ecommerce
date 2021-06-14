@@ -1,3 +1,4 @@
+import 'package:van_transport/src/common/constant_code.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/order/controllers/cart_merchant_controller.dart';
 import 'package:van_transport/src/pages/order/controllers/pick_address_controller.dart';
@@ -65,7 +66,8 @@ class _CheckOutPageState extends State<CheckOutPage> {
             int price = 0;
             for (int i = 0; i < snapshot.data.length; i++) {
               quantity += snapshot.data[i]['quantity'];
-              price += int.parse(snapshot.data[i]['product']['price']);
+              price += int.parse(snapshot.data[i]['product']['price']) *
+                  snapshot.data[i]['quantity'];
             }
 
             return Column(
@@ -185,6 +187,24 @@ class _CheckOutPageState extends State<CheckOutPage> {
   }
 
   Widget _buildBottomCheckout(context, idMerchant, price) {
+    void showPaymentBottomSheet() {
+      showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(40.0),
+          ),
+        ),
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return BottomSheetPayment(
+            typeOrders: PAYMENT_ORDERS_MERCHANT,
+            point: price,
+          );
+        },
+      );
+    }
+
     return Container(
       color: mCM,
       child: Neumorphic(
@@ -239,7 +259,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                       );
                       getSnackBar.show();
                     } else {
-                      pickAddressController.paymentCartMerchant(price);
+                      showPaymentBottomSheet();
                     }
                   },
                   duration: Duration(milliseconds: 200),

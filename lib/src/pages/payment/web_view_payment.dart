@@ -62,15 +62,15 @@ class WebViewPageState extends State<WebViewPage> {
         onPageFinished: (url) {
           if (url.startsWith('$baseUrl/Payment/Paypal/Success')) {
             getSnackBar = GetSnackBar(
-              title: 'Payment Successful',
-              subTitle: 'Let\'s check your order again',
+              title: 'Thanh toán thành công!',
+              subTitle: 'Hãy kiểm tra lại giỏ hàng và điểm của bạn.',
             );
             Get.offAndToNamed(Routes.ROOT);
             getSnackBar.show();
           } else if (url.startsWith('$baseUrl/Payment/Paypal/Cancel')) {
             getSnackBar = GetSnackBar(
-              title: 'Payment Failure',
-              subTitle: 'An error occurred',
+              title: 'Thanh toán thất bại!',
+              subTitle: 'Bạn đã huỷ thanh toán thành công.',
             );
             Get.offAndToNamed(Routes.ROOT);
             getSnackBar.show();
@@ -79,20 +79,22 @@ class WebViewPageState extends State<WebViewPage> {
             uri.queryParameters.forEach((k, v) {
               if (k == 'vnp_TransactionStatus') {
                 if (v == '00') {
+                  Get.offAndToNamed(Routes.ROOT);
+                  getSnackBar.show();
                   getSnackBar = GetSnackBar(
-                    title: 'Payment Successful',
-                    subTitle: 'Let\'s check your order again',
+                    title: 'Thanh toán thành công!',
+                    subTitle: 'Hãy kiểm tra lại giỏ hàng và điểm của bạn.',
                   );
                 } else {
+                  Get.offAndToNamed(Routes.ROOT);
+                  getSnackBar.show();
                   getSnackBar = GetSnackBar(
-                    title: 'Payment Failure',
-                    subTitle: 'An error occurred',
+                    title: 'Thanh toán thất bại!',
+                    subTitle: 'Bạn đã huỷ thanh toán thành công.',
                   );
                 }
               }
             });
-            Get.offAndToNamed(Routes.ROOT);
-            getSnackBar.show();
           }
         },
       ),

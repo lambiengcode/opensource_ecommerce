@@ -16,7 +16,6 @@ class SearchProductPage extends StatefulWidget {
 class _SearchProductPageState extends State<SearchProductPage> {
   final productController = Get.put(ProductGlobalController());
   final scrollController = ScrollController();
-  int page = 1;
   List<String> categories = [
     'Popular',
     'Electric',
@@ -28,7 +27,7 @@ class _SearchProductPageState extends State<SearchProductPage> {
 
   @override
   void initState() {
-    productController.getProduct(page);
+    productController.getProduct();
     super.initState();
   }
 
@@ -48,17 +47,10 @@ class _SearchProductPageState extends State<SearchProductPage> {
               _buildListCategories(),
               SizedBox(height: 6.0),
               Expanded(
-                child: NotificationListener<ScrollNotification>(
-                  onNotification: (scrollNotification) {
-                    if (scrollNotification is ScrollStartNotification) {
-                    } else if (scrollNotification is ScrollUpdateNotification) {
-                    } else if (scrollNotification is ScrollEndNotification) {
-                      setState(() {
-                        page++;
-                      });
-                      productController.getProduct(page);
-                    }
-                    return;
+                child: NotificationListener<OverscrollIndicatorNotification>(
+                  onNotification: (overscroll) {
+                    overscroll.disallowGlow();
+                    return true;
                   },
                   child: SingleChildScrollView(
                     physics: ClampingScrollPhysics(),
@@ -214,25 +206,35 @@ class _SearchProductPageState extends State<SearchProductPage> {
 
   Widget _buildPopularStore(context, data) {
     final _size = MediaQuery.of(context).size;
-    return Container(
-      height: _size.width * .42,
-      child: ListView.builder(
-        controller: scrollController,
-        padding: EdgeInsets.only(left: 6.0, right: 12.0),
-        scrollDirection: Axis.horizontal,
-        itemCount: data.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () =>
-                Get.toNamed(Routes.DETAILSPRODUCT, arguments: data[index]),
-            child: HorizontalStoreCard(
-              address: StringService().formatPrice(data[index]['price']),
-              title: data[index]['name'],
-              urlToImage: data[index]['image'],
-              desc: data[index]['description'],
-            ),
-          );
-        },
+    return NotificationListener<ScrollNotification>(
+      onNotification: (scrollNotification) {
+        if (scrollNotification is ScrollStartNotification) {
+        } else if (scrollNotification is ScrollUpdateNotification) {
+        } else if (scrollNotification is ScrollEndNotification) {
+          productController.getProduct();
+        }
+        return;
+      },
+      child: Container(
+        height: _size.width * .42,
+        child: ListView.builder(
+          controller: scrollController,
+          padding: EdgeInsets.only(left: 6.0, right: 12.0),
+          scrollDirection: Axis.horizontal,
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () =>
+                  Get.toNamed(Routes.DETAILSPRODUCT, arguments: data[index]),
+              child: HorizontalStoreCard(
+                address: StringService().formatPrice(data[index]['price']),
+                title: data[index]['name'],
+                urlToImage: data[index]['image'],
+                desc: data[index]['description'],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

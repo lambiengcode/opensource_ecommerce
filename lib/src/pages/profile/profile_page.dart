@@ -382,8 +382,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildAction(context, title, icon, role, RouteType routeType) {
     GetSnackBar getSnackBar = GetSnackBar(
-      title: 'Comming Soon!',
-      subTitle: 'This feature will available in next update',
+      title: 'Sắp ra mắt!',
+      subTitle: 'Tính năng đang trong giai đoạn phát triển.',
     );
     return GestureDetector(
       onTap: () {
@@ -396,19 +396,41 @@ class _ProfilePageState extends State<ProfilePage> {
           );
           Get.toNamed(route.getRoute());
         } else if (title == 'owner'.trArgs()) {
-          Get.toNamed(
-            role == 'ADMIN'
-                ? Routes.ADMIN
-                : Routes.MERCHANT + Routes.MIDDLEWAREMERCHANT,
-          );
+          if (role == 'TRANSPORT_SUB') {
+            Get.toNamed(Routes.SUBTRANSPORT);
+          } else if (role == 'STAFF') {
+            GetSnackBar getSnackBarStaff = GetSnackBar(
+              title: 'Không thể truy cập!',
+              subTitle: 'Bạn chưa được giao nhiệm vụ quản lí vận chuyển.',
+            );
+            getSnackBarStaff.show();
+          } else {
+            Get.toNamed(
+              role == 'ADMIN'
+                  ? Routes.ADMIN
+                  : role == 'MERCHANT'
+                      ? Routes.MERCHANT + Routes.MIDDLEWAREMERCHANT
+                      : Routes.DELIVERY + Routes.MIDDLETRANSPORT,
+            );
+          }
         } else if (title == 'transportOwner'.trArgs()) {
-          Get.toNamed(
-            role == 'ADMIN'
-                ? Routes.ADMIN
-                : role == 'MERCHANT'
-                    ? Routes.MERCHANT + Routes.MIDDLEWAREMERCHANT
-                    : Routes.DELIVERY + Routes.MIDDLETRANSPORT,
-          );
+          if (role == 'TRANSPORT_SUB') {
+            Get.toNamed(Routes.SUBTRANSPORT);
+          } else if (role == 'STAFF') {
+            GetSnackBar getSnackBarStaff = GetSnackBar(
+              title: 'Không thể truy cập!',
+              subTitle: 'Bạn chưa được giao nhiệm vụ quản lí vận chuyển.',
+            );
+            getSnackBarStaff.show();
+          } else {
+            Get.toNamed(
+              role == 'ADMIN'
+                  ? Routes.ADMIN
+                  : role == 'MERCHANT'
+                      ? Routes.MERCHANT + Routes.MIDDLEWAREMERCHANT
+                      : Routes.DELIVERY + Routes.MIDDLETRANSPORT,
+            );
+          }
         } else {
           getSnackBar.show();
         }

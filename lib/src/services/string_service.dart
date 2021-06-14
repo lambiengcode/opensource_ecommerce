@@ -35,7 +35,6 @@ class StringService {
   }
 
   isNumeric(String input) {
-    print(_numeric.hasMatch(input));
     return _numeric.hasMatch(input);
   }
 }

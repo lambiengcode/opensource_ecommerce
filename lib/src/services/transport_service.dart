@@ -85,6 +85,18 @@ class TransportService {
     return json;
   }
 
+  Future<Map<String, dynamic>> getSubTransport() async {
+    var response = await http.get(
+      baseUrl + ApiGateway.GET_TRANSPORTSUB,
+      headers: getHeaders(),
+    );
+    var json = response.statusCode == 200
+        ? convert.jsonDecode(response.body)['data']
+        : convert.jsonDecode(response.body);
+    json['status'] = response.statusCode;
+    return json;
+  }
+
   Future<List<dynamic>> getSubTransportByStatus(status) async {
     var response = await http.get(
       baseUrl + ApiGateway.GET_ALL_SUB_BY_STATUS + status,

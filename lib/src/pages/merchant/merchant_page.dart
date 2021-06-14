@@ -42,7 +42,7 @@ class _TransportPage extends State<MerchantPage>
       });
     });
     _pages = [
-      ManageOrderMerchantPage(pageName: 'AWAIT_FOR_COMFIRMATION'),
+      ManageOrderMerchantPage(pageName: 'AWAIT_FOR_CONFIRMATION'),
       ManageOrderMerchantPage(pageName: 'ON_GOING'),
       ManageOrderMerchantPage(pageName: 'DELIVERED'),
       ProductPage(idMerchant: widget.merchantInfo['_id']),

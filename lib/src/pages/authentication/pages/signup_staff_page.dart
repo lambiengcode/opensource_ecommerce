@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/transport/controllers/transport_controller.dart';
 import 'package:van_transport/src/services/authentication_service.dart';
-import 'package:van_transport/src/widgets/loading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
+import 'package:van_transport/src/services/storage_service.dart';
 import 'package:van_transport/src/widgets/snackbar.dart';
 
 class SignupStaffPage extends StatefulWidget {
@@ -15,8 +16,8 @@ class SignupStaffPage extends StatefulWidget {
 }
 
 class _SignupStaffPageState extends State<SignupStaffPage> {
+  final transportController = Get.put(TransportController());
   final _formKey = GlobalKey<FormState>();
-  AuthService _authService = AuthService();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPswController = TextEditingController();
@@ -118,27 +119,48 @@ class _SignupStaffPageState extends State<SignupStaffPage> {
                                       ),
                                       shape: BoxShape.circle,
                                     ),
-                                    child: Container(
-                                      height: _size.width * .28,
-                                      width: _size.width * .28,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: mC,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: mCL,
-                                            offset: Offset(3, 3),
-                                            blurRadius: 3,
-                                            spreadRadius: -3,
+                                    child: _image == null
+                                        ? Container(
+                                            height: _size.width * .28,
+                                            width: _size.width * .28,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: mC,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: mCL,
+                                                  offset: Offset(3, 3),
+                                                  blurRadius: 3,
+                                                  spreadRadius: -3,
+                                                ),
+                                              ],
+                                            ),
+                                            child: Icon(
+                                              Feather.image,
+                                              color: colorPrimary,
+                                              size: width / 8.0,
+                                            ),
+                                          )
+                                        : Container(
+                                            height: _size.width * .28,
+                                            width: _size.width * .28,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: mC,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: mCL,
+                                                  offset: Offset(3, 3),
+                                                  blurRadius: 3,
+                                                  spreadRadius: -3,
+                                                ),
+                                              ],
+                                              image: DecorationImage(
+                                                image: FileImage(_image),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
                                           ),
-                                        ],
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              'https://avatars.githubusercontent.com/u/60530946?s=460&u=e342f079ed3571122e21b42eedd0ae251a9d91ce&v=4'),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
                                   ),
                                 ],
                               ),
@@ -218,46 +240,31 @@ class _SignupStaffPageState extends State<SignupStaffPage> {
                         GestureDetector(
                           onTap: () async {
                             if (_formKey.currentState.validate()) {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                Colors.white),
-                                      ),
-                                    );
-                                  },
-                                  barrierColor: Color(0x80000000),
-                                  barrierDismissible: false);
-
-                              var res = await _authService.register(
-                                email,
-                                password,
-                                phone,
-                                fullName,
-                              );
-                              Get.back();
-                              if (res['status'] == 200) {
-                                Get.offAndToNamed('/root');
+                              if (_image != null) {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                  Colors.white),
+                                        ),
+                                      );
+                                    },
+                                    barrierColor: Color(0x80000000),
+                                    barrierDismissible: false);
+                                String urlToImage = await StorageService()
+                                    .uploadImageNotProfile(_image);
+                                await transportController.registerStaff(email,
+                                    phone, fullName, password, urlToImage);
+                                Get.back();
                               } else {
-                                setState(() {
-                                  email = res['email'];
-                                  password = res['password'];
-                                  fullName = res['fullName'];
-                                  phone = res['phone'];
-                                  _confirmPswController.text = res['password'];
-                                  _emailController.text = res['email'];
-                                  _passwordController.text = res['password'];
-                                  _phoneController.text = res['phone'];
-                                  _fullNameController.text = res['fullName'];
-                                });
-                                GetSnackBar snackBar = GetSnackBar(
-                                  title: 'Signup Fail!',
-                                  subTitle: 'Email exists, try again!',
+                                GetSnackBar getSnackBar = GetSnackBar(
+                                  title: 'Bạn chưa chọn ảnh',
+                                  subTitle: 'Hãy chọn ảnh đại diện.',
                                 );
-                                snackBar.show();
+                                getSnackBar.show();
                               }
                             }
                           },
