@@ -13,12 +13,14 @@ class VerticalTransportCard extends StatefulWidget {
   final String address;
   final String urlToImage;
   final String desc;
+  final bool isCover;
   VerticalTransportCard({
     this.image,
     this.address,
     this.title,
     this.urlToImage,
     this.desc,
+    this.isCover = true,
   });
   @override
   State<StatefulWidget> createState() => _VerticalTransportCardState();
@@ -79,16 +81,16 @@ class _VerticalTransportCardState extends State<VerticalTransportCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 10.0),
-                Expanded(
-                  child: Text(
-                    stringService.formatString(30, widget.title),
-                    style: TextStyle(
-                      color: colorTitle,
-                      fontSize: _size.width / 30.0,
-                      fontWeight: FontWeight.w600,
-                    ),
+                Text(
+                  stringService.formatString(30, widget.title),
+                  maxLines: 2,
+                  style: TextStyle(
+                    color: colorTitle,
+                    fontSize: _size.width / 30.0,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
+                SizedBox(height: 6.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -179,11 +181,12 @@ class _VerticalTransportCardState extends State<VerticalTransportCard> {
                       child: CachedNetworkImage(
                         width: _size.width * .35,
                         height: _size.width * .3,
-                        fit: !StringService().isNumeric(
-                                    widget.address.replaceAll(',', '')) ||
-                                widget.address == ''
-                            ? BoxFit.cover
-                            : BoxFit.contain,
+                        fit: StringService()
+                                .isNumeric(widget.address.replaceAll(',', ''))
+                            ? BoxFit.contain
+                            : widget.isCover
+                                ? BoxFit.cover
+                                : BoxFit.contain,
                         placeholder: (context, url) => PlaceHolderImage(),
                         errorWidget: (context, url, error) =>
                             ErrorLoadingImage(),

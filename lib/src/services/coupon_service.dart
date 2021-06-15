@@ -3,11 +3,12 @@ import 'package:van_transport/src/app.dart';
 import 'dart:convert' as convert;
 
 import 'package:van_transport/src/common/routes.dart';
+import 'package:van_transport/src/common/secret_key.dart';
 
 class CouponService {
   Future<List<Map<String, dynamic>>> getCoupons() async {
     var response = await http.get(
-      ApiGateway.GET_COUPONS,
+      baseUrl + ApiGateway.GET_COUPONS,
       headers: getHeaders(),
     );
     return convert.jsonDecode(response.body)['data'];
@@ -15,7 +16,7 @@ class CouponService {
 
   Future<int> createCoupon(body) async {
     var response = await http.post(
-      ApiGateway.CREATE_COUPON,
+      baseUrl + ApiGateway.CREATE_COUPON,
       body: body,
       headers: getHeaders(),
     );
@@ -24,7 +25,7 @@ class CouponService {
 
   Future<int> updateCoupon(body) async {
     var response = await http.put(
-      ApiGateway.UPDATE_COUPON,
+      baseUrl + ApiGateway.UPDATE_COUPON,
       body: body,
       headers: getHeaders(),
     );
@@ -33,7 +34,7 @@ class CouponService {
 
   Future<int> deleteCoupon(idCategory) async {
     var response = await http.delete(
-      ApiGateway.DELETE_COUPON + idCategory,
+      baseUrl + ApiGateway.DELETE_COUPON + idCategory,
       headers: getHeaders(),
     );
     return response.statusCode;

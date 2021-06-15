@@ -1,4 +1,5 @@
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/admin/controllers/admin_controller.dart';
 import 'package:van_transport/src/pages/admin/widgets/manage_merchant_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -11,12 +12,13 @@ class ManageMerchantPage extends StatefulWidget {
 
 class _ManageMerchantPageState extends State<ManageMerchantPage>
     with SingleTickerProviderStateMixin {
+  final adminController = Get.put(AdminController());
   TabController _tabController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   var _pages = [
-    ManageMerchantList(),
-    ManageMerchantList(),
+    ManageMerchantList(pageName: 'ACTIVE'),
+    ManageMerchantList(pageName: 'INACTIVE'),
   ];
 
   @override
@@ -40,7 +42,10 @@ class _ManageMerchantPageState extends State<ManageMerchantPage>
         centerTitle: true,
         brightness: Brightness.light,
         leading: IconButton(
-          onPressed: () => Get.back(),
+          onPressed: () {
+            adminController.getMerchant('ACTIVE');
+            Get.back();
+          },
           icon: Icon(
             Feather.arrow_left,
             color: colorTitle,
@@ -83,6 +88,7 @@ class _ManageMerchantPageState extends State<ManageMerchantPage>
       ),
       body: TabBarView(
         controller: _tabController,
+        physics: NeverScrollableScrollPhysics(),
         children: _pages.map((Widget tab) {
           return tab;
         }).toList(),

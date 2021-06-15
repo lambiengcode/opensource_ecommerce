@@ -7,8 +7,7 @@ class ApiGateway {
   static const REJECT_TRANSPORT = '/Admin/RejectTransport';
   static const APPROVE_TRANSPORT = '/Admin/ApproveMerchant';
   static const CANCEL_TRANSPORT = '/Admin/CancelTransport';
-  static const GET_TRANSPORT_BY_STATUS =
-      '/Admin/GetTransportByStatus?status=ACTIVE';
+  static const GET_TRANSPORT_BY_STATUS = '/Admin/GetTransportByStatus?status=';
 
   // Authentication: 5
   static const LOGIN_WITH_EMAIL = '/Auth/Login';

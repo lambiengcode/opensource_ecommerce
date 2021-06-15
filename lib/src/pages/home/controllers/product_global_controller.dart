@@ -26,7 +26,7 @@ class ProductGlobalController extends GetxController {
     res.shuffle();
     listProduct3.addAll(res);
     res.shuffle();
-    if (page > 0 && page < 3) {
+    if (listProduct4.length < 65) {
       listProduct4.addAll(res);
     }
     if (res.length > 0) {

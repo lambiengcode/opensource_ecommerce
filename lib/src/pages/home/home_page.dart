@@ -96,55 +96,65 @@ class _HomePageState extends State<HomePage> {
                 overscroll.disallowGlow();
                 return true;
               },
-              child: SingleChildScrollView(
-                physics: ClampingScrollPhysics(),
-                child: GetBuilder<ProductGlobalController>(
-                  builder: (_) => Column(
-                    children: [
-                      _buildCarouselBanner(context),
-                      SizedBox(height: 12.0),
-                      _buildTitle(context, 'category'.trArgs()),
-                      SizedBox(height: 5.0),
-                      _buildHorizontalAction(context),
-                      SizedBox(height: 10.0),
-                      _buildTitle(context, 'mostPopular'.trArgs()),
-                      SizedBox(height: 10.0),
-                      _buildPopularStore(context, _.listProduct1),
-                      SizedBox(height: 10.0),
-                      _buildTitle(context, 'onSale'.trArgs()),
-                      SizedBox(height: 10.0),
-                      _buildPopularStore(context, _.listProduct2),
-                      SizedBox(height: 10.0),
-                      _buildTitle(context, 'nearBy'.trArgs()),
-                      SizedBox(height: 10.0),
-                      _buildPopularStore(context, _.listProduct3),
-                      SizedBox(height: 10.0),
-                      _buildTitle(context, 'All Product'.trArgs()),
-                      SizedBox(height: 10.0),
-                      ListView.builder(
-                        controller: scrollController,
-                        padding: EdgeInsets.only(top: .0),
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: _.listProduct4.length < 15
-                            ? _.listProduct4.length
-                            : 15,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () => Get.toNamed(Routes.DETAILSPRODUCT,
-                                arguments: _.listProduct4[index]),
-                            child: VerticalTransportCard(
-                              image: null,
-                              address: StringService()
-                                  .formatPrice(_.listProduct4[index]['price']),
-                              title: _.listProduct4[index]['name'],
-                              urlToImage: _.listProduct4[index]['image'],
-                              desc: _.listProduct4[index]['description'],
-                            ),
-                          );
-                        },
-                      )
-                    ],
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (scrollNotification) {
+                  if (scrollNotification is ScrollStartNotification) {
+                  } else if (scrollNotification is ScrollUpdateNotification) {
+                  } else if (scrollNotification is ScrollEndNotification) {
+                    productController.getProduct();
+                  }
+                  return;
+                },
+                child: SingleChildScrollView(
+                  physics: ClampingScrollPhysics(),
+                  child: GetBuilder<ProductGlobalController>(
+                    builder: (_) => Column(
+                      children: [
+                        _buildCarouselBanner(context),
+                        SizedBox(height: 12.0),
+                        _buildTitle(context, 'category'.trArgs()),
+                        SizedBox(height: 5.0),
+                        _buildHorizontalAction(context),
+                        SizedBox(height: 10.0),
+                        _buildTitle(context, 'mostPopular'.trArgs()),
+                        SizedBox(height: 10.0),
+                        _buildPopularStore(context, _.listProduct1),
+                        SizedBox(height: 10.0),
+                        _buildTitle(context, 'onSale'.trArgs()),
+                        SizedBox(height: 10.0),
+                        _buildPopularStore(context, _.listProduct2),
+                        SizedBox(height: 10.0),
+                        _buildTitle(context, 'nearBy'.trArgs()),
+                        SizedBox(height: 10.0),
+                        _buildPopularStore(context, _.listProduct3),
+                        SizedBox(height: 10.0),
+                        _buildTitle(context, 'All Product'.trArgs()),
+                        SizedBox(height: 10.0),
+                        ListView.builder(
+                          controller: scrollController,
+                          padding: EdgeInsets.only(top: .0),
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: _.listProduct4.length < 75
+                              ? _.listProduct4.length
+                              : 75,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () => Get.toNamed(Routes.DETAILSPRODUCT,
+                                  arguments: _.listProduct4[index]),
+                              child: VerticalTransportCard(
+                                image: null,
+                                address: StringService().formatPrice(
+                                    _.listProduct4[index]['price']),
+                                title: _.listProduct4[index]['name'],
+                                urlToImage: _.listProduct4[index]['image'],
+                                desc: _.listProduct4[index]['description'],
+                              ),
+                            );
+                          },
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -380,35 +390,25 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildPopularStore(context, data) {
     final _size = MediaQuery.of(context).size;
-    return NotificationListener<ScrollNotification>(
-      onNotification: (scrollNotification) {
-        if (scrollNotification is ScrollStartNotification) {
-        } else if (scrollNotification is ScrollUpdateNotification) {
-        } else if (scrollNotification is ScrollEndNotification) {
-          productController.getProduct();
-        }
-        return;
-      },
-      child: Container(
-        height: _size.width * .42,
-        child: ListView.builder(
-          controller: scrollHorizontalController,
-          padding: EdgeInsets.only(left: 6.0, right: 12.0),
-          scrollDirection: Axis.horizontal,
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () =>
-                  Get.toNamed(Routes.DETAILSPRODUCT, arguments: data[index]),
-              child: HorizontalStoreCard(
-                address: StringService().formatPrice(data[index]['price']),
-                title: data[index]['name'],
-                urlToImage: data[index]['image'],
-                desc: data[index]['description'],
-              ),
-            );
-          },
-        ),
+    return Container(
+      height: _size.width * .42,
+      child: ListView.builder(
+        controller: scrollHorizontalController,
+        padding: EdgeInsets.only(left: 6.0, right: 12.0),
+        scrollDirection: Axis.horizontal,
+        itemCount: data.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () =>
+                Get.toNamed(Routes.DETAILSPRODUCT, arguments: data[index]),
+            child: HorizontalStoreCard(
+              address: StringService().formatPrice(data[index]['price']),
+              title: data[index]['name'],
+              urlToImage: data[index]['image'],
+              desc: data[index]['description'],
+            ),
+          );
+        },
       ),
     );
   }

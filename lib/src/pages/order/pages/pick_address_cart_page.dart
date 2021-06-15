@@ -39,7 +39,10 @@ class _PickAddressCartPageState extends State<PickAddressCartPage> {
         centerTitle: true,
         leadingWidth: 62.0,
         leading: IconButton(
-          onPressed: () => Get.back(),
+          onPressed: () {
+            pickAddressController.disposeFormInput();
+            Get.back();
+          },
           icon: Icon(
             Feather.arrow_left,
             color: colorTitle,

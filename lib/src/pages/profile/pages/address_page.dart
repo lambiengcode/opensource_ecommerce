@@ -332,7 +332,6 @@ class _AddressPageState extends State<AddressPage> {
                                 mProfile[index]['phoneNumber'],
                               );
                             }
-                            Get.back();
                           } else {
                             Get.toNamed(
                               Routes.EDITADDRESS,
@@ -374,7 +373,6 @@ class _AddressPageState extends State<AddressPage> {
             }
 
             return GestureDetector(
-              onTap: () {},
               child: _buildLocation(
                   context, title, snapshot.data, icon, '09889917877'),
             );

@@ -53,25 +53,47 @@ class PickAddressController extends GetxController {
   }
 
   pickAddress(lat, lng, fullAddress, idAddress, phoneNumber) {
-    locationTo = LatLng(
-      lat,
-      lng,
-    );
-    phone = phoneNumber;
-    placeTo = fullAddress;
-    this.idAddressTo = idAddress;
-    addressController.text = placeTo;
-    update();
+    if (locationFrom != null &&
+        locationFrom.latitude == lat &&
+        locationFrom.longitude == lng) {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Không thể chọn địa chỉ này!',
+        subTitle: 'Địa chỉ gửi hàng và địa chỉ nhận hàng giống nhau.',
+      );
+      getSnackBar.show();
+    } else {
+      locationTo = LatLng(
+        lat,
+        lng,
+      );
+      phone = phoneNumber;
+      placeTo = fullAddress;
+      this.idAddressTo = idAddress;
+      addressController.text = placeTo;
+      update();
+      Get.back();
+    }
   }
 
   pickFromAddress(lat, lng, fullAddress, idAddress) {
-    locationFrom = LatLng(
-      lat,
-      lng,
-    );
-    placeFrom = fullAddress;
-    this.idAddressFrom = idAddress;
-    update();
+    if (locationTo != null &&
+        locationTo.latitude == lat &&
+        locationTo.longitude == lng) {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Không thể chọn địa chỉ này!',
+        subTitle: 'Địa chỉ gửi hàng và địa chỉ nhận hàng giống nhau.',
+      );
+      getSnackBar.show();
+    } else {
+      locationFrom = LatLng(
+        lat,
+        lng,
+      );
+      placeFrom = fullAddress;
+      this.idAddressFrom = idAddress;
+      update();
+      Get.back();
+    }
   }
 
   saveInfoReceiver(fullName, phone, title, description) {

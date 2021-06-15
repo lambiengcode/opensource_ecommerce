@@ -1,4 +1,6 @@
+import 'package:lottie/lottie.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/admin/controllers/admin_controller.dart';
 import 'package:van_transport/src/pages/home/widget/horizontal_store_card.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,16 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
+  final adminController = Get.put(AdminController());
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    adminController.getMerchant('ACTIVE');
+    adminController.getTransport('ACTIVE');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,14 +81,56 @@ class _AdminPageState extends State<AdminPage> {
             SizedBox(height: 16.0),
             _buildTitle('activeMerchant'.trArgs()),
             SizedBox(height: 16.0),
-            // _buildPopularStore(context),
+            StreamBuilder(
+              stream: adminController.getMerchantStream,
+              builder: (context, AsyncSnapshot snapshot) {
+                if (!snapshot.hasData) {
+                  return Container(
+                    height: width * .42,
+                  );
+                }
+
+                return _buildPopularStore(context, snapshot.data, 'MERCHANT');
+              },
+            ),
             SizedBox(height: 16.0),
             _buildTitle('activeDelivery'.trArgs()),
             SizedBox(height: 16.0),
-            // _buildPopularStore(context),
+            StreamBuilder(
+              stream: adminController.getTransportStream,
+              builder: (context, AsyncSnapshot snapshot) {
+                if (!snapshot.hasData) {
+                  return Container(
+                    height: width * .42,
+                  );
+                }
+
+                return _buildPopularStore(context, snapshot.data, 'TRANSPORT');
+              },
+            ),
             SizedBox(height: 16.0),
-            _buildTitle('promo'.trArgs()),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Divider(
+                color: colorDarkGrey,
+                height: .2,
+                thickness: .2,
+              ),
+            ),
             SizedBox(height: 16.0),
+            Expanded(
+              child: Column(
+                children: [
+                  Container(
+                    height: width * .6,
+                    width: width * .6,
+                    child: Lottie.asset('assets/lottie/splash.json'),
+                  ),
+                ],
+              ),
+            ),
+            // _buildTitle('promo'.trArgs()),
+            // SizedBox(height: 16.0),
             // _buildPopularStore(context),
           ],
         ),
@@ -123,17 +176,27 @@ class _AdminPageState extends State<AdminPage> {
     );
   }
 
-  Widget _buildPopularStore(context) {
+  Widget _buildPopularStore(context, List<dynamic> data, title) {
     final _size = MediaQuery.of(context).size;
     return Container(
       height: _size.width * .42,
       child: ListView.builder(
-        padding: EdgeInsets.only(left: 6.0, right: 12.0),
+        padding: EdgeInsets.only(left: 12.0, right: 12.0),
         scrollDirection: Axis.horizontal,
-        itemCount: 10,
+        itemCount: data.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-            child: HorizontalStoreCard(),
+            child: HorizontalStoreCard(
+              isCover: !(title == 'MERCHANT'),
+              title: data[index]['name'],
+              urlToImage: title == 'MERCHANT'
+                  ? data[index]['image']
+                  : data[index]['avatar'],
+              address: title == 'MERCHANT'
+                  ? data[index]['address']['fullAddress']
+                  : data[index]['headquarters'],
+              desc: data[index]['description'],
+            ),
           );
         },
       ),

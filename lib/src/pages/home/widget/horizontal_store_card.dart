@@ -11,8 +11,15 @@ class HorizontalStoreCard extends StatefulWidget {
   final String address;
   final String urlToImage;
   final String desc;
+  final bool isCover;
 
-  HorizontalStoreCard({this.address, this.desc, this.title, this.urlToImage});
+  HorizontalStoreCard({
+    @required this.address,
+    @required this.desc,
+    @required this.title,
+    @required this.urlToImage,
+    this.isCover = true,
+  });
   @override
   State<StatefulWidget> createState() => _HorizontalStoreCardState();
 }
@@ -28,7 +35,7 @@ class _HorizontalStoreCardState extends State<HorizontalStoreCard> {
         children: [
           Container(
             width: _size.width * .4,
-            margin: EdgeInsets.only(left: _size.width * .01, bottom: 2.5),
+            margin: EdgeInsets.only(bottom: 2.5),
             padding: EdgeInsets.only(left: 6.5, right: 4.5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16.0),
@@ -49,7 +56,7 @@ class _HorizontalStoreCardState extends State<HorizontalStoreCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: _size.width * .269),
+                SizedBox(height: _size.width * .2485),
                 Text(
                   StringService().formatString(25, widget.title),
                   maxLines: 1,
@@ -66,6 +73,7 @@ class _HorizontalStoreCardState extends State<HorizontalStoreCard> {
                           : 'address'.trArgs()) +
                       ': ' +
                       StringService().formatString(25, widget.address),
+                  maxLines: 1,
                   style: TextStyle(
                     color: colorPrimary,
                     fontSize: _size.width / 36.5,
@@ -77,16 +85,16 @@ class _HorizontalStoreCardState extends State<HorizontalStoreCard> {
                 Text(
                   widget.desc == ''
                       ? 'Giới thiệu: Không có'
-                      : widget.desc.length < 36.5
+                      : widget.desc.length < 40
                           ? 'Giới thiệu: ${widget.desc.replaceAll('\n', '. ')}'
-                          : 'Giới thiệu: ${widget.desc.replaceAll('\n', '. ').substring(0, 30)}...',
+                          : 'Giới thiệu: ${widget.desc.replaceAll('\n', '. ').substring(0, 38)}...',
                   style: TextStyle(
                     color: fCD,
                     fontSize: _size.width / 38.5,
                     fontWeight: FontWeight.w400,
                     fontFamily: 'Lato',
                   ),
-                  maxLines: 1,
+                  maxLines: 2,
                 ),
               ],
             ),
@@ -95,14 +103,19 @@ class _HorizontalStoreCardState extends State<HorizontalStoreCard> {
             top: .0,
             left: .0,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(16.0),
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(12.0),
+                bottom: Radius.circular(2.0),
+              ),
               child: CachedNetworkImage(
-                width: _size.width * .40,
-                height: _size.width * .26,
+                width: _size.width * .4,
+                height: _size.width * .23,
                 fit: StringService()
                         .isNumeric(widget.address.replaceAll(',', ''))
                     ? BoxFit.contain
-                    : BoxFit.cover,
+                    : widget.isCover
+                        ? BoxFit.cover
+                        : BoxFit.contain,
                 placeholder: (context, url) => PlaceHolderImage(),
                 errorWidget: (context, url, error) => ErrorLoadingImage(),
                 imageUrl: widget.urlToImage,

@@ -2,24 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:van_transport/src/common/style.dart';
-import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
-import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
-import 'package:van_transport/src/pages/transport/controllers/transport_controller.dart';
-import 'package:van_transport/src/routes/app_pages.dart';
+import 'package:van_transport/src/pages/admin/controllers/admin_controller.dart';
 
-class BottomSettingsAddress extends StatefulWidget {
+class BottomSheetManage extends StatefulWidget {
   final List<String> values;
-  final String idAddress;
-  final String idMerchant;
-  BottomSettingsAddress({this.values, this.idAddress, this.idMerchant});
+  final bool isMerchant;
+  final String idObject;
+  BottomSheetManage({this.values, this.isMerchant, this.idObject});
   @override
-  State<StatefulWidget> createState() => _BottomSettingsAddressState();
+  State<StatefulWidget> createState() => _BottomSheetManageState();
 }
 
-class _BottomSettingsAddressState extends State<BottomSettingsAddress> {
-  final profileController = Get.put(ProfileController());
-  final merchantController = Get.put(MerchantController());
-  final transportController = Get.put(TransportController());
+class _BottomSheetManageState extends State<BottomSheetManage> {
   @override
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
@@ -62,8 +56,10 @@ class _BottomSettingsAddressState extends State<BottomSettingsAddress> {
             _buildAction(
               context,
               widget.values[0],
-              widget.values.length == 1 ? colorHigh : colorTitle,
-              widget.values.length == 1 ? Feather.trash : Feather.edit,
+              widget.values.length == 1 ? colorHigh : colorPrimary,
+              widget.values.length == 1
+                  ? Feather.x_square
+                  : Feather.check_square,
             ),
             widget.values.length == 2
                 ? Column(
@@ -73,7 +69,7 @@ class _BottomSettingsAddressState extends State<BottomSettingsAddress> {
                         context,
                         widget.values[1],
                         colorHigh,
-                        Feather.trash,
+                        Feather.x_square,
                       ),
                       SizedBox(height: 24.0),
                     ],
@@ -87,22 +83,26 @@ class _BottomSettingsAddressState extends State<BottomSettingsAddress> {
 
   Widget _buildAction(context, title, color, icon) {
     final _size = MediaQuery.of(context).size;
+    final adminController = Get.put(AdminController());
 
     return GestureDetector(
       onTap: () {
         Get.back();
-        if (widget.values.length == 1) {
-          if (widget.idAddress != null) {
-            profileController.deleteAddress(widget.idAddress);
+        if (widget.isMerchant) {
+          if (title == widget.values[0] && widget.values.length == 1) {
+            adminController.cancelMerchant(widget.idObject);
+          } else if (title == widget.values[0] && widget.values.length == 2) {
+            adminController.approveMerchant(widget.idObject);
           } else {
-            transportController.deleteSubTransport(widget.idMerchant);
+            adminController.rejectMerchant(widget.idObject);
           }
         } else {
-          if (title == widget.values[0]) {
-            Get.toNamed(Routes.MERCHANT + Routes.EDITGROUP);
+          if (title == widget.values[0] && widget.values.length == 1) {
+            adminController.cancelTransport(widget.idObject);
+          } else if (title == widget.values[0] && widget.values.length == 2) {
+            adminController.approveTransport(widget.idObject);
           } else {
-            merchantController.deleteGroupProduct(
-                widget.idAddress, widget.idMerchant);
+            adminController.rejectTransport(widget.idObject);
           }
         }
       },
