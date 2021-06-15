@@ -20,7 +20,6 @@ class _SubTransportManageOrderPageState
   @override
   void initState() {
     super.initState();
-    print(widget.pageName);
     orderController.getOrder(widget.pageName);
   }
 
@@ -32,7 +31,7 @@ class _SubTransportManageOrderPageState
         stream: orderController.getCartController,
         builder: (context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
-            return EmptyOrderPage();
+            return Container();
           }
 
           return snapshot.data.length == 0
@@ -48,7 +47,7 @@ class _SubTransportManageOrderPageState
                       child: OrderCard(
                         title: StringService().formatString(
                           25,
-                          snapshot.data[index]['isMerchant'] == true
+                          snapshot.data[index]['isMerchantSend'] == true
                               ? snapshot.data[index]['FK_Product'][0]
                                   ['products'][0]['name']
                               : snapshot.data[0]['FK_Product'][0]['name'],
@@ -58,10 +57,11 @@ class _SubTransportManageOrderPageState
                                     .round()
                                     .toString()) +
                             ' đ',
-                        urlToImage: snapshot.data[index]['isMerchant'] == true
-                            ? snapshot.data[index]['FK_Product'][0]['products']
-                                [0]['image']
-                            : snapshot.data[0]['FK_Product'][0]['image'][0],
+                        urlToImage:
+                            snapshot.data[index]['isMerchantSend'] == true
+                                ? snapshot.data[index]['FK_Product'][0]
+                                    ['products'][0]['image']
+                                : snapshot.data[0]['FK_Product'][0]['image'][0],
                       ),
                     );
                   },

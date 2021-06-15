@@ -30,7 +30,7 @@ class _ManageOrderMerchantPageState extends State<ManageOrderMerchantPage> {
         stream: orderController.getCartController,
         builder: (context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
-            return EmptyOrderPage();
+            return Container();
           }
 
           return snapshot.data.length == 0
@@ -39,17 +39,17 @@ class _ManageOrderMerchantPageState extends State<ManageOrderMerchantPage> {
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: () {
-                        Get.toNamed(
-                          Routes.DETAILSORDERS,
-                          arguments: snapshot.data[index],
-                        );
-                      },
+                      onTap: () => Get.toNamed(
+                        Routes.DETAILSORDERS,
+                        arguments: snapshot.data[index],
+                      ),
                       child: OrderCard(
                         title: StringService().formatString(
                           25,
-                          snapshot.data[index]['FK_Product'][0]['products'][0]
-                              ['name'],
+                          snapshot.data[index]['isMerchant'] == true
+                              ? snapshot.data[index]['FK_Product'][0]
+                                  ['products'][0]['name']
+                              : snapshot.data[0]['FK_Product'][0]['name'],
                         ),
                         transport: StringService().formatPrice(
                                 double.tryParse(snapshot.data[index]['prices'])
@@ -58,13 +58,8 @@ class _ManageOrderMerchantPageState extends State<ManageOrderMerchantPage> {
                             ' đ',
                         urlToImage: snapshot.data[index]['isMerchant'] == true
                             ? snapshot.data[index]['FK_Product'][0]['products']
-                                    [0]['image']
-                                .toString()
-                                .trim()
-                            : snapshot.data[index]['FK_Product'][0]['products']
-                                    [0]['image']
-                                .toString()
-                                .trim(),
+                                [0]['image']
+                            : snapshot.data[0]['FK_Product'][0]['image'][0],
                       ),
                     );
                   },

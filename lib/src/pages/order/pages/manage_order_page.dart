@@ -19,7 +19,6 @@ class _ManageOrderPageState extends State<ManageOrderPage> {
   @override
   void initState() {
     super.initState();
-    print(widget.pageName);
     orderController.getOrder(widget.pageName);
   }
 
@@ -31,7 +30,7 @@ class _ManageOrderPageState extends State<ManageOrderPage> {
         stream: orderController.getCartController,
         builder: (context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
-            return EmptyOrderPage();
+            return Container();
           }
 
           return snapshot.data.length == 0
@@ -47,21 +46,23 @@ class _ManageOrderPageState extends State<ManageOrderPage> {
                       child: OrderCard(
                         title: StringService().formatString(
                           25,
-                          snapshot.data[index]['FK_Product'][0]['products'][0]
-                              ['name'],
+                          snapshot.data[index]['isMerchantSend'] == true
+                              ? snapshot.data[index]['FK_Product'][0]
+                                  ['products'][0]['name']
+                              : snapshot.data[index]['FK_Product'][0]['name'],
                         ),
                         transport: StringService().formatPrice(
                                 double.tryParse(snapshot.data[index]['prices'])
                                     .round()
                                     .toString()) +
                             ' đ',
-                        urlToImage: snapshot.data[index]['isMerchant'] == true
+                        urlToImage: snapshot.data[index]['isMerchantSend'] ==
+                                true
                             ? snapshot.data[index]['FK_Product'][0]['products']
                                     [0]['image']
                                 .toString()
                                 .trim()
-                            : snapshot.data[index]['FK_Product'][0]['products']
-                                    [0]['image']
+                            : snapshot.data[index]['FK_Product'][0]['image'][0]
                                 .toString()
                                 .trim(),
                       ),

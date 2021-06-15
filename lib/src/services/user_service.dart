@@ -196,7 +196,6 @@ class UserService {
       headers: getHeaders(),
     );
 
-    print(convert.jsonDecode(response.body)['data']);
     return response.statusCode == 200
         ? convert.jsonDecode(response.body)['data']['products']
         : null;
@@ -208,7 +207,6 @@ class UserService {
       headers: getHeaders(),
     );
 
-    print(convert.jsonDecode(response.body)['data']);
     return response.statusCode == 200
         ? convert.jsonDecode(response.body)['data']
         : [];

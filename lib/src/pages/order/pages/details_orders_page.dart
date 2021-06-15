@@ -95,19 +95,27 @@ class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
                             top: 16.0,
                           ),
                           physics: ClampingScrollPhysics(),
-                          itemCount:
-                              widget.data['FK_Product'][0]['products'].length,
+                          itemCount: widget.data['isMerchantSend']
+                              ? widget.data['FK_Product'][0]['products'].length
+                              : widget.data['FK_Product'].length,
                           itemBuilder: (context, index) {
                             return CartCard(
                               name: StringService().formatString(
                                 24,
-                                widget.data['FK_Product'][0]['products'][index]
-                                    ['name'],
+                                widget.data['isMerchantSend']
+                                    ? widget.data['FK_Product'][0]['products']
+                                        [index]['name']
+                                    : widget.data['FK_Product'][index]['name'],
                               ),
-                              urlToString: widget.data['FK_Product'][0]
-                                  ['products'][index]['image'],
-                              price: widget.data['FK_Product'][0]['products']
-                                  [index]['price'],
+                              urlToString: widget.data['isMerchantSend']
+                                  ? widget.data['FK_Product'][0]['products']
+                                      [index]['image']
+                                  : widget.data['FK_Product'][index]['image']
+                                      [0],
+                              price: widget.data['isMerchantSend']
+                                  ? widget.data['FK_Product'][0]['products']
+                                      [index]['price']
+                                  : widget.data['prices'],
                             );
                           },
                         ),
@@ -119,7 +127,7 @@ class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           _buildPriceText(context, 'product'.trArgs(),
-                              '${widget.data['FK_Product'][0]['products'].length}'),
+                              '${widget.data['isMerchantSend'] ? widget.data['FK_Product'][0]['products'].length : widget.data['FK_Product'].length}'),
                           _buildPriceText(
                             context,
                             'subTotal'.trArgs(),

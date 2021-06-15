@@ -10,7 +10,6 @@ class OrderController extends GetxController {
   getOrder(status) async {
     var res = await userService.getOrderByStatus(status);
     cartController.add(res);
-    print(res);
   }
 
   cancelOrder(idOrder) async {}

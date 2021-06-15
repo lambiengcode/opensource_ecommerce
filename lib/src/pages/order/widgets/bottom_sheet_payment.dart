@@ -80,25 +80,17 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
               children: [
                 paymentMethod == methods[0]
                     ? _buildActiveMethodButton(
-                        'https://github.com/lambiengcode/project_college_ec/blob/master/images/logo_app.png?raw=true',
-                        methods[0])
+                        'images/logo_app.png', methods[0])
                     : _buildInactiveMethodButton(
-                        'https://github.com/lambiengcode/project_college_ec/blob/master/images/logo_app.png?raw=true',
-                        methods[0]),
+                        'images/logo_app.png', methods[0]),
                 paymentMethod == methods[1]
-                    ? _buildActiveMethodButton(
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDvwa33bkoHIQ-jOlXl_lZwVaxsVl2n_aSKg&usqp=CAU',
-                        methods[1])
+                    ? _buildActiveMethodButton('images/paypal.png', methods[1])
                     : _buildInactiveMethodButton(
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDvwa33bkoHIQ-jOlXl_lZwVaxsVl2n_aSKg&usqp=CAU',
-                        methods[1]),
+                        'images/paypal.png', methods[1]),
                 paymentMethod == methods[2]
-                    ? _buildActiveMethodButton(
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL-yFFVmVJBIWNZCACMRFgDWwFDJUehcizg_gmf8Xvri1fgzNVGSQxt8AzuJgbjj0ep1I&usqp=CAU',
-                        methods[2])
+                    ? _buildActiveMethodButton('images/vnpay.png', methods[2])
                     : _buildInactiveMethodButton(
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL-yFFVmVJBIWNZCACMRFgDWwFDJUehcizg_gmf8Xvri1fgzNVGSQxt8AzuJgbjj0ep1I&usqp=CAU',
-                        methods[2]),
+                        'images/vnpay.png', methods[2]),
               ],
             ),
             SizedBox(height: 24.0),
@@ -169,8 +161,8 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
           image: DecorationImage(
-            image: NetworkImage(image),
-            fit: BoxFit.fitWidth,
+            image: AssetImage(image),
+            fit: BoxFit.cover,
           ),
         ),
       ),
@@ -192,8 +184,8 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
           image: DecorationImage(
-            image: NetworkImage(image),
-            fit: BoxFit.fitWidth,
+            image: AssetImage(image),
+            fit: BoxFit.cover,
           ),
         ),
       ),

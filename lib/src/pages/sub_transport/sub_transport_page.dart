@@ -2,7 +2,6 @@ import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/merchant/pages/revenue_page.dart';
 import 'package:van_transport/src/pages/sub_transport/controllers/sub_transport_controller.dart';
 import 'package:van_transport/src/pages/sub_transport/pages/manage_order_page.dart';
-import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
