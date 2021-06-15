@@ -30,12 +30,12 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 44.0),
+      padding: EdgeInsets.symmetric(horizontal: 36.0),
       decoration: BoxDecoration(
         color: mC,
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(
-            40.0,
+            20.0,
           ),
         ),
       ),
@@ -43,7 +43,7 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 32.0),
+            SizedBox(height: 16.0),
             Container(
               height: 4.0,
               margin: EdgeInsets.symmetric(horizontal: width * .3),
@@ -64,12 +64,12 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
                 ],
               ),
             ),
-            SizedBox(height: 18.0),
+            SizedBox(height: 20.0),
             Text(
               'Chọn phuơng thức thanh toán',
               style: TextStyle(
                 color: colorDarkGrey,
-                fontSize: width / 22.5,
+                fontSize: width / 23.5,
                 fontWeight: FontWeight.w600,
                 fontFamily: 'Lato',
               ),
@@ -139,7 +139,7 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
                 ],
               ),
             ),
-            SizedBox(height: 46.0),
+            SizedBox(height: 36.0),
           ],
         ),
       ),
@@ -148,16 +148,16 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
 
   Widget _buildActiveMethodButton(image, title) {
     return Container(
-      height: width * .22,
-      width: width * .22,
+      height: width * .225,
+      width: width * .225,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
         border: Border.all(color: colorPrimary, width: 2.5),
       ),
       alignment: Alignment.center,
       child: Container(
-        height: width * .2,
-        width: width * .2,
+        height: width * .205,
+        width: width * .205,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
           image: DecorationImage(
@@ -179,8 +179,8 @@ class _BottomSheetPaymentState extends State<BottomSheetPayment> {
         }
       },
       child: Container(
-        height: width * .2,
-        width: width * .2,
+        height: width * .225,
+        width: width * .225,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
           image: DecorationImage(

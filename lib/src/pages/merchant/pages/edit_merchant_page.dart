@@ -188,6 +188,7 @@ class _EditMerchantPageState extends State<EditMerchantPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: mC,
         elevation: .0,

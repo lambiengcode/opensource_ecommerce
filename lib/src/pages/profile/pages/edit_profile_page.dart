@@ -95,6 +95,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
     final _size = MediaQuery.of(context).size;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: mC,
         centerTitle: true,

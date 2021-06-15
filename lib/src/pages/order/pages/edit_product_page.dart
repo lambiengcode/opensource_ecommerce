@@ -38,6 +38,7 @@ class _EditProductPageState extends State<EditProductPage> {
   List<File> images = [];
   List<String> urlImages = [];
   String name;
+  FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
@@ -52,6 +53,7 @@ class _EditProductPageState extends State<EditProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: mCL,
         elevation: .0,
@@ -119,8 +121,11 @@ class _EditProductPageState extends State<EditProductPage> {
                       ),
                       alignment: Alignment.center,
                       child: TextFormField(
+                        focusNode: focusNode,
                         controller: _nameController,
-                        onFieldSubmitted: (val) => null,
+                        onFieldSubmitted: (val) {
+                          focusNode.unfocus();
+                        },
                         cursorColor: fCL,
                         cursorRadius: Radius.circular(4.0),
                         keyboardType: TextInputType.text,
@@ -327,6 +332,7 @@ class _EditProductPageState extends State<EditProductPage> {
         ),
         GestureDetector(
           onTap: () {
+            focusNode.unfocus();
             if (title == 'typeProduct'.trArgs()) showProductTypeBottomSheet();
             if (title == 'weight'.trArgs()) showProductTypeBottomSheet();
           },
@@ -363,7 +369,10 @@ class _EditProductPageState extends State<EditProductPage> {
     }
 
     return GestureDetector(
-      onTap: () => showImageBottomSheet(),
+      onTap: () {
+        focusNode.unfocus();
+        showImageBottomSheet();
+      },
       child: Container(
         height: width * .26,
         width: width * .26,
@@ -407,7 +416,10 @@ class _EditProductPageState extends State<EditProductPage> {
       height: width * .26,
       width: width * .26,
       child: NeumorphicButton(
-        onPressed: () => showImageBottomSheet(),
+        onPressed: () {
+          focusNode.unfocus();
+          showImageBottomSheet();
+        },
         duration: Duration(milliseconds: 100),
         style: NeumorphicStyle(
           shape: NeumorphicShape.concave,

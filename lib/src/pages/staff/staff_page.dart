@@ -37,6 +37,7 @@ class _TransportPage extends State<StaffPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: mC,

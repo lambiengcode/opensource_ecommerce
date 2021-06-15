@@ -39,6 +39,7 @@ class _VerifyPageState extends State<VerifyPage> {
     final _size = MediaQuery.of(context).size;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         elevation: .0,

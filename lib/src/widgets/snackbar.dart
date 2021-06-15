@@ -14,7 +14,7 @@ class GetSnackBar {
       colorText: Colors.white,
       backgroundColor: Colors.black45,
       duration: Duration(
-        milliseconds: 2000,
+        milliseconds: 1500,
       ),
       titleText: Text(
         title,

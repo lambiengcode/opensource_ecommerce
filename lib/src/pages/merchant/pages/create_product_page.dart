@@ -58,6 +58,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: mC,
         elevation: .0,

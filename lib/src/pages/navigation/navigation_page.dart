@@ -33,6 +33,7 @@ class _NavigationState extends State<Navigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       bottomNavigationBar: StyleProvider(
         style: Style(),
         child: ConvexAppBar.badge(

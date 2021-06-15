@@ -39,6 +39,7 @@ class _SignupPageState extends State<SignupPage> {
     final _size = MediaQuery.of(context).size;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         elevation: .0,

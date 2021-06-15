@@ -1,10 +1,10 @@
 import 'package:van_transport/src/app.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/favourite/controllers/favourite_controller.dart';
 import 'package:van_transport/src/pages/home/controllers/product_global_controller.dart';
 import 'package:van_transport/src/pages/order/controllers/cart_merchant_controller.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
@@ -32,12 +32,14 @@ class DetailsProductPage extends StatefulWidget {
 }
 
 class _DetailsProductPageState extends State<DetailsProductPage> {
+  final favouriteController = Get.put(FavouriteController());
   final cartController = Get.put(CartMerchantController());
   final productController = Get.put(ProductGlobalController());
   int _quantity = 1;
   @override
   void initState() {
     productController.getMerchantById(widget.data['FK_merchant']);
+    favouriteController.checkIsFavourite(widget.data['FK_product']);
     super.initState();
   }
 
@@ -49,6 +51,7 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: mCL,
         child: Stack(
@@ -194,16 +197,20 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
                               ],
                             ),
                           ),
-                          IconButton(
-                            icon: Icon(
-                              Feather.heart,
-                              color: colorHigh,
-                              size: width / 16.0,
-                            ),
-                            onPressed: () {
-                              Get.toNamed(Routes.AUTHENTICATION);
-                            },
-                          ),
+                          GetBuilder<FavouriteController>(
+                              builder: (_) => IconButton(
+                                    icon: Icon(
+                                      Feather.heart,
+                                      color: _.isFavourite
+                                          ? colorHigh
+                                          : colorDarkGrey,
+                                      size: width / 16.0,
+                                    ),
+                                    onPressed: () {
+                                      favouriteController
+                                          .favourite(widget.data['FK_product']);
+                                    },
+                                  )),
                         ],
                       ),
                       SizedBox(height: 10.0),

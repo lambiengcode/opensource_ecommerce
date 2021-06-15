@@ -14,6 +14,7 @@ class _FriendPageState extends State<FriendsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: mC,
         elevation: .0,

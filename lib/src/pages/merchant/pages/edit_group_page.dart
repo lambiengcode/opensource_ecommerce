@@ -32,6 +32,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: mC,
         elevation: .0,

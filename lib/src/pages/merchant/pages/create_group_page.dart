@@ -30,6 +30,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: mC,
         elevation: .0,

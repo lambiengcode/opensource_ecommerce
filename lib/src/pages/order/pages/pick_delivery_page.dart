@@ -31,6 +31,7 @@ class _PickDeliveryPageState extends State<PickDeliveryPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: mC,

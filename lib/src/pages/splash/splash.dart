@@ -14,6 +14,7 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: colorPrimary,
         height: _size.height,

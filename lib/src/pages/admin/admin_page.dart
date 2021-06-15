@@ -15,6 +15,7 @@ class _AdminPageState extends State<AdminPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: mC,
@@ -69,15 +70,15 @@ class _AdminPageState extends State<AdminPage> {
             SizedBox(height: 16.0),
             _buildTitle('activeMerchant'.trArgs()),
             SizedBox(height: 16.0),
-            _buildPopularStore(context),
+            // _buildPopularStore(context),
             SizedBox(height: 16.0),
             _buildTitle('activeDelivery'.trArgs()),
             SizedBox(height: 16.0),
-            _buildPopularStore(context),
+            // _buildPopularStore(context),
             SizedBox(height: 16.0),
             _buildTitle('promo'.trArgs()),
             SizedBox(height: 16.0),
-            _buildPopularStore(context),
+            // _buildPopularStore(context),
           ],
         ),
       ),

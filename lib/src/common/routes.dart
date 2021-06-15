@@ -1,9 +1,14 @@
 class ApiGateway {
-  // Admin: 4
+  // Admin: 8
   static const REJECT_MERCHANT = '/Admin/RejectMerchant';
   static const CANCEL_MERCHANT = '/Admin/CancelMerchant';
   static const APPROVE_MERCHANT = '/Admin/ApproveMerchant';
   static const GET_MERCHANT_BY_STATUS = '/Admin/GetMerchantByStatus?status=';
+  static const REJECT_TRANSPORT = '/Admin/RejectTransport';
+  static const APPROVE_TRANSPORT = '/Admin/ApproveMerchant';
+  static const CANCEL_TRANSPORT = '/Admin/CancelTransport';
+  static const GET_TRANSPORT_BY_STATUS =
+      '/Admin/GetTransportByStatus?status=ACTIVE';
 
   // Authentication: 5
   static const LOGIN_WITH_EMAIL = '/Auth/Login';
@@ -49,6 +54,7 @@ class ApiGateway {
   static const UPDATE_CART_CLIENT = '/User/Client/UpdateProductFromCart';
   static const UPDATE_CART_MERCHANT = '/User/Merchant/UpdateProductFromCart';
   static const GET_ORDER_BY_STATUS = '/User/OrderByStatus?status=';
+  static const FAVOURITE_PRODUCT = '/User/OrderByStatus?status=';
 
   // Device: 2
   static const CREATE_DEVICE = '/Device/Create';

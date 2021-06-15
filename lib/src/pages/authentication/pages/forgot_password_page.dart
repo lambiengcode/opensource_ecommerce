@@ -35,6 +35,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     final _size = MediaQuery.of(context).size;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         elevation: .0,

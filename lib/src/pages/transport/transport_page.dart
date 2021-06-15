@@ -185,6 +185,7 @@ class _TransportPage extends State<TransportPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       floatingActionButton: _showFloatingButton
           ? Container(
               height: width / 6.25,
@@ -315,6 +316,7 @@ class _TransportPage extends State<TransportPage>
       ),
       body: TabBarView(
         controller: _tabController,
+        physics: NeverScrollableScrollPhysics(),
         children: _pages.map((Widget tab) {
           return tab;
         }).toList(),

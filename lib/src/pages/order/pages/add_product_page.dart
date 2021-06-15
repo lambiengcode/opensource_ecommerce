@@ -26,10 +26,12 @@ class _AddProductPageState extends State<AddProductPage> {
   ];
   List<File> images = [];
   String name = '';
+  FocusNode focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: mCL,
         elevation: .0,
@@ -97,7 +99,10 @@ class _AddProductPageState extends State<AddProductPage> {
                       ),
                       alignment: Alignment.center,
                       child: TextFormField(
-                        onFieldSubmitted: (val) => null,
+                        focusNode: focusNode,
+                        onFieldSubmitted: (val) {
+                          focusNode.unfocus();
+                        },
                         cursorColor: fCL,
                         cursorRadius: Radius.circular(4.0),
                         keyboardType: TextInputType.text,
@@ -309,6 +314,7 @@ class _AddProductPageState extends State<AddProductPage> {
         ),
         GestureDetector(
           onTap: () {
+            focusNode.unfocus();
             if (title == 'typeProduct'.trArgs()) showProductTypeBottomSheet();
             if (title == 'weight'.trArgs()) showProductTypeBottomSheet();
           },
@@ -346,7 +352,10 @@ class _AddProductPageState extends State<AddProductPage> {
     }
 
     return GestureDetector(
-      onTap: () => showImageBottomSheet(),
+      onTap: () {
+        focusNode.unfocus();
+        showImageBottomSheet();
+      },
       child: Container(
         height: width * .26,
         width: width * .26,
@@ -390,7 +399,10 @@ class _AddProductPageState extends State<AddProductPage> {
       height: width * .26,
       width: width * .26,
       child: NeumorphicButton(
-        onPressed: () => showImageBottomSheet(),
+        onPressed: () {
+          focusNode.unfocus();
+          showImageBottomSheet();
+        },
         duration: Duration(milliseconds: 100),
         style: NeumorphicStyle(
           shape: NeumorphicShape.concave,

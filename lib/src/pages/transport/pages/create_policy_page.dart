@@ -8,6 +8,8 @@ class CreatePolicyPage extends StatefulWidget {
 class _CreatePolicyPageState extends State<CreatePolicyPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+    );
   }
 }

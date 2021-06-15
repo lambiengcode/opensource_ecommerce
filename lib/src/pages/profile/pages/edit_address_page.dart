@@ -163,6 +163,7 @@ class _EditAddressPageState extends State<EditAddressPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: mC,
         elevation: .0,

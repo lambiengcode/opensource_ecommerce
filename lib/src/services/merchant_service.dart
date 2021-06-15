@@ -160,8 +160,6 @@ class MerchantService {
       baseUrl + ApiGateway.GET_MERCHANT_BY_ID + idMerchant,
       headers: getHeaders(),
     );
-    print(idMerchant);
-    print(convert.jsonDecode(response.body)['data']);
     return convert.jsonDecode(response.body)['data'];
   }
 

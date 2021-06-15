@@ -30,6 +30,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: mCL,
         elevation: .0,

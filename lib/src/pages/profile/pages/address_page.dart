@@ -215,6 +215,7 @@ class _AddressPageState extends State<AddressPage> {
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: .0,
         backgroundColor: mC,

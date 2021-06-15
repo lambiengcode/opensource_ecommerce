@@ -33,6 +33,8 @@ class _ManageOrderMerchantPageState extends State<ManageOrderMerchantPage> {
             return Container();
           }
 
+          print(snapshot.data);
+
           return snapshot.data.length == 0
               ? EmptyOrderPage()
               : ListView.builder(
@@ -46,7 +48,7 @@ class _ManageOrderMerchantPageState extends State<ManageOrderMerchantPage> {
                       child: OrderCard(
                         title: StringService().formatString(
                           25,
-                          snapshot.data[index]['isMerchant'] == true
+                          snapshot.data[index]['isMerchantSend'] == true
                               ? snapshot.data[index]['FK_Product'][0]
                                   ['products'][0]['name']
                               : snapshot.data[0]['FK_Product'][0]['name'],
@@ -56,10 +58,11 @@ class _ManageOrderMerchantPageState extends State<ManageOrderMerchantPage> {
                                     .round()
                                     .toString()) +
                             ' đ',
-                        urlToImage: snapshot.data[index]['isMerchant'] == true
-                            ? snapshot.data[index]['FK_Product'][0]['products']
-                                [0]['image']
-                            : snapshot.data[0]['FK_Product'][0]['image'][0],
+                        urlToImage:
+                            snapshot.data[index]['isMerchantSend'] == true
+                                ? snapshot.data[index]['FK_Product'][0]
+                                    ['products'][0]['image']
+                                : snapshot.data[0]['FK_Product'][0]['image'][0],
                       ),
                     );
                   },

@@ -46,6 +46,7 @@ class _TransportPage extends State<SubCityPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       floatingActionButton: _showFloatingButton
           ? Container(
               height: width / 6.25,

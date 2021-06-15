@@ -36,6 +36,7 @@ class _LoginPageState extends State<LoginPage> {
     final _size = MediaQuery.of(context).size;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         height: _size.height,
         width: _size.width,

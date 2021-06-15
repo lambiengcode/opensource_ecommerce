@@ -22,6 +22,7 @@ class _SearchFriendPageState extends State<SearchFriendPage> {
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: mC,
         padding: EdgeInsets.all(12.0),

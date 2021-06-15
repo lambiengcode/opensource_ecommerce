@@ -55,10 +55,11 @@ class UserService {
       headers: getHeaders(),
       body: body,
     );
+    print(response.statusCode);
     return response.statusCode;
   }
 
-  Future<List<Map<String, String>>> getFavorites() async {
+  Future<List<dynamic>> getFavorites() async {
     var response = await http.get(
       baseUrl + ApiGateway.GET_FAVORITE,
       headers: getHeaders(),

@@ -232,6 +232,7 @@ class PickAddressController extends GetxController {
     print(res);
     Get.back();
     if (response.statusCode == 200) {
+      disposeFormInput();
       if (paymentMethod == 'POINT') {
         transportInfo = null;
         senderInfo = null;
@@ -245,7 +246,6 @@ class PickAddressController extends GetxController {
         getSnackBar.show();
       } else {
         String url = res['data'];
-        update();
         if (url != null) {
           Get.toNamed(Routes.PAYMENTWEBVIEW, arguments: url);
         } else {

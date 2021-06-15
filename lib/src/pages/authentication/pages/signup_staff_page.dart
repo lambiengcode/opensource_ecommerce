@@ -54,6 +54,7 @@ class _SignupStaffPageState extends State<SignupStaffPage> {
     final _size = MediaQuery.of(context).size;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         elevation: .0,

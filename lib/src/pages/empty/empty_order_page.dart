@@ -11,6 +11,7 @@ class _EmptyOrderPageState extends State<EmptyOrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: mC,
         width: width,

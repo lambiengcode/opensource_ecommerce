@@ -29,6 +29,7 @@ class _MyPointPageState extends State<MyPointPage> {
       builder: (_) => _.loading
           ? Loading()
           : Scaffold(
+              resizeToAvoidBottomInset: false,
               appBar: AppBar(
                 elevation: .0,
                 backgroundColor: mC,

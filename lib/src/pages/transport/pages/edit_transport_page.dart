@@ -85,6 +85,7 @@ class _EditTransportPageState extends State<EditTransportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: mC,
         elevation: .0,

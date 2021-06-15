@@ -19,6 +19,7 @@ class _SettingsPageState extends State<SettingsPage> {
     final _size = MediaQuery.of(context).size;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         brightness: Brightness.light,
         backgroundColor: mC,

@@ -26,6 +26,7 @@ class _RevenuePageState extends State<RevenuePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: mC,
         child: Column(

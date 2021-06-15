@@ -27,6 +27,7 @@ class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       endDrawer: Container(
         width: width * .75,
