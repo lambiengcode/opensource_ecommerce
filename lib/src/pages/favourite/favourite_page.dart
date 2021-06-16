@@ -81,8 +81,8 @@ class _FavouritePageState extends State<FavouritePage> {
                 boxShadow: [
                   BoxShadow(
                     color: mCD,
-                    offset: Offset(10, 10),
-                    blurRadius: 10,
+                    offset: Offset(1, 1),
+                    blurRadius: 1,
                   ),
                 ],
               ),
@@ -118,7 +118,7 @@ class _FavouritePageState extends State<FavouritePage> {
                 ),
               ),
             ),
-            SizedBox(height: 12.0),
+            SizedBox(height: 6.0),
             StreamBuilder(
               stream: favouriteController.getFavouritesStream,
               builder: (context, AsyncSnapshot snapshot) {

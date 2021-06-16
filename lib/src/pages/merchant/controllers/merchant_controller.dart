@@ -12,6 +12,8 @@ class MerchantController extends GetxController {
       StreamController<List<dynamic>>.broadcast();
   StreamController<List<dynamic>> productController =
       StreamController<List<dynamic>>.broadcast();
+  StreamController<dynamic> statisticController =
+      StreamController<dynamic>.broadcast();
 
   List<dynamic> products1 = [];
   List<dynamic> products2 = [];
@@ -26,6 +28,11 @@ class MerchantController extends GetxController {
   getGroupProduct(idMerchant) async {
     var res = await merchantService.getGroupProduct(idMerchant);
     groupProductController.add(res);
+  }
+
+  getStatistic(period, type) async {
+    var res = await merchantService.getStatistic(period, type);
+    statisticController.add(res['data']);
   }
 
   getProductByGroup(idGroup, page) async {
@@ -262,7 +269,7 @@ class MerchantController extends GetxController {
   deleteGroupProduct(idGroup, idMerchant) async {
     int status = await merchantService.deleteGroupProduct(idGroup);
     if (status == 200) {
-      getGroupProduct(idMerchant);
+      getProductByGroup(idGroup, 1);
       GetSnackBar getSnackBar = GetSnackBar(
         title: 'Delete group product success!',
         subTitle: 'Your group product already update.',
@@ -281,4 +288,5 @@ class MerchantController extends GetxController {
   Stream<List<dynamic>> get getGroupProductStream =>
       groupProductController.stream;
   Stream<List<dynamic>> get getProductStream => productController.stream;
+  Stream<dynamic> get getStatisticStream => statisticController.stream;
 }

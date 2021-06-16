@@ -12,8 +12,10 @@ import 'package:van_transport/src/services/string_service.dart';
 
 class DetailsOrdersPage extends StatefulWidget {
   final String comeFrome;
+  final String pageName;
   final data;
-  DetailsOrdersPage({@required this.data, @required this.comeFrome});
+  DetailsOrdersPage(
+      {@required this.data, @required this.comeFrome, @required this.pageName});
   @override
   State<StatefulWidget> createState() => _DetailsOrdersPageState();
 }
@@ -252,11 +254,19 @@ class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
                 ),
                 depth: 5.0,
                 intensity: 1,
-                color: !widget.data['canReceive'] && !widget.data['canDelete']
-                    ? colorDarkGrey
-                    : widget.data['canReceive']
-                        ? colorPrimary
-                        : colorHigh,
+                color:
+                    widget.pageName == 'CANCEL' || widget.pageName == 'RECEIVE'
+                        ? colorDarkGrey
+                        : widget.comeFrome == 'USER'
+                            ? !widget.data['canReceive'] &&
+                                    !widget.data['canDelete']
+                                ? colorDarkGrey
+                                : widget.data['canReceive']
+                                    ? colorPrimary
+                                    : colorHigh
+                            : widget.data['canDelete']
+                                ? colorHigh
+                                : colorDarkGrey,
               ),
               padding: EdgeInsets.symmetric(
                 vertical: 16.0,
@@ -266,11 +276,20 @@ class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    !widget.data['canReceive'] && !widget.data['canDelete']
-                        ? 'Đang giao hàng'
-                        : widget.data['canReceive']
-                            ? 'Nhận đơn hàng'
-                            : 'Huỷ đơn hàng',
+                    widget.pageName == 'CANCEL'
+                        ? 'Bị huỷ'
+                        : widget.pageName == 'RECEIVE'
+                            ? 'Đã nhận hàng'
+                            : widget.comeFrome == 'USER'
+                                ? !widget.data['canReceive'] &&
+                                        !widget.data['canDelete']
+                                    ? 'Đang giao hàng'
+                                    : widget.data['canReceive']
+                                        ? 'Nhận đơn hàng'
+                                        : 'Huỷ đơn hàng'
+                                : widget.data['canDelete']
+                                    ? 'Huỷ đơn hàng'
+                                    : 'Đang giao hàng',
                     style: TextStyle(
                       color: !widget.data['canReceive'] &&
                               !widget.data['canDelete']

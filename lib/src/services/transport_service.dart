@@ -152,6 +152,16 @@ class TransportService {
     return response.statusCode;
   }
 
+  Future<Map<String, dynamic>> getStatistic(period, type) async {
+    var response = await http.get(
+      baseUrl + ApiGateway.STATISTIC_TRANSPORT + period + '&type=$type',
+      headers: getHeaders(),
+    );
+    print(baseUrl + ApiGateway.STATISTIC_TRANSPORT + period + '&type=$type');
+    print(convert.jsonDecode(response.body));
+    return convert.jsonDecode(response.body);
+  }
+
   Map<String, String> getHeaders() {
     return {
       'authorization': 'Bearer ${App.token}',

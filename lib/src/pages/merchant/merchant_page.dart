@@ -43,7 +43,7 @@ class _TransportPage extends State<MerchantPage>
     _pages = [
       ManageOrderMerchantPage(pageName: 'AWAIT_FOR_CONFIRMATION'),
       ManageOrderMerchantPage(pageName: 'ON_GOING'),
-      ManageOrderMerchantPage(pageName: 'DELIVERED'),
+      ManageOrderMerchantPage(pageName: 'RECEIVE'),
       ProductPage(idMerchant: widget.merchantInfo['_id']),
       RevenuePage(),
     ];

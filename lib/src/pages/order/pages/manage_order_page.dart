@@ -44,31 +44,33 @@ class _ManageOrderPageState extends State<ManageOrderPage> {
                         arguments: {
                           'data': snapshot.data[index],
                           'comeFrom': 'USER',
+                          'pageName': widget.pageName,
                         },
                       ),
                       child: OrderCard(
-                        title: StringService().formatString(
-                          25,
-                          snapshot.data[index]['isMerchantSend'] == true
-                              ? snapshot.data[index]['FK_Product'][0]
-                                  ['products'][0]['name']
-                              : snapshot.data[index]['FK_Product'][0]['name'],
-                        ),
-                        transport: StringService().formatPrice(
-                                double.tryParse(snapshot.data[index]['prices'])
-                                    .round()
-                                    .toString()) +
-                            ' đ',
-                        urlToImage: snapshot.data[index]['isMerchantSend'] ==
-                                true
-                            ? snapshot.data[index]['FK_Product'][0]['products']
-                                    [0]['image']
-                                .toString()
-                                .trim()
-                            : snapshot.data[index]['FK_Product'][0]['image'][0]
-                                .toString()
-                                .trim(),
-                      ),
+                              title: StringService().formatString(
+                                25,
+                                snapshot.data[index]['isMerchantSend'] == true
+                                    ? snapshot.data[index]['FK_Product'][0]
+                                            ['products'][0]['name'] ??
+                                        ''
+                                    : snapshot.data[index]['FK_Product'][0]
+                                        ['name'],
+                              ),
+                              transport: StringService().formatPrice(
+                                      double.tryParse(
+                                              snapshot.data[index]['prices'])
+                                          .round()
+                                          .toString()) +
+                                  ' đ',
+                              urlToImage:
+                                  snapshot.data[index]['isMerchantSend'] == true
+                                      ? snapshot.data[index]['FK_Product'][0]
+                                              ['products'][0]['image'] ??
+                                          ''
+                                      : snapshot.data[index]['FK_Product'][0]
+                                          ['image'][0],
+                            ),
                     );
                   },
                 );

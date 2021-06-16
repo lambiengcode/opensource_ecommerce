@@ -123,17 +123,18 @@ class _EditTransportPageState extends State<EditTransportPage> {
                   );
                 } else {
                   showDialog(
-                      context: context,
-                      builder: (context) {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.white),
-                          ),
-                        );
-                      },
-                      barrierColor: Color(0x80000000),
-                      barrierDismissible: false);
+                    context: context,
+                    builder: (context) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                      );
+                    },
+                    barrierColor: Color(0x80000000),
+                    barrierDismissible: false,
+                  );
 
                   StorageService storageService = StorageService();
                   String urlToImage =

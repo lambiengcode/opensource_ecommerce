@@ -11,6 +11,8 @@ class TransportController extends GetxController {
       StreamController<List<dynamic>>.broadcast();
   StreamController<List<dynamic>> assignStaffController =
       StreamController<List<dynamic>>.broadcast();
+  StreamController<dynamic> statisticController =
+      StreamController<dynamic>.broadcast();
   Map<String, dynamic> transportInfo;
 
   getTransport() async {
@@ -29,6 +31,11 @@ class TransportController extends GetxController {
     var res = await transportService.getSubTransportByStatus(status);
     print(res);
     subTransportController.add(res);
+  }
+
+  getStatistic(period, type) async {
+    var res = await transportService.getStatistic(period, type);
+    statisticController.add(res['data']);
   }
 
   editTransport(
@@ -164,4 +171,5 @@ class TransportController extends GetxController {
   Stream<dynamic> get getTransportStream => transportController.stream;
   Stream<dynamic> get getSubTransportStream => subTransportController.stream;
   Stream<dynamic> get getAssignStaffStream => assignStaffController.stream;
+  Stream<dynamic> get getStatisticStream => statisticController.stream;
 }

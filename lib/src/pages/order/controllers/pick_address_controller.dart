@@ -239,11 +239,19 @@ class PickAddressController extends GetxController {
         }
       }
     } else {
-      GetSnackBar getSnackBar = GetSnackBar(
-        title: 'Mua hàng thất bại!',
-        subTitle: 'Máy chủ đang quá tải.',
-      );
-      getSnackBar.show();
+      if (paymentMethod == 'POINT') {
+        GetSnackBar getSnackBar = GetSnackBar(
+          title: 'Mua hàng thất bại!',
+          subTitle: 'Bạn không đủ point để thanh toán.',
+        );
+        getSnackBar.show();
+      } else {
+        GetSnackBar getSnackBar = GetSnackBar(
+          title: 'Mua hàng thất bại!',
+          subTitle: 'Máy chủ đang quá tải.',
+        );
+        getSnackBar.show();
+      }
     }
   }
 
@@ -311,11 +319,19 @@ class PickAddressController extends GetxController {
         }
       }
     } else {
-      GetSnackBar getSnackBar = GetSnackBar(
-        title: 'Mua hàng thất bại!',
-        subTitle: 'Máy chủ đang quá tải.',
-      );
-      getSnackBar.show();
+      if (paymentMethod == 'POINT') {
+        GetSnackBar getSnackBar = GetSnackBar(
+          title: 'Mua hàng thất bại!',
+          subTitle: 'Bạn không đủ point để thanh toán.',
+        );
+        getSnackBar.show();
+      } else {
+        GetSnackBar getSnackBar = GetSnackBar(
+          title: 'Mua hàng thất bại!',
+          subTitle: 'Máy chủ đang quá tải.',
+        );
+        getSnackBar.show();
+      }
     }
   }
 

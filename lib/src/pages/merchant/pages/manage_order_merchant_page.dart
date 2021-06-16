@@ -46,6 +46,7 @@ class _ManageOrderMerchantPageState extends State<ManageOrderMerchantPage> {
                         arguments: {
                           'data': snapshot.data[index],
                           'comeFrom': 'MERCHANT',
+                          'pageName': widget.pageName,
                         },
                       ),
                       child: OrderCard(

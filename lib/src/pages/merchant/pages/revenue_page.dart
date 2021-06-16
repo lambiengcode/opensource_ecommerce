@@ -1,26 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:get/get.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
+import 'package:van_transport/src/pages/transport/controllers/transport_controller.dart';
 import 'package:van_transport/src/widgets/line_chart.dart';
 import 'package:van_transport/src/widgets/pie_chart.dart';
 
 class RevenuePage extends StatefulWidget {
+  final String comeFrom;
+  RevenuePage({this.comeFrom = 'MERCHANT'});
   @override
   State<StatefulWidget> createState() => _RevenuePageState();
 }
 
 class _RevenuePageState extends State<RevenuePage> {
-  String type = 'All';
+  final transportController = Get.put(TransportController());
+  final merchantController = Get.put(MerchantController());
+  String type = '';
   List<String> types = [
-    'Statistic by last 7 days',
-    'Statistic by last 3 month',
-    'Statistic by last year',
+    'Thống kê 7 ngày gần nhất',
+    'Thống kê 3 tháng gần nhất',
+    'Thống kê 12 tháng gần nhất',
   ];
 
   @override
   void initState() {
     super.initState();
-    type = types[1];
+    type = types[0];
+    if (widget.comeFrom == 'TRANSPORT') {
+      transportController.getStatistic('7', 'daily');
+    } else {
+      merchantController.getStatistic('7', 'daily');
+    }
   }
 
   @override
@@ -72,6 +84,25 @@ class _RevenuePageState extends State<RevenuePage> {
                     setState(() {
                       type = val;
                     });
+                    if (type == types[0]) {
+                      if (widget.comeFrom == 'TRANSPORT') {
+                        transportController.getStatistic('7', 'daily');
+                      } else {
+                        merchantController.getStatistic('7', 'daily');
+                      }
+                    } else if (type == types[1]) {
+                      if (widget.comeFrom == 'TRANSPORT') {
+                        transportController.getStatistic('3', 'month');
+                      } else {
+                        merchantController.getStatistic('3', 'month');
+                      }
+                    } else {
+                      if (widget.comeFrom == 'TRANSPORT') {
+                        transportController.getStatistic('12', 'month');
+                      } else {
+                        merchantController.getStatistic('12', 'month');
+                      }
+                    }
                   },
                 ),
               ),
@@ -82,18 +113,52 @@ class _RevenuePageState extends State<RevenuePage> {
               height: .1,
             ),
             Expanded(
-              child: Container(
-                child: LineChartRevenue(),
-              ),
-            ),
-            Divider(
-              color: colorDarkGrey,
-              thickness: 1,
-              height: 1,
-            ),
-            Expanded(
-              child: Container(
-                child: PieChartRevenue(),
+              child: StreamBuilder(
+                stream: transportController.getStatisticStream,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
+                    return Container();
+                  }
+
+                  print(snapshot.data);
+
+                  List<double> listDoubleLine = [];
+                  List<double> listDoublePie = [];
+                  for (int i = 0; i < snapshot.data['lineChart'].length; i++) {
+                    listDoubleLine.add(double.tryParse(
+                        snapshot.data['lineChart'][i].toString()));
+                    if (snapshot.data['pieChart'][i].toString() == '0.00') {
+                      listDoublePie.add(.3);
+                    } else {
+                      listDoublePie.add(double.tryParse(
+                          snapshot.data['pieChart'][i].toString()));
+                    }
+                  }
+
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          child: LineChartRevenue(
+                            data: listDoubleLine,
+                          ),
+                        ),
+                      ),
+                      Divider(
+                        color: colorDarkGrey,
+                        thickness: 1,
+                        height: 1,
+                      ),
+                      Expanded(
+                        child: Container(
+                            // child: PieChartRevenue(
+                            //   data: listDoublePie,
+                            // ),
+                            ),
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           ],

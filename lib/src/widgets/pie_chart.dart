@@ -1,16 +1,33 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:intl/intl.dart';
 import 'package:van_transport/src/common/style.dart';
-import 'indicator.dart';
+import 'package:van_transport/src/widgets/indicator.dart';
 
 class PieChartRevenue extends StatefulWidget {
+  final List<double> data;
+  PieChartRevenue({@required this.data});
   @override
   State<StatefulWidget> createState() => PieChart2State();
 }
 
-class PieChart2State extends State {
+class PieChart2State extends State<PieChartRevenue> {
   double touchedIndex;
+
+  List<Color> colors = [
+    Colors.redAccent,
+    colorPrimary,
+    Colors.deepPurple,
+    Colors.deepOrangeAccent,
+    Colors.amberAccent,
+    Colors.blue,
+    Colors.indigoAccent,
+    Colors.yellow,
+    Colors.tealAccent,
+    Colors.pinkAccent,
+    Colors.grey,
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +53,7 @@ class PieChart2State extends State {
         child: Row(
           children: <Widget>[
             Expanded(
+              flex: 4,
               child: AspectRatio(
                 aspectRatio: 1.23,
                 child: PieChart(
@@ -65,36 +83,39 @@ class PieChart2State extends State {
                 ),
               ),
             ),
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
-                Indicator(
-                  color: Color(0xfff8b250),
-                  text: 'Feb',
-                  isSquare: false,
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Indicator(
-                  color: Color(0xff845bef),
-                  text: 'Mar',
-                  isSquare: false,
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Indicator(
-                  color: Color(0xff13d38e),
-                  text: 'Apr',
-                  isSquare: false,
-                ),
-                SizedBox(
-                  height: 18,
-                ),
-              ],
+            Expanded(
+              flex: 1,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ListView.builder(
+                    padding: EdgeInsets.all(.0),
+                    shrinkWrap: true,
+                    reverse: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: widget.data.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: EdgeInsets.only(bottom: 10.0),
+                        child: Indicator(
+                          color: colors[index],
+                          text: widget.data.length == 7
+                              ? DateFormat('dd/MM').format(DateTime.now()
+                                  .subtract(Duration(days: index)))
+                              : DateFormat('MMM').format(DateTime.now()
+                                  .subtract(Duration(days: 30 * index))),
+                          isSquare: false,
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 18,
+                  ),
+                ],
+              ),
             ),
             const SizedBox(
               width: 28,
@@ -106,47 +127,20 @@ class PieChart2State extends State {
   }
 
   List<PieChartSectionData> showingSections() {
-    return List.generate(3, (i) {
+    return List.generate(widget.data.length, (i) {
       final isTouched = i == touchedIndex;
-      final double fontSize = isTouched ? 20 : 12;
+      final double fontSize = isTouched ? 15 : 10;
       final double radius = isTouched ? 80 : 60;
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: const Color(0xff13d38e),
-            value: 40,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: const Color(0xfff8b250),
-            value: 30,
-            title: '30%',
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: const Color(0xff845bef),
-            value: 30,
-            title: '30%',
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
-        default:
-          return null;
-      }
+      return PieChartSectionData(
+        color: colors[i],
+        value: widget.data[i] * 100,
+        title: '${widget.data[i] * 100}%',
+        radius: radius,
+        titleStyle: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xffffffff)),
+      );
     });
   }
 }

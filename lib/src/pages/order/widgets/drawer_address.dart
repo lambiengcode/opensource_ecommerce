@@ -370,8 +370,10 @@ class _DrawerAddressState extends State<DrawerAddress> {
                                 SizedBox(height: 4.0),
                                 Text(
                                   DateFormat('HH:mm, dd/MM/yyyy').format(
-                                      DateTime.parse(widget.data['historyStatus']
-                                          [index]['createAt'])),
+                                      DateTime.parse(
+                                              widget.data['historyStatus']
+                                                  [index]['createAt'])
+                                          .toLocal()),
                                   style: TextStyle(
                                     color: colorPrimary,
                                     fontSize: width / 30.0,

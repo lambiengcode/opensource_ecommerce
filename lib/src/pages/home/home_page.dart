@@ -128,7 +128,7 @@ class _HomePageState extends State<HomePage> {
                         SizedBox(height: 10.0),
                         _buildPopularStore(context, _.listProduct3),
                         SizedBox(height: 10.0),
-                        _buildTitle(context, 'All Product'.trArgs()),
+                        _buildTitle(context, 'product'.trArgs()),
                         SizedBox(height: 10.0),
                         ListView.builder(
                           controller: scrollController,

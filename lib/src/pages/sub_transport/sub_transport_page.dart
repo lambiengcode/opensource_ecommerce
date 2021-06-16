@@ -1,5 +1,4 @@
 import 'package:van_transport/src/common/style.dart';
-import 'package:van_transport/src/pages/merchant/pages/revenue_page.dart';
 import 'package:van_transport/src/pages/sub_transport/controllers/sub_transport_controller.dart';
 import 'package:van_transport/src/pages/sub_transport/pages/manage_order_page.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +20,9 @@ class _TransportPage extends State<SubTransportPage>
   var _pages = [
     SubTransportManageOrderPage(pageName: 'AWAIT_FOR_CONFIRMATION'),
     SubTransportManageOrderPage(pageName: 'ON_GOING'),
-    SubTransportManageOrderPage(pageName: 'DELIVERED'),
+    SubTransportManageOrderPage(pageName: 'RECEIVE'),
     SubTransportManageOrderPage(pageName: 'CANCEL'),
-    RevenuePage(),
+    // RevenuePage(),
   ];
 
   @override
@@ -32,7 +31,7 @@ class _TransportPage extends State<SubTransportPage>
     subTransportController.getInfo();
     _tabController = new TabController(
       vsync: this,
-      length: 5,
+      length: 4,
       initialIndex: 0,
     );
   }
@@ -137,12 +136,12 @@ class _TransportPage extends State<SubTransportPage>
                 text: 'reject'.trArgs(),
               ),
             ),
-            Container(
-              width: width * .18,
-              child: Tab(
-                text: 'statistics'.trArgs(),
-              ),
-            ),
+            // Container(
+            //   width: width * .18,
+            //   child: Tab(
+            //     text: 'statistics'.trArgs(),
+            //   ),
+            // ),
           ],
         ),
       ),

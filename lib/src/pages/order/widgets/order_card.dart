@@ -95,7 +95,7 @@ class _OrderCardState extends State<OrderCard> {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: StringService().isNumeric(widget.transport)
+                      text: !widget.transport.contains(',')
                           ? 'ĐVVC: '
                           : '${'price'.trArgs()}: ',
                       style: TextStyle(
@@ -122,7 +122,7 @@ class _OrderCardState extends State<OrderCard> {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: StringService().isNumeric(widget.transport)
+                      text: !widget.transport.contains(',')
                           ? 'Giá vận chuyển: '
                           : 'Dự tính: ',
                       style: TextStyle(
@@ -134,7 +134,7 @@ class _OrderCardState extends State<OrderCard> {
                     ),
                     TextSpan(
                       text: widget.subTitle +
-                          '${StringService().isNumeric(widget.subTitle) ? ' đ' : ''}',
+                          '${!widget.transport.contains(',') ? ' đ' : ''}',
                       style: TextStyle(
                         color: colorTitle,
                         fontSize: width / 26.5,

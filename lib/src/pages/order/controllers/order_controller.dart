@@ -16,6 +16,7 @@ class OrderController extends GetxController {
   cancelOrder(idOrder) async {
     int status = await userService.cancelOrder(idOrder);
     if (status == 200) {
+      getOrder('AWAIT_FOR_CONFIRMATION');
       Get.back();
       GetSnackBar getSnackBar = GetSnackBar(
         title: 'Bạn đã huỷ đơn hàng thành công!',
@@ -34,6 +35,7 @@ class OrderController extends GetxController {
   acceptReceiveOrder(idOrder) async {
     int status = await userService.receiveOrder(idOrder);
     if (status == 200) {
+      getOrder('ON_GOING');
       Get.back();
       GetSnackBar getSnackBar = GetSnackBar(
         title: 'Bạn đã nhận hàng thành công!',

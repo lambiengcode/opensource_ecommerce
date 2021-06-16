@@ -182,6 +182,14 @@ class MerchantService {
     return response.statusCode;
   }
 
+  Future<Map<String, dynamic>> getStatistic(period, type) async {
+    var response = await http.get(
+      baseUrl + ApiGateway.STATISTIC_MERCHANT + period + '&type=$type',
+      headers: getHeaders(),
+    );
+    return convert.jsonDecode(response.body);
+  }
+
   Map<String, String> getHeaders() {
     return {
       'authorization': 'Bearer ${App.token}',

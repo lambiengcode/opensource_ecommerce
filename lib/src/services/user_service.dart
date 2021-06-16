@@ -92,7 +92,6 @@ class UserService {
       headers: getHeaders(),
       body: body,
     );
-    print(convert.jsonDecode(response.body));
     return response.statusCode;
   }
 
