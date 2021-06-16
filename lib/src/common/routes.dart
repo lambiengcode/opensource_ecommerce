@@ -9,7 +9,7 @@ class ApiGateway {
   static const CANCEL_TRANSPORT = '/Admin/CancelTransport';
   static const GET_TRANSPORT_BY_STATUS = '/Admin/GetTransportByStatus?status=';
 
-  // Authentication: 5
+  // Authentication: 6
   static const LOGIN_WITH_EMAIL = '/Auth/Login';
   static const REGISTER = '/Auth/Register';
   static const REGISTER_STAFF = '/Auth/RegisterStaff';
@@ -29,7 +29,7 @@ class ApiGateway {
   static const GET_CATEGORIES = '/Category/GetAll';
   static const DELETE_CATEGORY = '/Category/Delete?id=';
 
-  // User: 8
+  // User: 24
   static const GET_PROFILE = '/User/GetInfo';
   static const UPDATE_PROFILE = '/User/Update';
   static const BUY_POINT = '/User/BuyPoint';
@@ -54,20 +54,23 @@ class ApiGateway {
   static const UPDATE_CART_MERCHANT = '/User/Merchant/UpdateProductFromCart';
   static const GET_ORDER_BY_STATUS = '/User/OrderByStatus?status=';
   static const FAVOURITE_PRODUCT = '/User/OrderByStatus?status=';
+  static const USER_RECEIVE_ORDER = '/User/ReceivePackage?idPackage=';
+  static const USER_CANCEL_ORDER = '/User/CancelPackage?idPackage=';
 
   // Device: 2
   static const CREATE_DEVICE = '/Device/Create';
   static const DELETE_DEVICE = '/Device/Delete?deviceUUid=';
 
-  // Transport: 4
+  // Transport: 7
   static const REGISTER_TRANSPORT = '/Transport/Create';
   static const ASSIGN_TRANSPORT = '/Transport/AssignStaff';
   static const UPDATE_TRANSPORT = '/Transport/Update';
   static const GET_TRANSPORT = '/Transport/GetInfo';
   static const GET_ASSIGN_STAFF = '/Transport/GetAssignStaff';
   static const UPDATE_PRICE_TYPE = '/Transport/UpdatePriceType';
+  static const TRANSPORT_CANCEL_ORDER = '/Transport/CancelPackage?idPackage=';
 
-  // Subtransport: 4
+  // Subtransport: 8
   static const REGISTER_TRANSPORTSUB = '/TransportSub/Create';
   static const ASSIGN_TRANSPORTSUB = '/TransportSub/ChangeStatus';
   static const UPDATE_TRANSPORTSUB = '/TransportSub/Update';
@@ -76,15 +79,15 @@ class ApiGateway {
   static const GET_ALL_SUB_BY_STATUS = '/Transport/GetAllTransportSub?status=';
   static const GET_ORDER_BY_STATUS_TRANSPORT =
       '/TransportSub/OrderByStatus?status=';
-
   static const CREATE_PACKAGE = '/Package/Create';
 
-  // Merchant: 3
+  // Merchant: 6
   static const GET_MERCHANT = '/Merchant/GetInfo';
   static const CREATE_MERCHANT = '/Merchant/Create';
   static const UPDATE_MERCHANT = '/Merchant/Update';
   static const GET_MERCHANT_BY_ID = '/Merchant/GetById?id=';
   static const GET_ORDER_BY_STATUS_MERCHANT = '/Merchant/OrderByStatus?status=';
+  static const MERCHANT_CANCEL_ORDER = '/User/CancelPackage?idPackage=';
 
   // Group Product: 4
   static const CREATE_GROUP_PRODUCT = '/GroupProduct/Create';
@@ -92,7 +95,7 @@ class ApiGateway {
   static const GET_GROUP_PRODUCT = '/GroupProduct/GetAll?idMerchant=';
   static const DELETE_GROUP_PRODUCT = '/GroupProduct/Delete?id=';
 
-  // Product: 5
+  // Product: 6
   static const CREATE_PRODUCT = '/Product/Create';
   static const UPDATE_PRODUCT = '/Product/Update';
   static const DELETE_PRODUCT = '/Product/Delete?id=';

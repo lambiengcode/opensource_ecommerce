@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:van_transport/src/services/transport_service.dart';
+import 'package:van_transport/src/widgets/snackbar.dart';
 
 class SubTransportController extends GetxController {
   final transportService = TransportService();
@@ -24,9 +25,23 @@ class SubTransportController extends GetxController {
     print(res);
   }
 
-  cancelOrder(idOrder) async {}
-
-  acceptReceiveOrder(idOrder) async {}
+  cancelOrder(idOrder) async {
+    var status = await transportService.cancelOrder(idOrder);
+    if (status == 200) {
+      Get.back();
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Bạn đã từ chối đơn hàng thành công!',
+        subTitle: 'Kiểm tra lại thông tin đơn hàng trong từ chối.',
+      );
+      getSnackBar.show();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Bạn không thể huỷ đơn hàng!',
+        subTitle: 'Quá trình xử lí đơn hàng đang bị lỗi.',
+      );
+      getSnackBar.show();
+    }
+  }
 
   Stream<Map<String, dynamic>> get getSubTransportController =>
       subTransportController.stream;

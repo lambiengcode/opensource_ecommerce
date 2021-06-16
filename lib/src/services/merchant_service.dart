@@ -121,7 +121,7 @@ class MerchantService {
     return response.statusCode;
   }
 
-  Future<int> cancelMerhcant(body) async {
+  Future<int> cancelMerchant(body) async {
     var response = await http.post(
       baseUrl + ApiGateway.CANCEL_MERCHANT,
       headers: getHeaders(),
@@ -172,6 +172,14 @@ class MerchantService {
     return response.statusCode == 200
         ? convert.jsonDecode(response.body)['data']
         : [];
+  }
+
+  Future<int> cancelOrder(idPackage) async {
+    var response = await http.get(
+      baseUrl + ApiGateway.MERCHANT_CANCEL_ORDER + idPackage,
+      headers: getHeaders(),
+    );
+    return response.statusCode;
   }
 
   Map<String, String> getHeaders() {

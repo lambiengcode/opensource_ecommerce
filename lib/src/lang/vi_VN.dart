@@ -1,7 +1,7 @@
 const Map<String, String> vi_VN = {
   // Home
   'deliver': 'Giao đến',
-  'searchHide': 'Tìm bạn bè',
+  'searchHide': 'Bạn đang tìm gì?',
   'mostPopular': 'Phổ biến nhất',
   'category': 'Danh mục',
   'nearBy': 'Gần bạn',
@@ -10,7 +10,7 @@ const Map<String, String> vi_VN = {
   'viewall': 'Xem thêm',
 
   // Favourite
-  'favourite': 'Favourite',
+  'favourite': 'Yêu thích',
 
   // Profile
   'me': 'Tôi',

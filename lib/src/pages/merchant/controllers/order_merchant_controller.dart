@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:van_transport/src/services/merchant_service.dart';
+import 'package:van_transport/src/widgets/snackbar.dart';
 
 class OrderMerchantController extends GetxController {
   final merchantService = MerchantService();
@@ -13,9 +14,23 @@ class OrderMerchantController extends GetxController {
     print(res);
   }
 
-  cancelOrder(idOrder) async {}
-
-  acceptReceiveOrder(idOrder) async {}
+  cancelOrder(idOrder) async {
+    var status = await merchantService.cancelOrder(idOrder);
+    if (status == 200) {
+      Get.back();
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Bạn đã từ chối đơn hàng thành công!',
+        subTitle: 'Kiểm tra lại thông tin đơn hàng trong từ chối.',
+      );
+      getSnackBar.show();
+    } else {
+      GetSnackBar getSnackBar = GetSnackBar(
+        title: 'Bạn không thể huỷ đơn hàng!',
+        subTitle: 'Quá trình xử lí đơn hàng đang bị lỗi.',
+      );
+      getSnackBar.show();
+    }
+  }
 
   Stream<List<dynamic>> get getCartController => cartController.stream;
 }

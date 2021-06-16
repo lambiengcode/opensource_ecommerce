@@ -55,7 +55,6 @@ class UserService {
       headers: getHeaders(),
       body: body,
     );
-    print(response.statusCode);
     return response.statusCode;
   }
 
@@ -211,6 +210,22 @@ class UserService {
     return response.statusCode == 200
         ? convert.jsonDecode(response.body)['data']
         : [];
+  }
+
+  Future<int> cancelOrder(idPackage) async {
+    var response = await http.get(
+      baseUrl + ApiGateway.USER_CANCEL_ORDER + idPackage,
+      headers: getHeaders(),
+    );
+    return response.statusCode;
+  }
+
+  Future<int> receiveOrder(idPackage) async {
+    var response = await http.get(
+      baseUrl + ApiGateway.USER_RECEIVE_ORDER + idPackage,
+      headers: getHeaders(),
+    );
+    return response.statusCode;
   }
 
   Map<String, String> getHeaders() {

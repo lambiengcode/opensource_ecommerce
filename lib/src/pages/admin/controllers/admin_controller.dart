@@ -28,8 +28,8 @@ class AdminController extends GetxController {
     int status = await adminService.approveMerchant(body);
     if (status == 200) {
       GetSnackBar getSnackBar = GetSnackBar(
-        title: 'Cửa hàng sẽ được hiển thị với người dùng!',
-        subTitle: 'Các sản phẩm của cửa hàng sẽ được nhìn thấy.',
+        title: 'Cửa hàng đã được hoạt động!',
+        subTitle: 'Sản phẩm của cửa hàng sẽ được nhìn thấy.',
       );
       getSnackBar.show();
       getMerchant('INACTIVE');
@@ -43,7 +43,7 @@ class AdminController extends GetxController {
     int status = await adminService.approveTransport(body);
     if (status == 200) {
       GetSnackBar getSnackBar = GetSnackBar(
-        title: 'Nhà vận chuyển đã được quyền hoạt động!',
+        title: 'Nhà vận chuyển đã được hoạt động!',
         subTitle: 'Người dùng có thể chọn nhà vận chuyển này.',
       );
       getSnackBar.show();

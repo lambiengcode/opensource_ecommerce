@@ -1,21 +1,28 @@
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/merchant/controllers/order_merchant_controller.dart';
+import 'package:van_transport/src/pages/order/controllers/order_controller.dart';
 import 'package:van_transport/src/pages/order/widgets/cart_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:van_transport/src/pages/order/widgets/drawer_address.dart';
+import 'package:van_transport/src/pages/sub_transport/controllers/sub_transport_controller.dart';
 import 'package:van_transport/src/services/string_service.dart';
 
 class DetailsOrdersPage extends StatefulWidget {
+  final String comeFrome;
   final data;
-  DetailsOrdersPage({@required this.data});
+  DetailsOrdersPage({@required this.data, @required this.comeFrome});
   @override
   State<StatefulWidget> createState() => _DetailsOrdersPageState();
 }
 
 class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final orderController = Get.put(OrderController());
+  final orderMerchantController = Get.put(OrderMerchantController());
+  final subTransportController = Get.put(SubTransportController());
   @override
   void initState() {
     super.initState();
@@ -224,7 +231,18 @@ class _DetailsOrdersPageState extends State<DetailsOrdersPage> {
             NeumorphicButton(
               onPressed: () {
                 if (widget.data['canReceive']) {
-                } else if (widget.data['canDelete']) {}
+                  if (widget.comeFrome == 'USER') {
+                    orderController.acceptReceiveOrder(widget.data['_id']);
+                  }
+                } else if (widget.data['canDelete']) {
+                  if (widget.comeFrome == 'USER') {
+                    orderController.cancelOrder(widget.data['_id']);
+                  } else if (widget.comeFrome == 'MERCHANT') {
+                    orderMerchantController.cancelOrder(widget.data['_id']);
+                  } else {
+                    subTransportController.cancelOrder(widget.data['_id']);
+                  }
+                }
               },
               duration: Duration(milliseconds: 200),
               style: NeumorphicStyle(

@@ -185,7 +185,8 @@ class AppPages {
     GetPage(
       name: Routes.DETAILSORDERS,
       page: () => DetailsOrdersPage(
-        data: Get.arguments,
+        data: Get.arguments['data'],
+        comeFrome: Get.arguments['comeFrom'],
       ),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 200),

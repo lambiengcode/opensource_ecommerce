@@ -57,10 +57,11 @@ class TransportService {
       body: body,
       headers: getHeaders(),
     );
-    print(convert.jsonDecode(response.body));
-    return response.statusCode == 200
+    var json = response.statusCode == 200
         ? convert.jsonDecode(response.body)['data']
-        : null;
+        : convert.jsonDecode(response.body);
+    json['status'] = response.statusCode;
+    return json;
   }
 
   Future<int> createTransportSub(body) async {
@@ -141,6 +142,14 @@ class TransportService {
     return response.statusCode == 200
         ? convert.jsonDecode(response.body)['data']
         : [];
+  }
+
+  Future<int> cancelOrder(idPackage) async {
+    var response = await http.get(
+      baseUrl + ApiGateway.TRANSPORT_CANCEL_ORDER + idPackage,
+      headers: getHeaders(),
+    );
+    return response.statusCode;
   }
 
   Map<String, String> getHeaders() {

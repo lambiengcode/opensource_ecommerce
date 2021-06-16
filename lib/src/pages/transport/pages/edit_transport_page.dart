@@ -100,7 +100,7 @@ class _EditTransportPageState extends State<EditTransportPage> {
           ),
         ),
         title: Text(
-          'Edit Company',
+          'Sửa thông tin',
           style: TextStyle(
             color: colorTitle,
             fontSize: width / 20.0,
@@ -162,42 +162,44 @@ class _EditTransportPageState extends State<EditTransportPage> {
         color: mC,
         child: Form(
           key: formKey,
-          child: Column(
-            children: [
-              SizedBox(height: 12.0),
-              GestureDetector(
-                onTap: () => showImageBottomSheet(),
-                child: VerticalTransportCard(
-                  image: _image,
-                  address: _address,
-                  title: _title,
-                  urlToImage: widget.transportInfo['avatar'],
-                  desc: _desc,
-                ),
-              ),
-              SizedBox(height: 16.0),
-              _buildLineInfo(context, 'Company Name', '', titleController),
-              _buildDivider(context),
-              _buildLineInfo(context, 'phone'.trArgs(), '', phoneController),
-              _buildDivider(context),
-              _buildLineInfo(
-                  context, 'address'.trArgs(), '', addressController),
-              _buildDivider(context),
-              _buildLineInfo(
-                  context, 'description'.trArgs(), '', descController),
-              _buildDivider(context),
-              SizedBox(height: 24.0),
-              StreamBuilder(
-                stream: transportController.getTransportStream,
-                builder: (context, AsyncSnapshot snapshot) {
-                  if (!snapshot.hasData) {
-                    return Container();
-                  }
-
-                  return _buildListCategories(snapshot.data['typeSupport']);
-                },
-              ),
-            ],
+          child: StreamBuilder(
+            stream: transportController.getTransportStream,
+            builder: (context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+                return Container();
+              }
+              return Column(
+                children: [
+                  SizedBox(height: 12.0),
+                  GestureDetector(
+                    onTap: () => showImageBottomSheet(),
+                    child: VerticalTransportCard(
+                      image: _image,
+                      address: _address,
+                      title: _title,
+                      urlToImage: widget.transportInfo['avatar'],
+                      desc: _desc,
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  _buildLineInfo(context, 'Company Name', '', titleController),
+                  _buildDivider(context),
+                  _buildLineInfo(
+                      context, 'phone'.trArgs(), '', phoneController),
+                  _buildDivider(context),
+                  _buildLineInfo(
+                      context, 'address'.trArgs(), '', addressController),
+                  _buildDivider(context),
+                  _buildLineInfo(
+                      context, 'description'.trArgs(), '', descController),
+                  _buildDivider(context),
+                  SizedBox(height: 24.0),
+                  _buildListCategories(
+                    snapshot.data['typeSupport'],
+                  )
+                ],
+              );
+            },
           ),
         ),
       ),

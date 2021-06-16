@@ -11,10 +11,13 @@ class TransportController extends GetxController {
       StreamController<List<dynamic>>.broadcast();
   StreamController<List<dynamic>> assignStaffController =
       StreamController<List<dynamic>>.broadcast();
+  Map<String, dynamic> transportInfo;
 
   getTransport() async {
     var res = await transportService.getTransport();
     transportController.add(res);
+    transportInfo = res;
+    update();
   }
 
   getAssignTransport() async {
@@ -86,16 +89,14 @@ class TransportController extends GetxController {
       'type': type,
     };
 
-    print(body);
-
     var res = await transportService.updatePriceType(body);
     if (res != null) {
-      transportController.add(res);
+      getTransport();
       Get.back();
     } else {
       GetSnackBar getSnackBar = GetSnackBar(
-        title: 'Update failure!',
-        subTitle: 'Check again your information.',
+        title: 'Cập nhật thất bại!',
+        subTitle: 'Hãy kiểm tra lại thông tin.',
       );
       getSnackBar.show();
     }
@@ -111,8 +112,8 @@ class TransportController extends GetxController {
 
     int status = await transportService.createTransportSub(body);
     if (status == 200) {
-      getTransport();
       Get.back();
+      getTransport();
     } else {
       GetSnackBar getSnackBar = GetSnackBar(
         title: 'Update failure!',
@@ -130,8 +131,8 @@ class TransportController extends GetxController {
 
     int status = await transportService.deleteTransportSub(body);
     if (status == 200) {
-      getTransport();
       Get.back();
+      getTransport();
     } else {
       GetSnackBar getSnackBar = GetSnackBar(
         title: 'Update failure!',

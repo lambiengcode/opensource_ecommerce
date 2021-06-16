@@ -131,6 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                                   focusNode: usernameFocus,
                                   onFieldSubmitted: (val) {
                                     usernameFocus.unfocus();
+                                    passwordFocus.requestFocus();
                                   },
                                   cursorRadius: Radius.circular(30.0),
                                   style: TextStyle(
@@ -176,8 +177,51 @@ class _LoginPageState extends State<LoginPage> {
                                   controller: _passwordController,
                                   cursorColor: colorTitle,
                                   cursorRadius: Radius.circular(30.0),
-                                  onFieldSubmitted: (val) {
+                                  onFieldSubmitted: (val) async {
                                     passwordFocus.unfocus();
+                                    if (_formKey.currentState.validate()) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      Colors.white),
+                                            ),
+                                          );
+                                        },
+                                        barrierColor: Color(0x80000000),
+                                        barrierDismissible: false,
+                                      );
+
+                                      var res = await _authService.loginByEmail(
+                                          email, password);
+
+                                      Get.back();
+
+                                      if (res['status'] == 200) {
+                                        Get.offAndToNamed(Routes.ROOT);
+                                      } else if (res['status'] == 500 &&
+                                          res['message'] ==
+                                              'Please verify your account') {
+                                        Get.toNamed(Routes.VERIFY,
+                                            arguments: email);
+                                      } else {
+                                        setState(() {
+                                          email = res['email'];
+                                          password = res['password'];
+                                          _emailController.text = res['email'];
+                                          _passwordController.text =
+                                              res['password'];
+                                        });
+                                        GetSnackBar snackBar = GetSnackBar(
+                                          title: 'Login Fail!',
+                                          subTitle: 'Wrong Password',
+                                        );
+                                        snackBar.show();
+                                      }
+                                    }
                                   },
                                   style: TextStyle(
                                     color: colorTitle,

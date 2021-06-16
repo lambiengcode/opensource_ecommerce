@@ -19,7 +19,7 @@ class GetSnackBar {
       titleText: Text(
         title,
         style: TextStyle(
-          fontSize: width / 24.5,
+          fontSize: width / 26.0,
           color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
@@ -27,7 +27,7 @@ class GetSnackBar {
       messageText: Text(
         subTitle,
         style: TextStyle(
-          fontSize: width / 26.0,
+          fontSize: width / 28.0,
           color: Colors.white.withOpacity(.85),
           fontWeight: FontWeight.w400,
         ),

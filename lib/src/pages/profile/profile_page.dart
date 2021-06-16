@@ -397,21 +397,19 @@ class _ProfilePageState extends State<ProfilePage> {
           );
           Get.toNamed(route.getRoute());
         } else if (title == 'owner'.trArgs()) {
-          if (role == 'TRANSPORT_SUB') {
-            Get.toNamed(Routes.SUBTRANSPORT);
-          } else if (role == 'STAFF') {
+          if (role == 'TRANSPORT_SUB' ||
+              role == 'STAFF' ||
+              role == 'TRANSPORT') {
             GetSnackBar getSnackBarStaff = GetSnackBar(
               title: 'Không thể truy cập!',
-              subTitle: 'Bạn chưa được giao nhiệm vụ quản lí vận chuyển.',
+              subTitle: 'Bạn đã là thành viên của đơn vị vận chuyển.',
             );
             getSnackBarStaff.show();
           } else {
             Get.toNamed(
               role == 'ADMIN'
                   ? Routes.ADMIN
-                  : role == 'MERCHANT'
-                      ? Routes.MERCHANT + Routes.MIDDLEWAREMERCHANT
-                      : Routes.DELIVERY + Routes.MIDDLETRANSPORT,
+                  : Routes.MERCHANT + Routes.MIDDLEWAREMERCHANT,
             );
           }
         } else if (title == 'transportOwner'.trArgs()) {
@@ -423,13 +421,17 @@ class _ProfilePageState extends State<ProfilePage> {
               subTitle: 'Bạn chưa được giao nhiệm vụ quản lí vận chuyển.',
             );
             getSnackBarStaff.show();
+          } else if (role == 'MERCHANT') {
+            GetSnackBar getSnackBarStaff = GetSnackBar(
+              title: 'Không thể truy cập!',
+              subTitle: 'Bạn đang quản lí một cửa hàng.',
+            );
+            getSnackBarStaff.show();
           } else {
             Get.toNamed(
               role == 'ADMIN'
                   ? Routes.ADMIN
-                  : role == 'MERCHANT'
-                      ? Routes.MERCHANT + Routes.MIDDLEWAREMERCHANT
-                      : Routes.DELIVERY + Routes.MIDDLETRANSPORT,
+                  : Routes.DELIVERY + Routes.MIDDLETRANSPORT,
             );
           }
         } else {

@@ -198,19 +198,21 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
                             ),
                           ),
                           GetBuilder<FavouriteController>(
-                              builder: (_) => IconButton(
-                                    icon: Icon(
-                                      Feather.heart,
-                                      color: _.isFavourite
-                                          ? colorHigh
-                                          : colorDarkGrey,
-                                      size: width / 16.0,
-                                    ),
-                                    onPressed: () {
-                                      favouriteController
-                                          .favourite(widget.data['FK_product']);
-                                    },
-                                  )),
+                            builder: (_) => IconButton(
+                              icon: Icon(
+                                Feather.heart,
+                                color:
+                                    _.isFavourite ? colorHigh : colorDarkGrey,
+                                size: width / 16.0,
+                              ),
+                              onPressed: () {
+                                _.favourite(
+                                  widget.data['FK_product'],
+                                  _.isFavourite,
+                                );
+                              },
+                            ),
+                          ),
                         ],
                       ),
                       SizedBox(height: 10.0),
@@ -290,7 +292,7 @@ class _DetailsProductPageState extends State<DetailsProductPage> {
                             ),
                             SizedBox(width: 8.0),
                             Text(
-                              'Add to Cart',
+                              'Thêm vào giỏ hàng',
                               style: TextStyle(
                                 color: mC,
                                 fontSize: width / 26.0,

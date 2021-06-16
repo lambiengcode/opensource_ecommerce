@@ -17,21 +17,20 @@ class FavouriteController extends GetxController {
     update();
   }
 
-  favourite(idProduct) async {
-    checkIsFavourite(idProduct);
+  favourite(idProduct, isLiked) async {
     var body = {
       'id': idProduct,
     };
     var status = await userService.favorite(body);
     if (status == 200) {
-      getFavourites();
-      checkIsFavourite(idProduct);
-      if (!isFavourite) {
+      if (!isLiked) {
         GetSnackBar getSnackBar = GetSnackBar(
             title: 'Bạn đã yêu thích sản phẩm!',
             subTitle: 'Đã lưu vào danh sách yêu thích.');
         getSnackBar.show();
       }
+      isFavourite = !isLiked;
+      update();
     }
   }
 

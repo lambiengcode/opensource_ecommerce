@@ -43,7 +43,10 @@ class _ManageOrderMerchantPageState extends State<ManageOrderMerchantPage> {
                     return GestureDetector(
                       onTap: () => Get.toNamed(
                         Routes.DETAILSORDERS,
-                        arguments: snapshot.data[index],
+                        arguments: {
+                          'data': snapshot.data[index],
+                          'comeFrom': 'MERCHANT',
+                        },
                       ),
                       child: OrderCard(
                         title: StringService().formatString(

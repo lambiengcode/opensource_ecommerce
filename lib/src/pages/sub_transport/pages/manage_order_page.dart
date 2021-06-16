@@ -42,7 +42,10 @@ class _SubTransportManageOrderPageState
                     return GestureDetector(
                       onTap: () => Get.toNamed(
                         Routes.DETAILSORDERS,
-                        arguments: snapshot.data[index],
+                        arguments: {
+                          'data': snapshot.data[index],
+                          'comeFrom': 'TRANSPORT',
+                        },
                       ),
                       child: OrderCard(
                         title: StringService().formatString(

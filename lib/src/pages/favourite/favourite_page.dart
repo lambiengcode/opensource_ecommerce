@@ -158,7 +158,9 @@ class _FavouritePageState extends State<FavouritePage> {
                                 onTap: () {
                                   slidableController.activeState.close();
                                   favouriteController.favourite(
-                                      snapshot.data[index]['FK_product']);
+                                    snapshot.data[index]['FK_product'],
+                                    true,
+                                  );
                                 },
                                 child: Container(
                                   margin: EdgeInsets.fromLTRB(

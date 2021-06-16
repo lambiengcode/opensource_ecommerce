@@ -26,7 +26,7 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
   @override
   void initState() {
     super.initState();
-    priceType = widget.data['price']['km'] == 0 ? 'VNĐ / Kg' : 'VNĐ / Km';
+    priceType = widget.data['price']['km'] == '0' ? 'VNĐ / Kg' : 'VNĐ / Km';
     available = widget.data['available'] == 'ACTIVE' ? 'On' : 'Off';
     price = StringService().formatPrice(
       priceType == 'VNĐ / Km'
@@ -84,7 +84,7 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  widget.title + '\tService',
+                  'Loại\t' + widget.title,
                   style: TextStyle(
                     color: colorDarkGrey,
                     fontFamily: 'Lato',
@@ -103,7 +103,7 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
                     }
                   },
                   child: Text(
-                    'Save',
+                    'Lưu',
                     style: TextStyle(
                       color: colorPrimary,
                       fontFamily: 'Lato',
@@ -122,7 +122,7 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
             ),
             SizedBox(height: 15.0),
             Text(
-              '• Setting Price',
+              '• Giá dịch vụ',
               style: TextStyle(
                 color: colorPrimary,
                 fontFamily: 'Lato',
@@ -186,7 +186,7 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
                             left: 18.0,
                           ),
                           border: InputBorder.none,
-                          hintText: "Type price...",
+                          hintText: "Nhập giá",
                           hintStyle: TextStyle(
                             color: fCL,
                             fontSize: width / 26.0,
@@ -244,7 +244,7 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
             ),
             SizedBox(height: 16.0),
             Text(
-              '• Available',
+              '• Trạng thái',
               style: TextStyle(
                 color: colorPrimary,
                 fontFamily: 'Lato',
@@ -299,12 +299,16 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              title,
+              !title.toString().contains('/') && title == 'On'
+                  ? 'Hoạt động'
+                  : !title.toString().contains('/') && title == 'Off'
+                      ? 'Dừng hoạt động'
+                      : title,
               style: TextStyle(
-                color: isActive ? mC : colorDarkGrey,
+                color: isActive ? mCL : colorDarkGrey,
                 fontSize: width / 28.5,
                 fontFamily: 'Lato',
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w400,
               ),
             )
           ],

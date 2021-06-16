@@ -12,7 +12,6 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:van_transport/src/services/storage_service.dart';
-import 'package:van_transport/src/widgets/loading_page.dart';
 
 class EditMerchantPage extends StatefulWidget {
   final merchantInfo;
@@ -203,7 +202,7 @@ class _EditMerchantPageState extends State<EditMerchantPage> {
           ),
         ),
         title: Text(
-          'Edit Merchant',
+          'Sửa thông tin',
           style: TextStyle(
             color: colorTitle,
             fontSize: width / 20.0,
