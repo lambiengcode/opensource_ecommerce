@@ -81,6 +81,7 @@ class _OrderCardState extends State<OrderCard> {
             children: [
               Text(
                 StringService().formatString(28, widget.title),
+                maxLines: 1,
                 style: TextStyle(
                   color: colorTitle,
                   fontSize: width / 24.0,
@@ -90,10 +91,13 @@ class _OrderCardState extends State<OrderCard> {
               ),
               SizedBox(height: 6.0),
               RichText(
+                maxLines: 1,
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: '${'price'.trArgs()}: ',
+                      text: StringService().isNumeric(widget.transport)
+                          ? 'ĐVVC: '
+                          : '${'price'.trArgs()}: ',
                       style: TextStyle(
                         color: colorPrimary,
                         fontSize: width / 28.5,
@@ -118,7 +122,9 @@ class _OrderCardState extends State<OrderCard> {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'Dự tính: ',
+                      text: StringService().isNumeric(widget.transport)
+                          ? 'Giá vận chuyển: '
+                          : 'Dự tính: ',
                       style: TextStyle(
                         color: colorTitle,
                         fontSize: width / 28.5,
@@ -127,7 +133,8 @@ class _OrderCardState extends State<OrderCard> {
                       ),
                     ),
                     TextSpan(
-                      text: widget.subTitle,
+                      text: widget.subTitle +
+                          '${StringService().isNumeric(widget.subTitle) ? ' đ' : ''}',
                       style: TextStyle(
                         color: colorTitle,
                         fontSize: width / 26.5,

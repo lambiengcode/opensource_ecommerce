@@ -17,6 +17,7 @@ class PickAddressController extends GetxController {
   String placeTo, placeFrom;
   LatLng locationTo, locationFrom;
   String distance;
+  String estimate;
   String idAddressFrom, idAddressTo;
   String phone;
   InfoReceiver infoReceiver = InfoReceiver(
@@ -57,14 +58,25 @@ class PickAddressController extends GetxController {
   }
 
   pickAddress(lat, lng, fullAddress, idAddress, phoneNumber) {
-    if (locationFrom != null &&
-        locationFrom.latitude == lat &&
-        locationFrom.longitude == lng) {
-      GetSnackBar getSnackBar = GetSnackBar(
-        title: 'Không thể chọn địa chỉ này!',
-        subTitle: 'Địa chỉ gửi hàng và địa chỉ nhận hàng giống nhau.',
-      );
-      getSnackBar.show();
+    if (locationFrom != null) {
+      if (locationFrom.latitude == lat && locationFrom.longitude == lng) {
+        GetSnackBar getSnackBar = GetSnackBar(
+          title: 'Không thể chọn địa chỉ này!',
+          subTitle: 'Địa chỉ gửi hàng và địa chỉ nhận hàng giống nhau.',
+        );
+        getSnackBar.show();
+      } else {
+        locationTo = LatLng(
+          lat,
+          lng,
+        );
+        phone = phoneNumber;
+        placeTo = fullAddress;
+        this.idAddressTo = idAddress;
+        addressController.text = placeTo;
+        update();
+        Get.back();
+      }
     } else {
       locationTo = LatLng(
         lat,
@@ -77,17 +89,29 @@ class PickAddressController extends GetxController {
       update();
       Get.back();
     }
+    if (locationFrom != null && locationTo != null) {
+      calDistance();
+    }
   }
 
   pickFromAddress(lat, lng, fullAddress, idAddress) {
-    if (locationTo != null &&
-        locationTo.latitude == lat &&
-        locationTo.longitude == lng) {
-      GetSnackBar getSnackBar = GetSnackBar(
-        title: 'Không thể chọn địa chỉ này!',
-        subTitle: 'Địa chỉ gửi hàng và địa chỉ nhận hàng giống nhau.',
-      );
-      getSnackBar.show();
+    if (locationTo != null) {
+      if (locationTo.latitude == lat && locationTo.longitude == lng) {
+        GetSnackBar getSnackBar = GetSnackBar(
+          title: 'Không thể chọn địa chỉ này!',
+          subTitle: 'Địa chỉ gửi hàng và địa chỉ nhận hàng giống nhau.',
+        );
+        getSnackBar.show();
+      } else {
+        locationFrom = LatLng(
+          lat,
+          lng,
+        );
+        placeFrom = fullAddress;
+        this.idAddressFrom = idAddress;
+        update();
+        Get.back();
+      }
     } else {
       locationFrom = LatLng(
         lat,
@@ -97,6 +121,9 @@ class PickAddressController extends GetxController {
       this.idAddressFrom = idAddress;
       update();
       Get.back();
+    }
+    if (locationFrom != null && locationTo != null) {
+      calDistance();
     }
   }
 
@@ -119,7 +146,8 @@ class PickAddressController extends GetxController {
       locationTo.latitude,
       locationTo.longitude,
     );
-    distance = res['rows'][0]['elements'][0]['distance']['text'];
+    distance = res['response']['route'][0]['summary']['distance'].toString();
+    estimate = res['response']['route'][0]['summary']['trafficTime'].toString();
     update();
   }
 
@@ -243,7 +271,7 @@ class PickAddressController extends GetxController {
       "senderAddress": placeTo,
       "senderLat": locationTo.latitude.toString(),
       "senderLng": locationTo.longitude.toString(),
-      "estimatedDate": "1622221281950",
+      "estimatedDate": estimate ?? "200000",
       "FK_Transport": transportInfo['FK_Transport']['_id'],
       "FK_SubTransport": transportInfo['start']['_id'],
       "FK_SubTransportAwait": transportInfo['end']['_id'],

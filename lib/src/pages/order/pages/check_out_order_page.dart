@@ -129,7 +129,7 @@ class _CheckOutOrderPageState extends State<CheckOutOrderPage> {
                                       builder: (_) => _buildPriceText(
                                           context,
                                           'distance'.trArgs(),
-                                          '${_.distance == null ? 'Calculating' : _.distance}'),
+                                          '${_.distance == null ? 'Calculating' : (double.tryParse(_.distance) / 1000).toStringAsFixed(2)} Km'),
                                     ),
                                   ],
                                 ),

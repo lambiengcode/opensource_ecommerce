@@ -25,14 +25,13 @@ class FavouriteController extends GetxController {
     var status = await userService.favorite(body);
     if (status == 200) {
       getFavourites();
+      checkIsFavourite(idProduct);
       if (!isFavourite) {
         GetSnackBar getSnackBar = GetSnackBar(
             title: 'Bạn đã yêu thích sản phẩm!',
             subTitle: 'Đã lưu vào danh sách yêu thích.');
         getSnackBar.show();
       }
-      isFavourite = !isFavourite;
-      update();
     }
   }
 
