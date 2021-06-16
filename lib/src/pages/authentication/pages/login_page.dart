@@ -1,7 +1,6 @@
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:van_transport/src/services/authentication_service.dart';
-import 'package:van_transport/src/widgets/loading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -22,14 +21,15 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  FocusNode textFieldFocus = FocusNode();
+  FocusNode usernameFocus = FocusNode();
+  FocusNode passwordFocus = FocusNode();
   String email = '';
   String password = '';
 
   bool hidePassword = true;
   bool rememberPsw = false;
 
-  hideKeyboard() => textFieldFocus.unfocus();
+  hideKeyboard() => usernameFocus.unfocus();
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +128,10 @@ class _LoginPageState extends State<LoginPage> {
                                 child: TextFormField(
                                   controller: _emailController,
                                   cursorColor: colorTitle,
+                                  focusNode: usernameFocus,
+                                  onFieldSubmitted: (val) {
+                                    usernameFocus.unfocus();
+                                  },
                                   cursorRadius: Radius.circular(30.0),
                                   style: TextStyle(
                                     color: colorTitle,
@@ -172,12 +176,15 @@ class _LoginPageState extends State<LoginPage> {
                                   controller: _passwordController,
                                   cursorColor: colorTitle,
                                   cursorRadius: Radius.circular(30.0),
+                                  onFieldSubmitted: (val) {
+                                    passwordFocus.unfocus();
+                                  },
                                   style: TextStyle(
                                     color: colorTitle,
                                     fontSize: _size.width / 26.0,
                                     fontWeight: FontWeight.w500,
                                   ),
-                                  focusNode: textFieldFocus,
+                                  focusNode: passwordFocus,
                                   validator: (val) => val.length < 6
                                       ? 'validPsw'.trArgs()
                                       : null,

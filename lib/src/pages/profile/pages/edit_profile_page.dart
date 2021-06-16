@@ -9,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:van_transport/src/pages/profile/controllers/profile_controller.dart';
 import 'package:van_transport/src/services/storage_service.dart';
-import 'package:van_transport/src/widgets/loading_page.dart';
 
 class MyProfilePage extends StatefulWidget {
   final String urlToImage;

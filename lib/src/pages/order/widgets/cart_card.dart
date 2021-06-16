@@ -168,9 +168,13 @@ class _CartCardState extends State<CartCard> {
     return NeumorphicButton(
       onPressed: () {
         if (widget.idProduct != null) {
-          if (icon == Feather.minus && int.parse(widget.quantity) > 1) {
-            cartController.updateCart(
-                widget.idProduct, (int.parse(widget.quantity) - 1).toString());
+          if (icon == Feather.minus) {
+            if (widget.quantity == '1') {
+              cartController.deleteCartMerchant(widget.idProduct);
+            } else {
+              cartController.updateCart(widget.idProduct,
+                  (int.parse(widget.quantity) - 1).toString());
+            }
           } else {
             cartController.updateCart(
                 widget.idProduct, (int.parse(widget.quantity) + 1).toString());

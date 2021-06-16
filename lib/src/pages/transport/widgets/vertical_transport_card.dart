@@ -130,17 +130,16 @@ class _VerticalTransportCardState extends State<VerticalTransportCard> {
                 Text(
                   widget.desc == ''
                       ? 'Giới thiệu: Không có'
-                      : widget.desc.length < 50
-                          ? 'Giới thiệu: ${widget.desc.replaceAll('\n', '. ')}'
-                          : 'Giới thiệu: ${widget.desc.replaceAll('\n', '. ').substring(0, 50)}...',
+                      : 'Giới thiệu: ${widget.desc}',
+                  maxLines: 2,
                   style: TextStyle(
                     color: fCD,
-                    fontSize: _size.width / 32.5,
-                    fontWeight: FontWeight.w500,
+                    fontSize: _size.width / 35.0,
+                    fontWeight: FontWeight.w400,
                     fontFamily: 'Lato',
                   ),
                 ),
-                SizedBox(height: 12.0),
+                SizedBox(height: 4.0),
               ],
             ),
           ),

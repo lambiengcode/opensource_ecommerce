@@ -112,9 +112,9 @@ class _AdminPageState extends State<AdminPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: Divider(
-                color: colorDarkGrey,
-                height: .2,
-                thickness: .2,
+                color: colorPrimary,
+                height: .15,
+                thickness: .15,
               ),
             ),
             SizedBox(height: 16.0),
@@ -179,7 +179,8 @@ class _AdminPageState extends State<AdminPage> {
   Widget _buildPopularStore(context, List<dynamic> data, title) {
     final _size = MediaQuery.of(context).size;
     return Container(
-      height: _size.width * .42,
+      height: _size.width * .44,
+      padding: EdgeInsets.only(bottom: _size.height * .005),
       child: ListView.builder(
         padding: EdgeInsets.only(left: 12.0, right: 12.0),
         scrollDirection: Axis.horizontal,
