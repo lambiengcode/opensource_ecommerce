@@ -50,6 +50,10 @@ class PickAddressController extends GetxController {
       description: '',
       address: '',
     );
+    senderInfo = null;
+    recipientInfo = null;
+    transportInfo = null;
+    update();
   }
 
   pickAddress(lat, lng, fullAddress, idAddress, phoneNumber) {

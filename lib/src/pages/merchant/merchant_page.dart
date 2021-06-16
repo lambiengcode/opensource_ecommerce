@@ -1,5 +1,4 @@
 import 'package:van_transport/src/common/style.dart';
-import 'package:van_transport/src/pages/empty/empty_order_page.dart';
 import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
 import 'package:van_transport/src/pages/merchant/pages/manage_order_merchant_page.dart';
 import 'package:van_transport/src/pages/merchant/pages/product_page.dart';

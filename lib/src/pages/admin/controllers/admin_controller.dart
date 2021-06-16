@@ -100,7 +100,7 @@ class AdminController extends GetxController {
     var body = {
       'idTransport': idTransport,
     };
-    int status = await adminService.rejectMerchant(body);
+    int status = await adminService.rejectTransport(body);
     if (status == 200) {
       GetSnackBar getSnackBar = GetSnackBar(
         title: 'Bạn đã xoá lời mời hợp tác từ nhà vận chuyển!',

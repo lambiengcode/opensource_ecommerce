@@ -82,26 +82,14 @@ class WebViewPageState extends State<WebViewPage> {
           } else if (url
               .toLowerCase()
               .startsWith('$baseUrl/Payment/VNpayReturn'.toLowerCase())) {
-            var uri = Uri.parse(url);
-            uri.queryParameters.forEach((k, v) {
-              if (k == 'vnp_TransactionStatus') {
-                if (v == '00') {
-                  Get.offAndToNamed(Routes.ROOT);
-                  getSnackBar.show();
-                  getSnackBar = GetSnackBar(
-                    title: 'Thanh toán thành công!',
-                    subTitle: 'Hãy kiểm tra lại giỏ hàng và điểm của bạn.',
-                  );
-                } else {
-                  Get.offAndToNamed(Routes.ROOT);
-                  getSnackBar.show();
-                  getSnackBar = GetSnackBar(
-                    title: 'Thanh toán thất bại!',
-                    subTitle: 'Bạn đã huỷ thanh toán thành công.',
-                  );
-                }
-              }
-            });
+            Get.offAndToNamed(Routes.ROOT);
+            getSnackBar.show();
+            getSnackBar = GetSnackBar(
+              title: 'Thanh toán thành công!',
+              subTitle: 'Hãy kiểm tra lại giỏ hàng và điểm của bạn.',
+            );
+            Get.offAndToNamed(Routes.ROOT);
+            getSnackBar.show();
           }
         },
       ),
