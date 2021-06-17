@@ -53,11 +53,15 @@ class LineChartRevenueState extends State<LineChartRevenue> {
                   height: 4,
                 ),
                 Text(
-                  'Monthly Sales',
+                  widget.data.length == 7
+                      ? 'Đơn hàng trong 7 ngày qua'
+                      : widget.data.length == 3
+                          ? 'Đơn hàng trong 3 tháng qua'
+                          : 'Đơn hàng trong 12 tháng qua',
                   style: TextStyle(
                     color: colorTitle,
-                    fontSize: width / 18.0,
-                    fontWeight: FontWeight.bold,
+                    fontSize: width / 23.5,
+                    fontWeight: FontWeight.w600,
                     letterSpacing: 2,
                     fontFamily: 'Lato',
                   ),
@@ -97,7 +101,7 @@ class LineChartRevenueState extends State<LineChartRevenue> {
     return LineChartData(
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
-          tooltipBgColor: Colors.black.withOpacity(.15),
+          tooltipBgColor: mC,
         ),
         touchCallback: (LineTouchResponse touchResponse) {},
         handleBuiltInTouches: true,

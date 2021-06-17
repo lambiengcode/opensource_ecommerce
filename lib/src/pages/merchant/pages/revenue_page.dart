@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
 import 'package:van_transport/src/pages/transport/controllers/transport_controller.dart';
@@ -144,17 +145,24 @@ class _RevenuePageState extends State<RevenuePage> {
                           ),
                         ),
                       ),
-                      Divider(
-                        color: colorDarkGrey,
-                        thickness: 1,
-                        height: 1,
-                      ),
+                      // Divider(
+                      //   color: colorDarkGrey,
+                      //   thickness: 1,
+                      //   height: 1,
+                      // ),
+                      // Expanded(
+                      //   child: Container(
+                      //       // child: PieChartRevenue(
+                      //       //   data: listDoublePie,
+                      //       // ),
+                      //       ),
+                      // ),
                       Expanded(
                         child: Container(
-                            // child: PieChartRevenue(
-                            //   data: listDoublePie,
-                            // ),
-                            ),
+                          height: width * .65,
+                          width: width * .65,
+                          child: Lottie.asset('assets/lottie/splash.json'),
+                        ),
                       ),
                     ],
                   );
