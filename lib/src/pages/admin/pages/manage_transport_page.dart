@@ -32,6 +32,12 @@ class _ManageTransportPageState extends State<ManageTransportPage>
   }
 
   @override
+  void dispose() {
+    adminController.getTransport('ACTIVE');
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,

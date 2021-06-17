@@ -32,6 +32,7 @@ class _FavouritePageState extends State<FavouritePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: mC,
         elevation: .0,
         centerTitle: true,

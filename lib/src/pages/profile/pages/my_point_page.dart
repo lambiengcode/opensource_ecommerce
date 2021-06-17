@@ -77,7 +77,8 @@ class _MyPointPageState extends State<MyPointPage> {
                             );
                           }
                           return Text(
-                            snapshot.data['point'].toString(),
+                            double.tryParse(snapshot.data['point'].toString())
+                                .toStringAsFixed(2),
                             style: TextStyle(
                               color: colorPrimary,
                               fontSize: _size.width / 14.0,

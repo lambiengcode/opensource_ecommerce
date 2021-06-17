@@ -16,6 +16,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: mC,
         elevation: .0,
         centerTitle: true,

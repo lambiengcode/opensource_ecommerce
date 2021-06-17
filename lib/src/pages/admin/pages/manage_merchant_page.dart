@@ -32,6 +32,12 @@ class _ManageMerchantPageState extends State<ManageMerchantPage>
   }
 
   @override
+  void dispose() {
+    adminController.getMerchant('ACTIVE');
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,

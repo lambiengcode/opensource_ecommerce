@@ -45,6 +45,7 @@ class _BottomSetPriceState extends State<BottomSetPrice> {
     final _size = MediaQuery.of(context).size;
     return Container(
       height: height * .88,
+      width: width,
       padding: EdgeInsets.symmetric(horizontal: 24.0),
       decoration: BoxDecoration(
         color: mC,

@@ -53,7 +53,7 @@ class _EditTransportPageState extends State<EditTransportPage> {
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
-          Radius.circular(30.0),
+          Radius.circular(20.0),
         ),
       ),
       isScrollControlled: true,
@@ -70,7 +70,6 @@ class _EditTransportPageState extends State<EditTransportPage> {
   @override
   void initState() {
     super.initState();
-    print(widget.transportInfo['headquarters']);
     transportController.getTransport();
     _title = widget.transportInfo['name'];
     _desc = widget.transportInfo['description'];
@@ -163,90 +162,81 @@ class _EditTransportPageState extends State<EditTransportPage> {
         color: mC,
         child: Form(
           key: formKey,
-          child: StreamBuilder(
-            stream: transportController.getTransportStream,
-            builder: (context, AsyncSnapshot snapshot) {
-              if (!snapshot.hasData) {
-                return Container();
-              }
-              return Column(
-                children: [
-                  SizedBox(height: 12.0),
-                  GestureDetector(
-                    onTap: () => showImageBottomSheet(),
-                    child: VerticalTransportCard(
-                      image: _image,
-                      address: _address,
-                      title: _title,
-                      urlToImage: widget.transportInfo['avatar'],
-                      desc: _desc,
-                    ),
-                  ),
-                  SizedBox(height: 16.0),
-                  _buildLineInfo(context, 'Company Name', '', titleController),
-                  _buildDivider(context),
-                  _buildLineInfo(
-                      context, 'phone'.trArgs(), '', phoneController),
-                  _buildDivider(context),
-                  _buildLineInfo(
-                      context, 'address'.trArgs(), '', addressController),
-                  _buildDivider(context),
-                  _buildLineInfo(
-                      context, 'description'.trArgs(), '', descController),
-                  _buildDivider(context),
-                  SizedBox(height: 24.0),
-                  _buildListCategories(
-                    snapshot.data['typeSupport'],
-                  )
-                ],
-              );
-            },
+          child: Column(
+            children: [
+              SizedBox(height: 12.0),
+              GestureDetector(
+                onTap: () => showImageBottomSheet(),
+                child: VerticalTransportCard(
+                  image: _image,
+                  address: _address,
+                  title: _title,
+                  urlToImage: widget.transportInfo['avatar'],
+                  desc: _desc,
+                ),
+              ),
+              SizedBox(height: 16.0),
+              _buildLineInfo(context, 'Company Name', '', titleController),
+              _buildDivider(context),
+              _buildLineInfo(context, 'phone'.trArgs(), '', phoneController),
+              _buildDivider(context),
+              _buildLineInfo(
+                  context, 'address'.trArgs(), '', addressController),
+              _buildDivider(context),
+              _buildLineInfo(
+                  context, 'description'.trArgs(), '', descController),
+              _buildDivider(context),
+              SizedBox(height: 24.0),
+              _buildListCategories()
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _buildListCategories(listPrices) {
+  Widget _buildListCategories() {
     return Container(
       height: width * .135,
       width: width,
       child: ListView.builder(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
         scrollDirection: Axis.horizontal,
-        itemCount: listPrices.length,
+        itemCount: categories.length,
         itemBuilder: (context, index) {
-          return NeumorphicButton(
-            onPressed: () => showSetPriceBottomSheet(
-              categories[index],
-              listPrices[index],
-            ),
-            style: NeumorphicStyle(
-              shape: NeumorphicShape.concave,
-              boxShape: NeumorphicBoxShape.roundRect(
-                BorderRadius.circular(8.0),
+          return GetBuilder<TransportController>(
+            builder: (_) => NeumorphicButton(
+              onPressed: () => showSetPriceBottomSheet(
+                categories[index],
+                _.transportInfo['typeSupport'][index],
               ),
-              depth: 4.0,
-              intensity: .65,
-              color: mC,
-            ),
-            margin: EdgeInsets.only(right: 12.0, bottom: width / 32.0),
-            padding: EdgeInsets.symmetric(horizontal: 24.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  categories[index],
-                  style: TextStyle(
-                    color: colorDarkGrey,
-                    fontFamily: 'Lato',
-                    fontSize: width / 30.0,
-                  ),
+              style: NeumorphicStyle(
+                shape: NeumorphicShape.concave,
+                boxShape: NeumorphicBoxShape.roundRect(
+                  BorderRadius.circular(8.0),
                 ),
-              ],
+                depth: 4.0,
+                intensity: .65,
+                color: mC,
+              ),
+              margin: EdgeInsets.only(right: 12.0, bottom: width / 32.0),
+              padding: EdgeInsets.symmetric(horizontal: 24.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    categories[index],
+                    style: TextStyle(
+                      color: colorDarkGrey,
+                      fontFamily: 'Lato',
+                      fontSize: width / 30.0,
+                    ),
+                  ),
+                ],
+              ),
+              duration: Duration(milliseconds: 200),
             ),
-            duration: Duration(milliseconds: 200),
           );
         },
       ),

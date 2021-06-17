@@ -35,6 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: .0,
         brightness: Brightness.light,
         backgroundColor: mC,

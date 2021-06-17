@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:get/get.dart';
+import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:van_transport/src/services/transport_service.dart';
 import 'package:van_transport/src/widgets/snackbar.dart';
 
@@ -98,8 +99,8 @@ class TransportController extends GetxController {
 
     var res = await transportService.updatePriceType(body);
     if (res != null) {
-      getTransport();
-      Get.back();
+      Get.offNamedUntil(Routes.DELIVERY, (route) => false);
+      Get.toNamed(Routes.DELIVERY + Routes.EDITDELIVERY, arguments: res);
     } else {
       GetSnackBar getSnackBar = GetSnackBar(
         title: 'Cập nhật thất bại!',
