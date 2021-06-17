@@ -99,7 +99,8 @@ class TransportController extends GetxController {
 
     var res = await transportService.updatePriceType(body);
     if (res != null) {
-      Get.offNamedUntil(Routes.DELIVERY, (route) => false);
+      Get.back();
+      Get.back();
       Get.toNamed(Routes.DELIVERY + Routes.EDITDELIVERY, arguments: res);
     } else {
       GetSnackBar getSnackBar = GetSnackBar(
