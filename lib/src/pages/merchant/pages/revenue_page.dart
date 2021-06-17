@@ -6,7 +6,6 @@ import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/merchant/controllers/merchant_controller.dart';
 import 'package:van_transport/src/pages/transport/controllers/transport_controller.dart';
 import 'package:van_transport/src/widgets/line_chart.dart';
-import 'package:van_transport/src/widgets/pie_chart.dart';
 
 class RevenuePage extends StatefulWidget {
   final String comeFrom;
@@ -115,7 +114,9 @@ class _RevenuePageState extends State<RevenuePage> {
             ),
             Expanded(
               child: StreamBuilder(
-                stream: transportController.getStatisticStream,
+                stream: widget.comeFrom == 'TRANSPORT'
+                    ? transportController.getStatisticStream
+                    : merchantController.getStatisticStream,
                 builder: (context, AsyncSnapshot snapshot) {
                   if (!snapshot.hasData) {
                     return Container();

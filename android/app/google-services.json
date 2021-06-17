@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:682633805775:android:41a73605a19024cf951cba",
+        "mobilesdk_app_id": "1:682633805775:android:aadbeb3577c4bc3e951cba",
         "android_client_info": {
-          "package_name": "com.vanth.van_transport"
+          "package_name": "com.app.vanth"
         }
       },
       "oauth_client": [
@@ -31,10 +31,46 @@
               "client_type": 3
             },
             {
-              "client_id": "682633805775-qq2fn8rndblkjiahk3635eg2h9gf3ncg.apps.googleusercontent.com",
+              "client_id": "682633805775-d74pnbtm88u1k6472r178cib7bd5dgbp.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.vanth.van-transport"
+                "bundle_id": "com.app.transport"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682633805775:android:41a73605a19024cf951cba",
+        "android_client_info": {
+          "package_name": "com.app.vanth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "682633805775-8pulbsl1dq3lphoctc5mlffvheoormmb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtRUcvN9IIIkr3FcyjWJPhOiW45JCYNv8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682633805775-8pulbsl1dq3lphoctc5mlffvheoormmb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "682633805775-d74pnbtm88u1k6472r178cib7bd5dgbp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.transport"
               }
             }
           ]

@@ -68,7 +68,8 @@ class ApiGateway {
   static const GET_TRANSPORT = '/Transport/GetInfo';
   static const GET_ASSIGN_STAFF = '/Transport/GetAssignStaff';
   static const UPDATE_PRICE_TYPE = '/Transport/UpdatePriceType';
-  static const TRANSPORT_CANCEL_ORDER = '/Transport/CancelPackage?idPackage=';
+  static const TRANSPORT_CANCEL_ORDER =
+      '/TransportSub/CancelPackage?idPackage=';
   static const STATISTIC_TRANSPORT = '/Transport/PackageStatistics?period=';
 
   // Subtransport: 8
@@ -88,7 +89,7 @@ class ApiGateway {
   static const UPDATE_MERCHANT = '/Merchant/Update';
   static const GET_MERCHANT_BY_ID = '/Merchant/GetById?id=';
   static const GET_ORDER_BY_STATUS_MERCHANT = '/Merchant/OrderByStatus?status=';
-  static const MERCHANT_CANCEL_ORDER = '/User/CancelPackage?idPackage=';
+  static const MERCHANT_CANCEL_ORDER = '/Merchant/CancelPackage?idPackage=';
   static const STATISTIC_MERCHANT = '/Merchant/PackageStatistics?period=';
 
   // Group Product: 4

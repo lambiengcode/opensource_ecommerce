@@ -187,6 +187,7 @@ class MerchantService {
       baseUrl + ApiGateway.STATISTIC_MERCHANT + period + '&type=$type',
       headers: getHeaders(),
     );
+    // print(convert.jsonDecode(response.body));
     return convert.jsonDecode(response.body);
   }
 

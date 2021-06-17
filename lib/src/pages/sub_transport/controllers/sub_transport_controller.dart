@@ -28,6 +28,7 @@ class SubTransportController extends GetxController {
   cancelOrder(idOrder) async {
     var status = await transportService.cancelOrder(idOrder);
     if (status == 200) {
+      getOrder('AWAIT_FOR_CONFIRMATION');
       Get.back();
       GetSnackBar getSnackBar = GetSnackBar(
         title: 'Bạn đã từ chối đơn hàng thành công!',

@@ -1,4 +1,4 @@
-package com.vanth.van_transport
+package com.app.vanth
 
 import io.flutter.embedding.android.FlutterActivity
 
