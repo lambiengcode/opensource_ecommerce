@@ -47,7 +47,6 @@ class TransportService {
       body: body,
       headers: getHeaders(),
     );
-    print(convert.jsonDecode(response.body));
     return response.statusCode;
   }
 
@@ -70,7 +69,6 @@ class TransportService {
       body: body,
       headers: getHeaders(),
     );
-    print(convert.jsonDecode(response.body));
     return response.statusCode;
   }
 
@@ -106,7 +104,6 @@ class TransportService {
     var json = response.statusCode == 200
         ? convert.jsonDecode(response.body)['data']
         : [];
-    print(json);
     return json;
   }
 
@@ -119,14 +116,14 @@ class TransportService {
   }
 
   Future<int> registerStaff(body) async {
-    var response =
-        await http.post(baseUrl + ApiGateway.REGISTER_STAFF, body: body);
+    var response = await http.post(baseUrl + ApiGateway.REGISTER_STAFF,
+        body: body, headers: getHeaders());
     return response.statusCode;
   }
 
   Future<int> deleteTransportSub(body) async {
-    var response =
-        await http.post(baseUrl + ApiGateway.DELETE_TRANSPORTSUB, body: body);
+    var response = await http.post(baseUrl + ApiGateway.DELETE_TRANSPORTSUB,
+        body: body, headers: getHeaders());
     return response.statusCode;
   }
 

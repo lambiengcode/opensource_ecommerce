@@ -230,6 +230,7 @@ class _EditMerchantPageState extends State<EditMerchantPage> {
                   StorageService storageService = StorageService();
                   String urlToImage =
                       await storageService.uploadImageNotProfile(_image);
+                  Get.back();
                   merchantController.editMerchant(
                     widget.merchantInfo['_id'],
                     _title,
@@ -240,9 +241,7 @@ class _EditMerchantPageState extends State<EditMerchantPage> {
                     _lat,
                     _lng,
                   );
-                  Get.back();
                 } else {
-                  Get.back();
                   merchantController.editMerchant(
                     widget.merchantInfo['_id'],
                     _title,

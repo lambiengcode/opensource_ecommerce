@@ -8,6 +8,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:van_transport/src/services/string_service.dart';
+import 'package:van_transport/src/widgets/snackbar.dart';
 
 class CartPage extends StatefulWidget {
   @override
@@ -179,7 +180,9 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ),
                 _buildBottomCheckout(
-                    context, StringService().formatPrice(price.toString())),
+                  context,
+                  StringService().formatPrice(price.toString()),
+                ),
               ],
             );
           },
@@ -255,7 +258,17 @@ class _CartPageState extends State<CartPage> {
               ),
             ),
             NeumorphicButton(
-              onPressed: () => Get.toNamed(Routes.PICKADDRESSCART),
+              onPressed: () {
+                if (price != '0') {
+                  Get.toNamed(Routes.PICKADDRESSCART);
+                } else {
+                  GetSnackBar getSnackBar = GetSnackBar(
+                    title: 'Giỏ hàng của bạn đang rỗng!',
+                    subTitle: 'Hãy mua hàng ngay, và tiến hành thanh toán.',
+                  );
+                  getSnackBar.show();
+                }
+              },
               duration: Duration(milliseconds: 200),
               style: NeumorphicStyle(
                 shape: NeumorphicShape.convex,

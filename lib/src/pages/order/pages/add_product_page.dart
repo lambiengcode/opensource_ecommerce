@@ -29,6 +29,12 @@ class _AddProductPageState extends State<AddProductPage> {
   FocusNode focusNode = FocusNode();
 
   @override
+  void dispose() {
+    cartController.disposeInfo();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,

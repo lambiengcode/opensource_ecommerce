@@ -11,7 +11,9 @@ class BottomSettingsAddress extends StatefulWidget {
   final List<String> values;
   final String idAddress;
   final String idMerchant;
-  BottomSettingsAddress({this.values, this.idAddress, this.idMerchant});
+  final dataGroup;
+  BottomSettingsAddress(
+      {this.values, this.idAddress, this.idMerchant, this.dataGroup});
   @override
   State<StatefulWidget> createState() => _BottomSettingsAddressState();
 }
@@ -99,7 +101,8 @@ class _BottomSettingsAddressState extends State<BottomSettingsAddress> {
           }
         } else {
           if (title == widget.values[0]) {
-            Get.toNamed(Routes.MERCHANT + Routes.EDITGROUP);
+            Get.toNamed(Routes.MERCHANT + Routes.EDITGROUP,
+                arguments: widget.dataGroup);
           } else {
             merchantController.deleteGroupProduct(
                 widget.idAddress, widget.idMerchant);

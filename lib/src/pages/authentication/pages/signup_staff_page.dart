@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:van_transport/src/common/style.dart';
 import 'package:van_transport/src/pages/transport/controllers/transport_controller.dart';
-import 'package:van_transport/src/services/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -28,7 +27,7 @@ class _SignupStaffPageState extends State<SignupStaffPage> {
   String phone = '';
   String email = '';
   String password = '';
-  File _image = null;
+  File _image;
 
   bool hidePassword = true;
 

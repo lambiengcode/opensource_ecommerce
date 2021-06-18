@@ -138,6 +138,12 @@ class _PickAddressPageState extends State<PickAddressPage> {
   }
 
   @override
+  void dispose() {
+    pickAddressController.disposeFormInput();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,

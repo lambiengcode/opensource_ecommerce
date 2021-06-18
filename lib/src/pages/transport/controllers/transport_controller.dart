@@ -77,10 +77,12 @@ class TransportController extends GetxController {
     };
 
     int status = await transportService.registerStaff(body);
+    print(status);
     if (status == 200) {
       getAssignTransport();
       Get.back();
     } else {
+      Get.back();
       GetSnackBar getSnackBar = GetSnackBar(
         title: 'Đăng kí thất bại',
         subTitle: 'Hãy kiểm tra lại thông tin bạn nhập',
@@ -159,7 +161,7 @@ class TransportController extends GetxController {
 
     int status = await transportService.assignTransport(body);
     if (status == 200) {
-      getAllSubTransportByStatus('ACTIVE');
+      getAssignTransport();
       Get.back();
     } else {
       GetSnackBar getSnackBar = GetSnackBar(

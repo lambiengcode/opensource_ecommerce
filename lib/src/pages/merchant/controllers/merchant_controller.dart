@@ -269,7 +269,7 @@ class MerchantController extends GetxController {
   deleteGroupProduct(idGroup, idMerchant) async {
     int status = await merchantService.deleteGroupProduct(idGroup);
     if (status == 200) {
-      getProductByGroup(idGroup, 1);
+      getGroupProduct(idMerchant);
       GetSnackBar getSnackBar = GetSnackBar(
         title: 'Delete group product success!',
         subTitle: 'Your group product already update.',

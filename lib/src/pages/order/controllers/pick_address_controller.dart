@@ -54,6 +54,13 @@ class PickAddressController extends GetxController {
     senderInfo = null;
     recipientInfo = null;
     transportInfo = null;
+    phone = null;
+    estimate = null;
+    distance = null;
+    locationFrom = null;
+    locationTo = null;
+    placeFrom = null;
+    placeTo = null;
     update();
   }
 
@@ -159,8 +166,8 @@ class PickAddressController extends GetxController {
   getListTransportForClientCart() async {
     var res = await userService.getTransportDeliveryClient(
       idAddressFrom,
-      locationFrom.latitude,
-      locationFrom.longitude,
+      locationTo.latitude,
+      locationTo.longitude,
     );
     listTransport.add(res);
   }
@@ -215,10 +222,7 @@ class PickAddressController extends GetxController {
     Get.back();
     if (response.statusCode == 200) {
       if (paymentMethod == 'POINT') {
-        transportInfo = null;
-        senderInfo = null;
-        recipientInfo = null;
-        idAddressFrom = null;
+        disposeFormInput();
         Get.offAndToNamed(Routes.ROOT);
         GetSnackBar getSnackBar = GetSnackBar(
           title: 'Mua hàng thành công!',
@@ -294,8 +298,8 @@ class PickAddressController extends GetxController {
     print(res);
     Get.back();
     if (response.statusCode == 200) {
-      disposeFormInput();
       if (paymentMethod == 'POINT') {
+        disposeFormInput();
         transportInfo = null;
         senderInfo = null;
         recipientInfo = null;

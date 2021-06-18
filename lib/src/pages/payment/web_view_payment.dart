@@ -4,6 +4,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:van_transport/src/common/secret_key.dart';
 import 'package:van_transport/src/common/style.dart';
+import 'package:van_transport/src/pages/order/controllers/pick_address_controller.dart';
 import 'package:van_transport/src/routes/app_pages.dart';
 import 'package:van_transport/src/widgets/snackbar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -16,6 +17,7 @@ class WebViewPage extends StatefulWidget {
 }
 
 class WebViewPageState extends State<WebViewPage> {
+  final pickAddressController = Get.put(PickAddressController());
   WebViewController _controller;
   GetSnackBar getSnackBar;
 
@@ -64,6 +66,7 @@ class WebViewPageState extends State<WebViewPage> {
           if (url
               .toLowerCase()
               .startsWith('$baseUrl/Payment/Paypal/Success'.toLowerCase())) {
+            pickAddressController.disposeFormInput();
             getSnackBar = GetSnackBar(
               title: 'Thanh toán thành công!',
               subTitle: 'Hãy kiểm tra lại giỏ hàng và điểm của bạn.',
@@ -73,6 +76,7 @@ class WebViewPageState extends State<WebViewPage> {
           } else if (url
               .toLowerCase()
               .startsWith('$baseUrl/Payment/Paypal/Cancel'.toLowerCase())) {
+            pickAddressController.disposeFormInput();
             getSnackBar = GetSnackBar(
               title: 'Thanh toán thất bại!',
               subTitle: 'Bạn đã huỷ thanh toán thành công.',
@@ -82,6 +86,7 @@ class WebViewPageState extends State<WebViewPage> {
           } else if (url
               .toLowerCase()
               .startsWith('$baseUrl/Payment/VNpayReturn'.toLowerCase())) {
+            pickAddressController.disposeFormInput();
             Get.offAndToNamed(Routes.ROOT);
             getSnackBar.show();
             getSnackBar = GetSnackBar(

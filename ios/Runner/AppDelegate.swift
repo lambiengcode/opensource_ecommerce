@@ -12,7 +12,7 @@ import GoogleMaps
       if #available(iOS 10.0, *) {
         UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
       }
-      GMSServices.provideAPIKey("AIzaSyB_teODaKXlxFAtKUoWjlldv-fD3ZLSWVk")
+      GMSServices.provideAPIKey("AIzaSyBRl407ZSUzcXyYqTEf2z4v5pzxPeL0nAQ")
       GeneratedPluginRegistrant.register(with: self)
       application.registerForRemoteNotifications()
       return super.application(application, didFinishLaunchingWithOptions: launchOptions)

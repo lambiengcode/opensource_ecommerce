@@ -16,6 +16,12 @@ class CartClientController extends GetxController {
     'Jewelry',
   ];
 
+  disposeInfo() {
+    weight = null;
+    typeProduct = 0;
+    update();
+  }
+
   getListCart() async {
     var res = await userService.getCartClient();
     listCartController.add(res);

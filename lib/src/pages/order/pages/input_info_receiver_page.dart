@@ -56,7 +56,7 @@ class _InputInfoReceiverPageState extends State<InputInfoReceiverPage> {
         leading: IconButton(
           onPressed: () {
             Get.back();
-            pickAddressController.disposeFormInput();
+            // pickAddressController.disposeFormInput();
           },
           icon: Icon(
             Feather.arrow_left,

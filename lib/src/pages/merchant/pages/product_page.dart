@@ -15,7 +15,7 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   final merchantController = Get.put(MerchantController());
-  List<String> values = ['Edit Product', 'Delete Product'];
+  List<String> values = ['Sửa nhóm sản phẩm', 'Xoá nhóm sản phẩm'];
 
   showGroupProductSettings(groupProductInfo) {
     showModalBottomSheet(
@@ -31,6 +31,7 @@ class _ProductPageState extends State<ProductPage> {
           values: values,
           idAddress: groupProductInfo['_id'],
           idMerchant: widget.idMerchant,
+          dataGroup: groupProductInfo,
         );
       },
     );
